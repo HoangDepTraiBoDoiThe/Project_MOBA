@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+struct FGameplayTag;
+class UHeroInfosDataAsset;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
@@ -21,6 +24,9 @@ class PROJECT_MOBA_API APlayerCharacter : public ABaseCharacter
 
 public:
 	APlayerCharacter();
+	FORCEINLINE UHeroInfosDataAsset* GetHeroInfosDataAsset() const {return HeroInfos;}
+
+	FGameplayTag GetHeroTag() const {return HeroTag;}
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -31,6 +37,10 @@ protected:
 	TObjectPtr<USceneComponent> CameraRootComponent;
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
+	FGameplayTag HeroTag;
+	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
+	TObjectPtr<UHeroInfosDataAsset> HeroInfos;
 	
 private:
 	

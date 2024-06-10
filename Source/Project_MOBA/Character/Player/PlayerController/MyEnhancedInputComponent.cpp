@@ -2,13 +2,3 @@
 
 
 #include "MyEnhancedInputComponent.h"
-
-UMyEnhancedInputComponent::UMyEnhancedInputComponent()
-{
-	
-}
-
-void UMyEnhancedInputComponent::SetupInputActions()
-{
-	
-}

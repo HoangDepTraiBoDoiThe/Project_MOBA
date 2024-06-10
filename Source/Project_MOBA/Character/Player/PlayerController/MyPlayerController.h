@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class APlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
 /**
@@ -18,15 +20,20 @@ class PROJECT_MOBA_API AMyPlayerController : public APlayerController
 
 public:
 	AMyPlayerController();
+	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void SetupInputComponent() override;
 
-	TObjectPtr<UInputMappingContext> IMC;
-	TObjectPtr<UInputAction> Q;
+	void OnInputPressed(FGameplayTag AbilityTag);
+	void OnInputHeld(FGameplayTag AbilityTag);
+	void OnInputReleased(FGameplayTag AbilityTag);
 	
 private:
+	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
+	TObjectPtr<UInputMappingContext> IMC;
+	TObjectPtr<UInputAction> Q;
 	
 };

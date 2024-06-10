@@ -5,6 +5,8 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "MyEnhancedInputComponent.h"
+#include "Project_MOBA/Character/Player/PlayerCharacter.h"
+#include "Project_MOBA/Data/HeroInfosDataAsset.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -25,6 +27,29 @@ void AMyPlayerController::SetupInputComponent()
 
 	if (UMyEnhancedInputComponent* EnhancedInputComponent = Cast<UMyEnhancedInputComponent>(InputComponent))
 	{
-		EnhancedInputComponent->SetupInputActions();
+		if (!GetPlayerCharacter()) return;
+		TMap<TObjectPtr<UInputAction>, FGameplayTag>* InputInfos = PlayerCharacter->GetHeroInfosDataAsset()->GetInputActionInfos(PlayerCharacter->GetHeroTag());
+		EnhancedInputComponent->SetupInputActions(InputInfos, this, OnInputPressed, OnInputHeld, OnInputReleased);
 	}
+}
+
+void AMyPlayerController::OnInputPressed(FGameplayTag AbilityTag)
+{
+}
+
+void AMyPlayerController::OnInputHeld(FGameplayTag AbilityTag)
+{
+}
+
+void AMyPlayerController::OnInputReleased(FGameplayTag AbilityTag)
+{
+}
+
+APlayerCharacter* AMyPlayerController::GetPlayerCharacter()
+{
+	if (!PlayerCharacter)
+	{
+		PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
+	}
+	return PlayerCharacter;
 }
