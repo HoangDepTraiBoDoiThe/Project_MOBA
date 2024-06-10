@@ -8,9 +8,12 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UInputAction;
+
 /**
  * 
  */
+
 UCLASS()
 class PROJECT_MOBA_API APlayerCharacter : public ABaseCharacter
 {
@@ -28,6 +31,7 @@ protected:
 	TObjectPtr<USceneComponent> CameraRootComponent;
 	virtual void BeginPlay() override;
 
+	
 private:
 	
 };

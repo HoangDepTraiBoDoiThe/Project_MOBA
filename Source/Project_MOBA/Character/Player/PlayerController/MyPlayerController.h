@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class UInputMappingContext;
+class UInputAction;
 /**
  * 
  */
@@ -18,7 +20,11 @@ public:
 	AMyPlayerController();
 	
 protected:
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void SetupInputComponent() override;
 
+	TObjectPtr<UInputMappingContext> IMC;
+	TObjectPtr<UInputAction> Q;
 	
 private:
 
