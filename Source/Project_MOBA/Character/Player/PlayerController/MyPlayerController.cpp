@@ -17,7 +17,7 @@ void AMyPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = Cast<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	EnhancedInputLocalPlayerSubsystem->AddMappingContext(IMC, 0);	
 }
 
@@ -29,7 +29,7 @@ void AMyPlayerController::SetupInputComponent()
 	{
 		if (!GetPlayerCharacter()) return;
 		TMap<TObjectPtr<UInputAction>, FGameplayTag>* InputInfos = PlayerCharacter->GetHeroInfosDataAsset()->GetInputActionInfos(PlayerCharacter->GetHeroTag());
-		EnhancedInputComponent->SetupInputActions(InputInfos, this, OnInputPressed, OnInputHeld, OnInputReleased);
+		EnhancedInputComponent->SetupInputActions(*InputInfos, this, &ThisClass::OnInputPressed, &ThisClass::OnInputHeld, &ThisClass::OnInputReleased);
 	}
 }
 

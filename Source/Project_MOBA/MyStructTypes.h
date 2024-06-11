@@ -4,14 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "InputAction.h"
+#include "MyStructTypes.generated.h"
+
 
 /**
  * 
  */
 
-class UInputAction;
-
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FHeroInfosStruct
 {
 	GENERATED_BODY()
@@ -24,3 +25,15 @@ struct FHeroInfosStruct
 
 };
 
+UCLASS()
+class PROJECT_MOBA_API UMyStructTypes : public UObject
+{
+	GENERATED_BODY()
+
+public:
+
+protected:
+
+private:
+	
+};

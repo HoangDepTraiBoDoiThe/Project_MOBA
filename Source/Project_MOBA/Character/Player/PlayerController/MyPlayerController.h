@@ -33,7 +33,9 @@ protected:
 private:
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputMappingContext> IMC;
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> Q;
 	
 };

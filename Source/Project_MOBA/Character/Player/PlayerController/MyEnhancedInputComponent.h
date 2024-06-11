@@ -17,24 +17,22 @@ class PROJECT_MOBA_API UMyEnhancedInputComponent : public UEnhancedInputComponen
 	GENERATED_BODY()
 
 public:
-	UMyEnhancedInputComponent();
-
 	template<class UserClass, typename InputPressFuncType, typename InputHeldFuncType, typename InputReleaseFuncType>
-	void SetupInputActions(TMap<TObjectPtr<UInputAction>, FGameplayTag>* HeroInfos, UserClass* Object , InputPressFuncType InputPressFunc, InputHeldFuncType InputHeldFunc, InputReleaseFuncType InputReleaseFunc);
+	void SetupInputActions(TMap<TObjectPtr<UInputAction>, FGameplayTag> HeroInfos, UserClass* Object , InputPressFuncType InputPressFunc, InputHeldFuncType InputHeldFunc, InputReleaseFuncType InputReleaseFunc);
 
 protected:
 	
 };
 
 template <class UserClass, typename InputPressFuncType, typename InputHeldFuncType, typename InputReleaseFuncType>
-void UMyEnhancedInputComponent::SetupInputActions(TMap<TObjectPtr<UInputAction>, FGameplayTag>* HeroInfos,
+void UMyEnhancedInputComponent::SetupInputActions(TMap<TObjectPtr<UInputAction>, FGameplayTag> HeroInfos,
 	UserClass* Object, InputPressFuncType InputPressFunc, InputHeldFuncType InputHeldFunc,
 	InputReleaseFuncType InputReleaseFunc)
 {
 	for (TTuple<TObjectPtr<UInputAction>, FGameplayTag>& Pair : HeroInfos)
 	{
-		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Started, Object, InputPressFunc(Pair.Value));
-		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Started, Object, InputHeldFunc(Pair.Value));
-		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Completed, Object, InputReleaseFunc(Pair.Value));
+		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Started, Object, InputPressFunc, Pair.Value);
+		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Started, Object, InputHeldFunc, Pair.Value);
+		if (InputPressFunc) BindAction(Pair.Key, ETriggerEvent::Completed, Object, InputReleaseFunc, Pair.Value);
 	}
 }
