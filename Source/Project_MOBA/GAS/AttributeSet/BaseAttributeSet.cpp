@@ -32,8 +32,9 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, MagicResist, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, MagicResistPenetration, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, CriticalHitChange, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, BlockChange, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, CriticalHitMultiply, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
 }
 
 #pragma region Rep Notify Functions
@@ -112,13 +113,18 @@ void UBaseAttributeSet::OnRep_MagicResistPenetration(const FGameplayAttributeDat
     GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, MagicResistPenetration, OldValue); 
 }
 
-void UBaseAttributeSet::OnRep_CriticalHitChange(const FGameplayAttributeData& OldValue) const
+void UBaseAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldValue) const
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, CriticalHitChange, OldValue); 
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, CriticalHitChance, OldValue); 
 }
 
-void UBaseAttributeSet::OnRep_BlockChange(const FGameplayAttributeData& OldValue) const
+void UBaseAttributeSet::OnRep_CriticalHitMultiply(const FGameplayAttributeData& OldValue) const
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, BlockChange, OldValue);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, CriticalHitMultiply, OldValue); 
+}
+
+void UBaseAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldValue) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, BlockChance, OldValue);
 }
 #pragma endregion

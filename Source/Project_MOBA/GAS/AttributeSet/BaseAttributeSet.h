@@ -44,8 +44,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MagicResist)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ArmorPenetration)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MagicResistPenetration)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitChange)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChange)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitChance)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitMultiply)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChance)
 
 protected:
 
@@ -87,9 +88,11 @@ private:
 	UFUNCTION()
 	void OnRep_MagicResistPenetration(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
-	void OnRep_CriticalHitChange(const FGameplayAttributeData& OldValue) const;
+	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
-	void OnRep_BlockChange(const FGameplayAttributeData& OldValue) const;
+	void OnRep_CriticalHitMultiply(const FGameplayAttributeData& OldValue) const;
+	UFUNCTION()
+	void OnRep_BlockChance(const FGameplayAttributeData& OldValue) const;
 #pragma endregion
 
 #pragma region Vital attributes
@@ -158,12 +161,16 @@ private:
     FGameplayAttributeData MagicResistPenetration;
 
     // Chance to deal increased damage
-    UPROPERTY(ReplicatedUsing=OnRep_CriticalHitChange)
-    FGameplayAttributeData CriticalHitChange;
+    UPROPERTY(ReplicatedUsing=OnRep_CriticalHitChance)
+    FGameplayAttributeData CriticalHitChance;
+	
+    // 
+    UPROPERTY(ReplicatedUsing=OnRep_CriticalHitMultiply)
+    FGameplayAttributeData CriticalHitMultiply;
 
     // Chance to reduce incoming damage
-    UPROPERTY(ReplicatedUsing=OnRep_BlockChange)
-    FGameplayAttributeData BlockChange;
+    UPROPERTY(ReplicatedUsing=OnRep_BlockChance)
+    FGameplayAttributeData BlockChance;
 #pragma endregion
 	
 #pragma region Meta attributes
