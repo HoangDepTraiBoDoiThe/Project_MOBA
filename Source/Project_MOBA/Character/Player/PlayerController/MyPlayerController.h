@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class AMyPlayerState;
 class APlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
@@ -21,6 +22,7 @@ class PROJECT_MOBA_API AMyPlayerController : public APlayerController
 public:
 	AMyPlayerController();
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
+	AMyPlayerState* GetMyPlayerState();
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -37,5 +39,7 @@ private:
 	TObjectPtr<UInputMappingContext> IMC;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> Q;
+
+	TObjectPtr<AMyPlayerState> MyPlayerState;
 	
 };

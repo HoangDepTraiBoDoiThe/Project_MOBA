@@ -7,6 +7,7 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class AMyPlayerState;
 struct FGameplayTag;
 class UHeroInfosDataAsset;
 class UCameraComponent;
@@ -28,6 +29,8 @@ public:
 
 	FGameplayTag GetHeroTag() const {return HeroTag;}
 
+	AMyPlayerState* GetMyPlayerState();
+
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
@@ -36,11 +39,16 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USceneComponent> CameraRootComponent;
 	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
+
+	void SetPlayerCharacterGASInfos();
 
 	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
 	FGameplayTag HeroTag;
 	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
 	TObjectPtr<UHeroInfosDataAsset> HeroInfos;
+
+	TObjectPtr<AMyPlayerState> MyPlayerState;
 	
 private:
 	

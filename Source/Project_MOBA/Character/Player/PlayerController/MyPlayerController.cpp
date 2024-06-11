@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "MyEnhancedInputComponent.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
+#include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/Data/HeroInfosDataAsset.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -17,8 +18,8 @@ void AMyPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	EnhancedInputLocalPlayerSubsystem->AddMappingContext(IMC, 0);	
+ 	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	EnhancedInputLocalPlayerSubsystem->AddMappingContext(IMC, 0);
 }
 
 void AMyPlayerController::SetupInputComponent()
@@ -52,4 +53,10 @@ APlayerCharacter* AMyPlayerController::GetPlayerCharacter()
 		PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
 	}
 	return PlayerCharacter;
+}
+
+AMyPlayerState* AMyPlayerController::GetMyPlayerState()
+{
+	if (!MyPlayerState) MyPlayerState = GetPlayerCharacter()->GetMyPlayerState();
+	return MyPlayerState;
 }
