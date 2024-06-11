@@ -50,6 +50,7 @@ public:
 protected:
 
 private:
+#pragma region Rep Notify Functions
 	// Vital attributes
 	UFUNCTION()
 	void OnRep_HitPoint(const FGameplayAttributeData& OldValue) const;
@@ -89,50 +90,80 @@ private:
 	void OnRep_CriticalHitChange(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_BlockChange(const FGameplayAttributeData& OldValue) const;
-
-
+#pragma endregion
 
 #pragma region Vital attributes
-	UPROPERTY(ReplicatedUsing=OnRep_HitPoint)
-	FGameplayAttributeData HitPoint;
-	UPROPERTY(ReplicatedUsing=OnRep_Mana)
-	FGameplayAttributeData Mana;
-	UPROPERTY(ReplicatedUsing=OnRep_MaxHitPoint)
-	FGameplayAttributeData MaxHitPoint;
-	UPROPERTY(ReplicatedUsing=OnRep_MaxMana)
-	FGameplayAttributeData MaxMana;
+    // Current health of the character
+    UPROPERTY(ReplicatedUsing=OnRep_HitPoint)
+    FGameplayAttributeData HitPoint;
+
+    // Current mana/energy/resource of the character
+    UPROPERTY(ReplicatedUsing=OnRep_Mana)
+    FGameplayAttributeData Mana;
+
+    // Maximum possible health of the character
+    UPROPERTY(ReplicatedUsing=OnRep_MaxHitPoint)
+    FGameplayAttributeData MaxHitPoint;
+
+    // Maximum possible mana/energy/resource of the character
+    UPROPERTY(ReplicatedUsing=OnRep_MaxMana)
+    FGameplayAttributeData MaxMana;
 #pragma endregion
 
 #pragma region Primary attributes
-	UPROPERTY(ReplicatedUsing=OnRep_Vigor)
-	FGameplayAttributeData Vigor;
-	UPROPERTY(ReplicatedUsing=OnRep_Resilient)
-	FGameplayAttributeData Resilient;
-	UPROPERTY(ReplicatedUsing=OnRep_Resistance)
-	FGameplayAttributeData Resistance;
-	UPROPERTY(ReplicatedUsing=OnRep_Strength)
-	FGameplayAttributeData Strength;
-	UPROPERTY(ReplicatedUsing=OnRep_Intelligence)
-	FGameplayAttributeData Intelligence;
+    // Influences health and physical damage
+    UPROPERTY(ReplicatedUsing=OnRep_Vigor)
+    FGameplayAttributeData Vigor;
+
+    // Influences defensive capabilities and resistance to status effects
+    UPROPERTY(ReplicatedUsing=OnRep_Resilient)
+    FGameplayAttributeData Resilient;
+
+    // Influences resistance to elemental/magic damage
+    UPROPERTY(ReplicatedUsing=OnRep_Resistance)
+    FGameplayAttributeData Resistance;
+
+    // Influences physical attack power and related abilities
+    UPROPERTY(ReplicatedUsing=OnRep_Strength)
+    FGameplayAttributeData Strength;
+
+    // Influences magical attack power and related abilities
+    UPROPERTY(ReplicatedUsing=OnRep_Intelligence)
+    FGameplayAttributeData Intelligence;
 #pragma endregion
 
 #pragma region Secondary attributes
-	UPROPERTY(ReplicatedUsing=OnRep_HitPointRegeneration)
-	FGameplayAttributeData HitPointRegeneration;
-	UPROPERTY(ReplicatedUsing=OnRep_ManaRegeneration)
-	FGameplayAttributeData ManaRegeneration;
-	UPROPERTY(ReplicatedUsing=OnRep_Armor)
-	FGameplayAttributeData Armor;
-	UPROPERTY(ReplicatedUsing=OnRep_MagicResist)
-	FGameplayAttributeData MagicResist;
-	UPROPERTY(ReplicatedUsing=OnRep_ArmorPenetration)
-	FGameplayAttributeData ArmorPenetration;
-	UPROPERTY(ReplicatedUsing=OnRep_MagicResistPenetration)
-	FGameplayAttributeData MagicResistPenetration;
-	UPROPERTY(ReplicatedUsing=OnRep_CriticalHitChange)
-	FGameplayAttributeData CriticalHitChange;
-	UPROPERTY(ReplicatedUsing=OnRep_BlockChange)
-	FGameplayAttributeData BlockChange;
+    // Rate at which health regenerates
+    UPROPERTY(ReplicatedUsing=OnRep_HitPointRegeneration)
+    FGameplayAttributeData HitPointRegeneration;
+
+    // Rate at which mana/energy/resource regenerates
+    UPROPERTY(ReplicatedUsing=OnRep_ManaRegeneration)
+    FGameplayAttributeData ManaRegeneration;
+
+    // Physical damage reduction
+    UPROPERTY(ReplicatedUsing=OnRep_Armor)
+    FGameplayAttributeData Armor;
+
+    // Magical damage reduction
+    UPROPERTY(ReplicatedUsing=OnRep_MagicResist)
+    FGameplayAttributeData MagicResist;
+
+    // Amount of armor ignored when dealing physical damage
+    UPROPERTY(ReplicatedUsing=OnRep_ArmorPenetration)
+    FGameplayAttributeData ArmorPenetration;
+
+    // Amount of magic resist ignored when dealing magical damage
+    UPROPERTY(ReplicatedUsing=OnRep_MagicResistPenetration)
+    FGameplayAttributeData MagicResistPenetration;
+
+    // Chance to deal increased damage
+    UPROPERTY(ReplicatedUsing=OnRep_CriticalHitChange)
+    FGameplayAttributeData CriticalHitChange;
+
+    // Chance to reduce incoming damage
+    UPROPERTY(ReplicatedUsing=OnRep_BlockChange)
+    FGameplayAttributeData BlockChange;
 #pragma endregion
 	
 #pragma region Meta attributes
