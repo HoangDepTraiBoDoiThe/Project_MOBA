@@ -21,8 +21,9 @@ public:
 	TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetInputActionInfos(const FGameplayTag& HeroTag);
 
 protected:
+	UPROPERTY(EditAnywhere)
+	TArray<FHeroInfosStruct> HeroInfosStructs;
 
 private:
-	TArray<FHeroInfosStruct> HeroInfosStructs;
 	
 };

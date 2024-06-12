@@ -9,7 +9,6 @@ MyGameplayTagsManager MyGameplayTagsManager::GameplayTags;
 
 MyGameplayTagsManager::MyGameplayTagsManager()
 {
-	
 }
 
 MyGameplayTagsManager& MyGameplayTagsManager::Get()
@@ -19,9 +18,18 @@ MyGameplayTagsManager& MyGameplayTagsManager::Get()
 
 void MyGameplayTagsManager::InitNativeGameplayTags()
 {
-		/*
-	 *	Vital attributes
-	 */
+/*
+ *	Hero tags
+ */
+	MyGameplayTagsManager::GameplayTags.Hero_Murdock = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Hero.Murdock"),
+		FString(
+			"")
+	);
+	
+/*
+ *	Vital attributes
+ */
 	MyGameplayTagsManager::GameplayTags.Attribute_Vital_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Vital.HitPoint"),
 		FString(
@@ -34,8 +42,9 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	/*
 	*	Primary attributes
 	*/
-	MyGameplayTagsManager::GameplayTags.Attribute_Primary_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Primary.Intelligence"), FString("Directly affect maximum mana and mana regeneration."));
+	MyGameplayTagsManager::GameplayTags.Attribute_Primary_Intelligence = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Primary.Intelligence"), FString("Directly affect maximum mana and mana regeneration."));
 
 	MyGameplayTagsManager::GameplayTags.Attribute_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Primary.Strength"), FString("Influence physical power."));
@@ -60,8 +69,9 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 			FName("Attribute.Secondary.ArmorPenetration"),
 			FString("Impacted by 'Resilience'. Ignore percentage of enemy 'Armor'. Increases 'Critical Hit Chance'."));
 
-	MyGameplayTagsManager::GameplayTags.Attribute_Secondary_BlockChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Secondary.BlockChance"), FString("Impacted by 'Armor'. Chance to cut damage in half"));
+	MyGameplayTagsManager::GameplayTags.Attribute_Secondary_BlockChance = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Secondary.BlockChance"), FString("Impacted by 'Armor'. Chance to cut damage in half"));
 
 	MyGameplayTagsManager::GameplayTags.Attribute_Secondary_CriticalHitChance = UGameplayTagsManager::Get().
 		AddNativeGameplayTag(
@@ -94,9 +104,10 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	/*
 	*	Damage type Tags
 	*/
-	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("DamageType.Elemental.Physical"),
-		FString(""));
+	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Physical = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("DamageType.Elemental.Physical"),
+			FString(""));
 	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Fire"),
 		FString(""));
@@ -112,19 +123,22 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Water, FName("Water"));
 	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Wind, FName("Wind"));
 
-	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Resistance.Elemental.Fire"),
-		FString(""));
+	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Resistance.Elemental.Fire"),
+			FString(""));
 	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Water = UGameplayTagsManager::Get().
 		AddNativeGameplayTag(
 			FName("Attribute.Resistance.Elemental.Water"),
 			FString(""));
-	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Resistance.Elemental.Wind"),
-		FString(""));
-	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Resistance.Physical"),
-		FString(""));
+	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Wind = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Resistance.Elemental.Wind"),
+			FString(""));
+	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Physical = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Resistance.Physical"),
+			FString(""));
 
 	/*
 	 *	Meta attribute Tags
@@ -185,4 +199,3 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 		FName("Ability.Projectile.LightingBall"),
 		FString(""));
 }
-

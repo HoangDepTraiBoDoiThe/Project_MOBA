@@ -15,6 +15,11 @@ public:
 	static MyGameplayTagsManager& Get();
  static void InitNativeGameplayTags();
 
+ /*
+  *	Hero tags
+  */
+ FGameplayTag Hero_Murdock;
+
 /*
  *	Vital attributes
  */

@@ -21,16 +21,23 @@ class PROJECT_MOBA_API AMyPlayerController : public APlayerController
 
 public:
 	AMyPlayerController();
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 	AMyPlayerState* GetMyPlayerState();
+	virtual void AcknowledgePossession(APawn* P) override;
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void SetupInputComponent() override;
+	void CharacterMoveToLocation();
 
 	void OnInputPressed(FGameplayTag AbilityTag);
 	void OnInputHeld(FGameplayTag AbilityTag);
 	void OnInputReleased(FGameplayTag AbilityTag);
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UInputAction> RMB;
 	
 private:
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
@@ -41,5 +48,8 @@ private:
 	TObjectPtr<UInputAction> Q;
 
 	TObjectPtr<AMyPlayerState> MyPlayerState;
+
+	bool bShouldAutoRunToLocation = false;
+	FVector LocationToMove;
 	
 };
