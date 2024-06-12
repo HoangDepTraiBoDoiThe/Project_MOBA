@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SplineComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "PLayerState/MyPlayerState.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"

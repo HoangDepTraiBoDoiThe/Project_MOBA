@@ -5,6 +5,10 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "MyEnhancedInputComponent.h"
+#include "NavigationPath.h"
+#include "NavigationPathGenerator.h"
+#include "NavigationSystem.h"
+#include "Components/SplineComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "Project_MOBA/Data/HeroInfosDataAsset.h"
@@ -12,6 +16,7 @@
 
 AMyPlayerController::AMyPlayerController()
 {
+	SplineComponent = CreateDefaultSubobject<USplineComponent>(FName("Spline component"));
 }
 
 void AMyPlayerController::BeginPlay()
@@ -27,14 +32,7 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (bShouldAutoRunToLocation)
-	{
-		const FVector MoveDirection = (LocationToMove - GetPlayerCharacter()->GetActorLocation()).GetSafeNormal();
-		GetPlayerCharacter()->AddMovementInput(MoveDirection);
-		float Range = FMath::Abs((GetCharacter()->GetActorLocation() - LocationToMove).Size2D());
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%f"), Range));
-		if (Range <= 50.f) bShouldAutoRunToLocation = false;
-	}
+	CharacterAutoMovetoLocation();
 }
 
 void AMyPlayerController::OnPossess(APawn* InPawn)
@@ -67,11 +65,32 @@ void AMyPlayerController::CharacterMoveToLocation()
 {
 	FHitResult Out_MouseLocation;
 	GetHitResultUnderCursor(ECC_Visibility, false, Out_MouseLocation);
-	LocationToMove = Out_MouseLocation.ImpactPoint;
+	DestinyLocation = Out_MouseLocation.ImpactPoint;
+
+	UNavigationPath* NavigationPathToLocation = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), GetCharacterLocation(), DestinyLocation);
+	if (NavigationPathToLocation)
+	{
+		NavigationPathToLocation->EnableRecalculationOnInvalidation(ENavigationOptionFlag::Enable);
+		NavigationPathToLocation->EnableDebugDrawing(true, FLinearColor::Blue);
+		SplineComponent->ClearSplinePoints();
+		SplineComponent->SetSplineWorldPoints(NavigationPathToLocation->PathPoints);
+	}
+
 	bShouldAutoRunToLocation = true;
-	
-	DrawDebugSphere(GetWorld(), LocationToMove, 15.f, 12, FColor::Green, false, 5.f);
-	UKismetSystemLibrary::DrawDebugArrow(GetWorld(), GetPlayerCharacter()->GetActorLocation(), LocationToMove, 5.f, FLinearColor::Green, 5.f);
+}
+
+void AMyPlayerController::CharacterAutoMovetoLocation()
+{
+	if (bShouldAutoRunToLocation)
+	{
+		const FVector MoveDirection = SplineComponent->FindDirectionClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
+		GetPlayerCharacter()->AddMovementInput(MoveDirection);
+		const FVector LocationClosestToCharacter = SplineComponent->FindLocationClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
+		UKismetSystemLibrary::DrawDebugArrow(GetWorld(), GetCharacterLocation(), (LocationClosestToCharacter + MoveDirection) * 20.f, 1.f, FColor::Blue);
+		const float DistanceToDestination = FMath::Abs((LocationClosestToCharacter - DestinyLocation).Size2D());
+		if (DistanceToDestination <= 50.f)
+			bShouldAutoRunToLocation = false;
+	}
 }
 
 void AMyPlayerController::OnInputPressed(FGameplayTag AbilityTag)
@@ -105,3 +124,7 @@ AMyPlayerState* AMyPlayerController::GetMyPlayerState()
 	return MyPlayerState;
 }
 
+FVector AMyPlayerController::GetCharacterLocation()
+{
+	return GetPlayerCharacter()->GetActorLocation();
+}

@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class USplineComponent;
 class AMyPlayerState;
 class APlayerCharacter;
 class UInputMappingContext;
@@ -22,10 +23,12 @@ class PROJECT_MOBA_API AMyPlayerController : public APlayerController
 public:
 	AMyPlayerController();
 	virtual void BeginPlay() override;
+	void CharacterAutoMovetoLocation();
 	virtual void Tick(float DeltaSeconds) override;
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 	AMyPlayerState* GetMyPlayerState();
 	virtual void AcknowledgePossession(APawn* P) override;
+	FVector GetCharacterLocation();
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -38,6 +41,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> RMB;
+	TObjectPtr<USplineComponent> SplineComponent;
 	
 private:
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
@@ -50,6 +54,6 @@ private:
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 
 	bool bShouldAutoRunToLocation = false;
-	FVector LocationToMove;
+	FVector DestinyLocation;
 	
 };
