@@ -6,7 +6,6 @@
 #include "EnhancedInputSubsystems.h"
 #include "MyEnhancedInputComponent.h"
 #include "NavigationPath.h"
-#include "NavigationPathGenerator.h"
 #include "NavigationSystem.h"
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -86,7 +85,6 @@ void AMyPlayerController::CharacterAutoMovetoLocation()
 		const FVector MoveDirection = SplineComponent->FindDirectionClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
 		GetPlayerCharacter()->AddMovementInput(MoveDirection);
 		const FVector LocationClosestToCharacter = SplineComponent->FindLocationClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
-		UKismetSystemLibrary::DrawDebugArrow(GetWorld(), GetCharacterLocation(), (LocationClosestToCharacter + MoveDirection) * 20.f, 1.f, FColor::Blue);
 		const float DistanceToDestination = FMath::Abs((LocationClosestToCharacter - DestinyLocation).Size2D());
 		if (DistanceToDestination <= 50.f)
 			bShouldAutoRunToLocation = false;
