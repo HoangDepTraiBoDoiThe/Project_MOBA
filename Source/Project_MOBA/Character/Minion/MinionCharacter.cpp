@@ -24,7 +24,7 @@ void AMinionCharacter::BeginPlay()
 
 AMyAIController* AMinionCharacter::GetMyAIController()
 {
-	if (!MyAIController) MyAIController = Cast<AMyAIController>(GetController());
+	if (!MyAIController) MyAIController = Cast<AMyAIController>(GetInstigatorController());
 	return MyAIController;
 }
 
@@ -33,5 +33,6 @@ void AMinionCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	GetMyAIController();
 
-	MyAIController->SetupBehavior(BehaviorTree);
+	AMyAIController* AIController = Cast<AMyAIController>(NewController);
+	if (AIController) AIController->SetupBehavior(BehaviorTree);
 }

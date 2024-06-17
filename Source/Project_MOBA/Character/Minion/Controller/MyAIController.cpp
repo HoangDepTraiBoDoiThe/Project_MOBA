@@ -31,6 +31,7 @@ AMinionCharacter* AMyAIController::GetMinionCharacter()
 
 void AMyAIController::SetupBehavior(UBehaviorTree* BehaviorTree)
 {
+	checkf(BehaviorTree, TEXT("BehaviorTree is null"))
 	RunBehaviorTree(BehaviorTree);
 	Blackboard->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
 }
