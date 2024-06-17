@@ -12,7 +12,8 @@
 				"Engine",
 				"UMG",
 				"EnhancedInput",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"AIModule"
 			]
 		}
 	],
