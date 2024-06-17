@@ -21,6 +21,8 @@ public:
 	virtual void BeginPlay() override;
 	AMinionCharacter* GetMinionCharacter();
 
+	void SetupBehavior(UBehaviorTree* BehaviorTree);
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBehaviorTreeComponent> BTComponent;

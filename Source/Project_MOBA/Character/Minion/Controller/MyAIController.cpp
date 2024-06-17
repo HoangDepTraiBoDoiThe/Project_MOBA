@@ -19,8 +19,7 @@ void AMyAIController::BeginPlay()
 
 	if (GetMinionCharacter())
 	{
-		RunBehaviorTree(MinionCharacter->GetMinionBehaviorTree());
-		Blackboard->InitializeBlackboard(*MinionCharacter->GetMinionBehaviorTree()->GetBlackboardAsset());
+		
 	}
 }
 
@@ -28,4 +27,10 @@ AMinionCharacter* AMyAIController::GetMinionCharacter()
 {
 	if (!MinionCharacter) MinionCharacter = Cast<AMinionCharacter>(GetPawn());
 	return MinionCharacter;
+}
+
+void AMyAIController::SetupBehavior(UBehaviorTree* BehaviorTree)
+{
+	RunBehaviorTree(BehaviorTree);
+	Blackboard->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
 }

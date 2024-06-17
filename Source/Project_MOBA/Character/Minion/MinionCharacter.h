@@ -6,6 +6,7 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "MinionCharacter.generated.h"
 
+class AMyAIController;
 class UBehaviorTree;
 class UBlackboardData;
 class UBehaviorTreeComponent;
@@ -23,12 +24,18 @@ public:
 	virtual void BeginPlay() override;
 	UBehaviorTree* GetMinionBehaviorTree() const {return BehaviorTree;}
 
+	AMyAIController* GetMyAIController();
+
 protected:
+	virtual void PossessedBy(AController* NewController) override;
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	TObjectPtr<AMyAIController> MyAIController;
 
 private:
 	

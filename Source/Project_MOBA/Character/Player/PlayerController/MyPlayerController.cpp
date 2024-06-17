@@ -22,9 +22,11 @@ void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	FInputModeGameAndUI InputModeGameAndUI;
+	InputModeGameAndUI.SetHideCursorDuringCapture(false);
+	InputModeGameAndUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetShowMouseCursor(true);
-	const FInputModeGameAndUI InputMode;
-	SetInputMode(InputMode);
+	SetInputMode(InputModeGameAndUI);
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
