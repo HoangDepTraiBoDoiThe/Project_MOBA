@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "MyAIController.generated.h"
 
+class AMinionCharacter;
+class UBehaviorTreeComponent;
 /**
  * 
  */
@@ -13,5 +15,18 @@ UCLASS()
 class PROJECT_MOBA_API AMyAIController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+	AMyAIController();
+	virtual void BeginPlay() override;
+	AMinionCharacter* GetMinionCharacter();
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBehaviorTreeComponent> BTComponent;
+
+	UPROPERTY()
+	TObjectPtr<AMinionCharacter> MinionCharacter;
+private:
 	
 };
