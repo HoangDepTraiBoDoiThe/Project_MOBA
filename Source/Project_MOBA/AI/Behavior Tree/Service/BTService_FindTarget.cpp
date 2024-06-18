@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
 
 void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -16,21 +17,19 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 	ActorsToIgnore.AddUnique(AIOwner->GetPawn());
 	const FVector Origin = AIOwner->GetPawn()->GetActorLocation();
 
-	FCollisionQueryParams SphereParams(SCENE_QUERY_STAT(ApplyRadialDamage),  false, AIOwner);
-	SphereParams.AddIgnoredActors(ActorsToIgnore);
-	// query scene to see what we hit
-	TArray<FOverlapResult> Overlaps;
-	if (UWorld* World = GEngine->GetWorldFromContextObject(GetWorld(), EGetWorldErrorMode::LogAndReturnNull))
-	{
-		World->OverlapMultiByObjectType(Overlaps, Origin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllObjects), FCollisionShape::MakeSphere(SearchRadius), SphereParams);
-	}
+	TArray<AActor*> OutActors;
+	UMyBlueprintFunctionLibrary::GetFilteredActorListFromComponentList(GetWorld(), Origin, SearchRadius, ObjectTypeQueries, UAttackableInterface::StaticClass(), ActorsToIgnore, OutActors);
+	/*
 	UKismetSystemLibrary::DrawDebugCapsule(GetWorld(), Origin, SearchRadius, SearchRadius, FRotator());
+	*/
 
-	for (FOverlapResult& Actor : Overlaps)
+	for (AActor* Actor : OutActors)
 	{
-		if (Actor.GetActor()->Implements<UAttackableInterface>())
+		if (Actor->Implements<UAttackableInterface>())
 		{
-			UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetActor, Actor.GetActor());
+			UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetActor, Actor);
+			return;
 		}
+		UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetActor, nullptr);
 	}
 }
