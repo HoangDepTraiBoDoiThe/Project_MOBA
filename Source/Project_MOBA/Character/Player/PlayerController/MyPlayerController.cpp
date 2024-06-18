@@ -27,6 +27,7 @@ void AMyPlayerController::BeginPlay()
 	InputModeGameAndUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetShowMouseCursor(true);
 	SetInputMode(InputModeGameAndUI);
+
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
@@ -34,6 +35,30 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	CharacterAutoMovetoLocation();
+	HighlightingActor();
+}
+
+void AMyPlayerController::HighlightingActor()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursorForObjects(CursorTraceObjectTypes, false, HitResult);
+
+	PreviousTargetActorUnderMouse = CurrentTargetActorUnderMouse;
+	if (HitResult.bBlockingHit)
+		CurrentTargetActorUnderMouse = Cast<IAttackableInterface>(HitResult.GetActor());
+	else CurrentTargetActorUnderMouse = nullptr;
+
+	if (CurrentTargetActorUnderMouse)
+	{
+		bShouldHighlight(CurrentTargetActorUnderMouse, true);
+		if (PreviousTargetActorUnderMouse && PreviousTargetActorUnderMouse != CurrentTargetActorUnderMouse)
+			bShouldHighlight(PreviousTargetActorUnderMouse, false);
+	}
+	else
+	{
+		if (PreviousTargetActorUnderMouse)
+			bShouldHighlight(PreviousTargetActorUnderMouse, false);
+	}
 }
 
 void AMyPlayerController::OnPossess(APawn* InPawn)
@@ -107,6 +132,15 @@ void AMyPlayerController::OnInputHeld(FGameplayTag AbilityTag)
 
 void AMyPlayerController::OnInputReleased(FGameplayTag AbilityTag)
 {
+}
+
+void AMyPlayerController::bShouldHighlight(IAttackableInterface* Actor, bool b) const
+{
+	if (b)UKismetSystemLibrary::PrintString(GetWorld(), "bShouldHighlight");
+	if (!Actor) return;
+	Actor->GetAttackableActorMesh()->bRenderCustomDepth = b;
+	Actor->GetAttackableActorMesh()->SetCustomDepthStencilValue((b) ? 250 : 0);
+	Actor->GetAttackableActorMesh()->MarkRenderStateDirty();
 }
 
 APlayerCharacter* AMyPlayerController::GetPlayerCharacter()

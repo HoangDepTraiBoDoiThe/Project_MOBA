@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class IAttackableInterface;
 class USplineComponent;
 class AMyPlayerState;
 class APlayerCharacter;
@@ -35,6 +36,8 @@ protected:
 	virtual void SetupInputComponent() override;
 	void CharacterMoveToLocation();
 
+	void HighlightingActor();
+	
 	void OnInputPressed(FGameplayTag AbilityTag);
 	void OnInputHeld(FGameplayTag AbilityTag);
 	void OnInputReleased(FGameplayTag AbilityTag);
@@ -42,8 +45,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> RMB;
 	TObjectPtr<USplineComponent> SplineComponent;
+
+	UPROPERTY(EditAnywhere)
+	TArray<TEnumAsByte<EObjectTypeQuery>> CursorTraceObjectTypes;
 	
 private:
+	void bShouldHighlight(IAttackableInterface* Actor, bool b) const;
+	
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -55,5 +63,8 @@ private:
 
 	bool bShouldAutoRunToLocation = false;
 	FVector DestinyLocation;
-	
+
+	// Highlighting
+	IAttackableInterface* CurrentTargetActorUnderMouse;
+	IAttackableInterface* PreviousTargetActorUnderMouse;
 };

@@ -34,3 +34,7 @@ UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 	return Cast<UMyAbilitySystemComponent>(AbilitySystemComponent);
 }
 
+USkeletalMeshComponent* ABaseCharacter::GetAttackableActorMesh()
+{
+	return GetMesh();
+}
