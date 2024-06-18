@@ -40,6 +40,7 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 
 void AMyPlayerController::HighlightingActor()
 {
+	if (!IsLocalController()) return;
 	FHitResult HitResult;
 	GetHitResultUnderCursorForObjects(CursorTraceObjectTypes, false, HitResult);
 
@@ -48,7 +49,7 @@ void AMyPlayerController::HighlightingActor()
 		CurrentTargetActorUnderMouse = Cast<IAttackableInterface>(HitResult.GetActor());
 	else CurrentTargetActorUnderMouse = nullptr;
 
-	if (CurrentTargetActorUnderMouse)
+	if (CurrentTargetActorUnderMouse && Cast<APlayerCharacter>(HitResult.GetActor()) != GetPlayerCharacter())
 	{
 		bShouldHighlight(CurrentTargetActorUnderMouse, true);
 		if (PreviousTargetActorUnderMouse && PreviousTargetActorUnderMouse != CurrentTargetActorUnderMouse)
@@ -136,7 +137,6 @@ void AMyPlayerController::OnInputReleased(FGameplayTag AbilityTag)
 
 void AMyPlayerController::bShouldHighlight(IAttackableInterface* Actor, bool b) const
 {
-	if (b)UKismetSystemLibrary::PrintString(GetWorld(), "bShouldHighlight");
 	if (!Actor) return;
 	Actor->GetAttackableActorMesh()->bRenderCustomDepth = b;
 	Actor->GetAttackableActorMesh()->SetCustomDepthStencilValue((b) ? 250 : 0);
