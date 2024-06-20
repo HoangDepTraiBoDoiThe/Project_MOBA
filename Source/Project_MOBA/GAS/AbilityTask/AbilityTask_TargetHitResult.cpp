@@ -2,6 +2,7 @@
 
 #include "AbilityTask_TargetHitResult.h"
 
+#include "AbilitySystemComponent.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 
@@ -15,9 +16,37 @@ void UAbilityTask_TargetHitResult::Activate()
 {
 	Super::Activate();
 
+	if (GetAvatarActor()->GetInstigatorController()->IsLocalController())
+	{
+		StartSendingTargetDataToServer();
+	}
+	else
+	{
+		TargetDataCallBackDelegateHandle = AbilitySystemComponent->AbilityTargetDataSetDelegate(GetAbilitySpecHandle(), GetActivationPredictionKey()).AddUObject(this, &ThisClass::TargetDataCallBack);
+	}
+
 	FHitResult HitResult;
 	Cast<APlayerCharacter>(GetAvatarActor())->GetMyPlayerController()->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
-	TargetDataHitResultDelegate.Broadcast(HitResult);
+}
+
+void UAbilityTask_TargetHitResult::StartSendingTargetDataToServer()
+{
+	FScopedPredictionWindow PredictionWindow(AbilitySystemComponent.Get());
+	
+	FHitResult HitResult;
+	Cast<APlayerCharacter>(GetAvatarActor())->GetMyPlayerController()->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	FGameplayAbilityTargetData_SingleTargetHit* TargetData_Cursor = new FGameplayAbilityTargetData_SingleTargetHit();
+	TargetData_Cursor->HitResult = HitResult;
+	FGameplayAbilityTargetDataHandle TargetDataHandle;
+	TargetDataHandle.Add(TargetData_Cursor);
+	AbilitySystemComponent->ServerSetReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey(), TargetDataHandle, FGameplayTag(), AbilitySystemComponent->ScopedPredictionKey);
+	
+	TargetDataCallBack(TargetDataHandle, FGameplayTag());
+}
+
+void UAbilityTask_TargetHitResult::TargetDataCallBack(const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag Tag)
+{
+	if (ShouldBroadcastAbilityTaskDelegates()) TargetDataHitResultDelegate.Broadcast(TargetDataHandle);
 }
 
 void UAbilityTask_TargetHitResult::OnTargetDataHitResultCallback(FHitResult HitResult)
@@ -28,6 +57,8 @@ void UAbilityTask_TargetHitResult::OnTargetDataHitResultCallback(FHitResult HitR
 void UAbilityTask_TargetHitResult::OnDestroy(bool bInOwnerFinished)
 {
 	TargetDataHitResultDelegate.Clear();
+	if (TargetDataCallBackDelegateHandle.IsValid())
+		AbilitySystemComponent->AbilityTargetDataSetDelegate(GetAbilitySpecHandle(), GetActivationPredictionKey()).Remove(TargetDataCallBackDelegateHandle);
 	
 	Super::OnDestroy(bInOwnerFinished);
 }

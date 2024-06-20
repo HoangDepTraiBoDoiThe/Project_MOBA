@@ -9,7 +9,7 @@
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataHitResultSignature, FHitResult, HitResult);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataHitResultSignature, FGameplayAbilityTargetDataHandle, HitResult);
 
 UCLASS()
 class PROJECT_MOBA_API UAbilityTask_TargetHitResult : public UAbilityTask
@@ -27,6 +27,13 @@ protected:
 	virtual void Activate() override;
 	virtual void OnDestroy(bool bInOwnerFinished) override;
 
+	void StartSendingTargetDataToServer();
+	void TargetDataCallBack(const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag Tag);
+	
 	UFUNCTION()
 	void OnTargetDataHitResultCallback(FHitResult HitResult);
+
+private:
+	FDelegateHandle TargetDataCallBackDelegateHandle;
+	
 };
