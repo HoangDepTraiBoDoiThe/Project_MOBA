@@ -9,16 +9,16 @@
 
 AMinionCharacter::AMinionCharacter()
 {
-	AbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(FName("Ability system component"));
+	MyAbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(FName("Ability system component"));
 	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("Attribute set"));
-	AbilitySystemComponent->ReplicationMode = EGameplayEffectReplicationMode::Minimal;
+	MyAbilitySystemComponent->ReplicationMode = EGameplayEffectReplicationMode::Minimal;
 }
 
 void AMinionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	MyAbilitySystemComponent->InitAbilityActorInfo(this, this);
 	
 }
 
