@@ -11,7 +11,7 @@ AMyPlayerState::AMyPlayerState()
 	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("Attribute Set"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-
+	
 	NetUpdateFrequency = 100;
 }
 

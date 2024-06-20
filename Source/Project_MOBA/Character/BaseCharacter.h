@@ -25,12 +25,14 @@ public:
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const {return BaseAttributeSet;}
 
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
+	virtual UMyAbilitySystemComponent* GetMyASC() override;
+	virtual void ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply) override; 
 	
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category=GAS)
-	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UMyAbilitySystemComponent> MyAbilitySystemComponent;
 	UPROPERTY(VisibleAnywhere, Category=GAS)
 	TObjectPtr<UBaseAttributeSet> BaseAttributeSet;
 

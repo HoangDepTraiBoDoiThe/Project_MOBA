@@ -38,9 +38,9 @@ protected:
 
 	void HighlightingActor();
 	
-	void OnInputPressed(FGameplayTag AbilityTag);
-	void OnInputHeld(FGameplayTag AbilityTag);
-	void OnInputReleased(FGameplayTag AbilityTag);
+	void OnInputPressed(FGameplayTag InputTag);
+	void OnInputHeld(FGameplayTag InputTag);
+	void OnInputReleased(FGameplayTag InputTag);
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> RMB;

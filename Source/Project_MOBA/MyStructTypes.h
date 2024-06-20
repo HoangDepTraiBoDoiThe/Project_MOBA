@@ -12,6 +12,8 @@
  * 
  */
 
+class UGameplayAbility;
+
 USTRUCT(BlueprintType)
 struct FHeroInfosStruct
 {
@@ -23,6 +25,8 @@ struct FHeroInfosStruct
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos = TMap<TObjectPtr<UInputAction>, FGameplayTag>();
 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
 
 UCLASS()

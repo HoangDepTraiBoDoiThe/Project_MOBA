@@ -7,6 +7,8 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class UGameplayAbility;
+class AMyPlayerController;
 class USplineComponent;
 class AMyPlayerState;
 struct FGameplayTag;
@@ -27,10 +29,14 @@ class PROJECT_MOBA_API APlayerCharacter : public ABaseCharacter
 public:
 	APlayerCharacter();
 	FORCEINLINE UHeroInfosDataAsset* GetHeroInfosDataAsset() const {return HeroInfos;}
+	TArray<TSubclassOf<UGameplayAbility>>* GetHeroStartupAbilities() const;
+	TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
 
 	FGameplayTag GetHeroTag() const {return HeroTag;}
 
 	AMyPlayerState* GetMyPlayerState();
+	AMyPlayerController* GetMyPlayerController();
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
@@ -41,8 +47,9 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 
-	void SetPlayerCharacterGASInfos();
+	void PlayerInitializeGASInfos();
 
 	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
 	FGameplayTag HeroTag;
@@ -50,6 +57,7 @@ protected:
 	TObjectPtr<UHeroInfosDataAsset> HeroInfos;
 
 	TObjectPtr<AMyPlayerState> MyPlayerState;
+	TObjectPtr<AMyPlayerController> MyPlayerController;
 	
 private:
 	

@@ -6,7 +6,9 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "PlayerController/MyPlayerController.h"
 #include "PLayerState/MyPlayerState.h"
+#include "Project_MOBA/Data/HeroInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 
@@ -30,21 +32,46 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	SetPlayerCharacterGASInfos();
+	PlayerInitializeGASInfos();
 }
 
-void APlayerCharacter::SetPlayerCharacterGASInfos()
+void APlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	PlayerInitializeGASInfos();
+}
+
+void APlayerCharacter::PlayerInitializeGASInfos()
 {
 	if (!GetMyPlayerState()) return;
 
-	AbilitySystemComponent = Cast<UMyAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetMyPlayerState()));
+	MyAbilitySystemComponent = Cast<UMyAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetMyPlayerState()));
 	BaseAttributeSet = MyPlayerState->GetBaseAttributeSet();
-	AbilitySystemComponent->InitAbilityActorInfo(GetMyPlayerState(), this);
-	BaseAttributeSet->SetHitPoint(100);
+	if (HasAuthority())
+	{
+		MyAbilitySystemComponent->PlayerASCInitialize(GetMyPlayerState(), this);
+		BaseAttributeSet->SetHitPoint(100);
+	}
 }
 
 AMyPlayerState* APlayerCharacter::GetMyPlayerState()
 {
 	if (!MyPlayerState) MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
 	return MyPlayerState;
+}
+
+AMyPlayerController* APlayerCharacter::GetMyPlayerController()
+{
+	if (!MyPlayerController) MyPlayerController = Cast<AMyPlayerController>(GetController());
+	return MyPlayerController;
+}
+
+TArray<TSubclassOf<UGameplayAbility>>* APlayerCharacter::GetHeroStartupAbilities() const
+{
+	return HeroInfos->GetStartupAbilities(GetHeroTag());
+}
+
+TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInputActionInfos() const
+{
+	return HeroInfos->GetInputActionInfos(GetHeroTag());
 }

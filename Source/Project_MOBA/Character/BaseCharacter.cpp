@@ -31,10 +31,20 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
-	return Cast<UMyAbilitySystemComponent>(AbilitySystemComponent);
+	return MyAbilitySystemComponent;
 }
 
 USkeletalMeshComponent* ABaseCharacter::GetAttackableActorMesh()
 {
 	return GetMesh();
+}
+
+UMyAbilitySystemComponent* ABaseCharacter::GetMyASC()
+{
+	return MyAbilitySystemComponent;
+}
+
+void ABaseCharacter::ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply)
+{
+	MyAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(SpecToApply);
 }

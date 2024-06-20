@@ -11,6 +11,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "Project_MOBA/Data/HeroInfosDataAsset.h"
+#include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -119,19 +120,24 @@ void AMyPlayerController::CharacterAutoMovetoLocation()
 	}
 }
 
-void AMyPlayerController::OnInputPressed(FGameplayTag AbilityTag)
+void AMyPlayerController::OnInputPressed(FGameplayTag InputTag)
 {
-	if (AbilityTag.MatchesTagExact(MyGameplayTagsManager::Get().Control_RMB))
+	if (InputTag.MatchesTagExact(MyGameplayTagsManager::Get().Control_RMB))
 	{
 		CharacterMoveToLocation();
 	}
+	else
+	{
+		bool bSuccessfull = GetPlayerCharacter()->GetMyASC()->TryActivateAbilityByInputTag(InputTag);
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *InputTag.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
+	}
 }
 
-void AMyPlayerController::OnInputHeld(FGameplayTag AbilityTag)
+void AMyPlayerController::OnInputHeld(FGameplayTag InputTag)
 {
 }
 
-void AMyPlayerController::OnInputReleased(FGameplayTag AbilityTag)
+void AMyPlayerController::OnInputReleased(FGameplayTag InputTag)
 {
 }
 

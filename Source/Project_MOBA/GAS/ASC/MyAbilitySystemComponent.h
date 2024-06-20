@@ -15,7 +15,12 @@ class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponen
 	GENERATED_BODY()
 
 public:
-	
+	bool TryActivateAbilityByInputTag(const FGameplayTag InputTag);
+
+	/*
+	 *Give abilities, default effects, etc to player
+	 */
+	void PlayerASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
 
 protected:
 

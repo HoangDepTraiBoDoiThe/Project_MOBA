@@ -19,6 +19,7 @@ class PROJECT_MOBA_API UHeroInfosDataAsset : public UDataAsset
 public:
 	FORCEINLINE const TArray<FHeroInfosStruct>* GetHeroInfosStruct() const { return &HeroInfosStructs; }
 	TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetInputActionInfos(const FGameplayTag& HeroTag);
+	TArray<TSubclassOf<UGameplayAbility>>* GetStartupAbilities(const FGameplayTag& HeroTag);
 
 protected:
 	UPROPERTY(EditAnywhere)
