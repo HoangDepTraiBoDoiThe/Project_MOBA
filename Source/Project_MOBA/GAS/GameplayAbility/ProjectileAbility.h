@@ -21,7 +21,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FGameplayEffectSpecHandle MakeGameplayEffect();
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile(const FVector& TargetLocation);
+	void SpawnProjectile(const FVector& TargetLocation, FName SocketLocation = "PuzzleSocket", FVector ProjectileScale = FVector(1, 1, 1));
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

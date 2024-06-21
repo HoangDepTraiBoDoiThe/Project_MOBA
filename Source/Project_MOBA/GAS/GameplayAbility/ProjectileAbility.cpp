@@ -3,6 +3,7 @@
 #include "ProjectileAbility.h"
 
 #include "AbilitySystemComponent.h"
+#include "Project_MOBA/Interface/CombatInterface.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 #include "SpawnActor/Projectile.h"
 
@@ -19,15 +20,21 @@ FGameplayEffectSpecHandle UProjectileAbility::MakeGameplayEffect()
 	return SpecHandle;
 }
 
-void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation)
+void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation, FName SocketName, FVector ProjectileScale)
 {
     if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()));
+
+	const FVector Direction = (TargetLocation - GetAvatarActorFromActorInfo()->GetActorLocation()).GetSafeNormal2D(0);
+	FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
+	//OrientateCharacter(Direction.Rotation());
 	
 	FTransform ProjectileTransform;
-	FVector Direction = (TargetLocation - GetAvatarActorFromActorInfo()->GetActorLocation()).GetSafeNormal2D(0);
 	ProjectileTransform.SetRotation(Direction.Rotation().Quaternion());
-	ProjectileTransform.SetLocation(GetAvatarActorFromActorInfo()->GetActorLocation());
+	SpawnLocation = SpawnLocation != FVector::Zero() ? SpawnLocation : GetAvatarActorFromActorInfo()->GetActorLocation();
+	ProjectileTransform.SetLocation(SpawnLocation);
+	ProjectileTransform.SetScale3D(ProjectileScale);
+	Projectile->SetActorScale3D(ProjectileScale);
 	Projectile->SetSpecHandle(MakeGameplayEffect().Data);
 	
 	Projectile->FinishSpawning(ProjectileTransform);

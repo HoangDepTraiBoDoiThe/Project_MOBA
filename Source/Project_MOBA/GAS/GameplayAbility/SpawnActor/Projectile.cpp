@@ -6,7 +6,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Particles/ParticleSystemComponent.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
 
 AProjectile::AProjectile()

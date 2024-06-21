@@ -18,6 +18,8 @@ public:
 	const TMap<FGameplayTag, float>& GetDamageTypes() const {return DamageTypes;}
 
 protected:
+	virtual void OrientateCharacter(FRotator Rotator);
+	
 	TMap<FGameplayTag, float> DamageTypes;
 	
 };

@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
+#include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
 class UAbilitySystemComponent;
@@ -13,7 +14,7 @@ class UBaseAttributeSet;
 class UMyAbilitySystemComponent;
 
 UCLASS()
-class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public IAttackableInterface
+class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public IAttackableInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -26,7 +27,8 @@ public:
 
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
 	virtual UMyAbilitySystemComponent* GetMyASC() override;
-	virtual void ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply) override; 
+	virtual void ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply) override;
+	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
 	
 protected:
 	virtual void BeginPlay() override;

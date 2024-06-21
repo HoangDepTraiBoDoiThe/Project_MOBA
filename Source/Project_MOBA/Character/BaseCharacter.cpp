@@ -48,3 +48,8 @@ void ABaseCharacter::ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToAppl
 {
 	MyAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(SpecToApply);
 }
+
+FVector ABaseCharacter::GetWeaponSocketLocationByName(FName SocketName)
+{
+	return GetMesh()->GetSocketLocation(SocketName);
+}
