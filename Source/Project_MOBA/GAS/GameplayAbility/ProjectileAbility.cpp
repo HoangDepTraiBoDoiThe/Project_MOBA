@@ -21,6 +21,7 @@ FGameplayEffectSpecHandle UProjectileAbility::MakeGameplayEffect()
 
 void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation)
 {
+    if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()));
 	
 	FTransform ProjectileTransform;

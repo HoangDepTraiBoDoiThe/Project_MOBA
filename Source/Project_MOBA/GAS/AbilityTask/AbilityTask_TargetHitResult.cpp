@@ -23,6 +23,8 @@ void UAbilityTask_TargetHitResult::Activate()
 	else
 	{
 		TargetDataCallBackDelegateHandle = AbilitySystemComponent->AbilityTargetDataSetDelegate(GetAbilitySpecHandle(), GetActivationPredictionKey()).AddUObject(this, &ThisClass::TargetDataCallBack);
+		if (!AbilitySystemComponent->CallReplicatedTargetDataDelegatesIfSet(GetAbilitySpecHandle(), GetActivationPredictionKey()))
+			SetWaitingOnRemotePlayerData();
 	}
 
 	FHitResult HitResult;

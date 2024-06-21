@@ -31,6 +31,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
 	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UParticleSystem> BulletParticle;
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
 	TSharedPtr<FGameplayEffectSpec> EffectSpec;

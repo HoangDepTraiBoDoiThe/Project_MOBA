@@ -5,13 +5,15 @@
 
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
 
 AProjectile::AProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SetReplicates(true);
+	bReplicates = true;
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("UBoxComponent"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("MeshComponent"));
 	SetRootComponent(BoxComponent);
@@ -22,10 +24,12 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetReplicateMovement(true);
 	if (HasAuthority())
 	{
 		BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnProjectileOverlap);
 	}
+	UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent());
 }
 
 void AProjectile::Tick(float DeltaTime)
