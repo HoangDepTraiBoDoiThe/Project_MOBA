@@ -35,7 +35,18 @@ void AProjectile::BeginPlay()
 
 	SetReplicateMovement(true);
 	if (BulletParticle) UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent())->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
-	if (OpeningParticle) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), OpeningParticle, GetActorTransform())->SetWorldScale3D(FVector::One() * OpeningParticleMultiply);
+	for (auto& Particle : OpeningParticles)
+	{
+		if (Particle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, GetActorLocation(),
+			                                         bShouldRotateOpeningParticle
+				                                         ? GetActorRotation()
+				                                         : FVector::Zero().Rotation(),
+			                                         GetActorScale())->SetWorldScale3D(
+				FVector::One() * OpeningParticleMultiply);
+		}
+	}
 }
 
 void AProjectile::Tick(float DeltaTime)

@@ -41,10 +41,12 @@ protected:
 	TObjectPtr<UParticleSystem> BulletParticle;
 	
 	UPROPERTY(EditDefaultsOnly)
+	bool bShouldRotateOpeningParticle{true};
+	UPROPERTY(EditDefaultsOnly)
 	float OpeningParticleMultiply{1};
 	// Spawn particle, like postal.
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UParticleSystem> OpeningParticle;
+	TArray<TObjectPtr<UParticleSystem>> OpeningParticles;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float HitParticleMultiply{1};

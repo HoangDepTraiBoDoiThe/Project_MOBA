@@ -48,6 +48,7 @@ void UAbilityTask_TargetHitResult::StartSendingTargetDataToServer()
 
 void UAbilityTask_TargetHitResult::TargetDataCallBack(const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag Tag)
 {
+	AbilitySystemComponent->ConsumeClientReplicatedTargetData(Ability->GetCurrentAbilitySpecHandle(), GetActivationPredictionKey());
 	if (ShouldBroadcastAbilityTaskDelegates()) TargetDataHitResultDelegate.Broadcast(TargetDataHandle);
 }
 
