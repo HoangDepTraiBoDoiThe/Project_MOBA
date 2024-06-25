@@ -19,23 +19,42 @@ FGameplayEffectSpecHandle UProjectileAbility::MakeGameplayEffect()
 	return SpecHandle;
 }
 
-void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation, FName SocketName, FVector ProjectileScale)
+void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation, FVector SpawnLoc, FVector ProjectileScale, bool bIgnorePitch)
 {
-    if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()));
+	if (!Projectile)
+	{
+		UE_LOG(LogActor, Error, TEXT("Can not spawn projectile. Projectile is null"));
+		return;
+	}
 	Projectile->SetOwner(GetAvatarActorFromActorInfo());
 
-	const FVector Direction = (TargetLocation - GetAvatarActorFromActorInfo()->GetActorLocation()).GetSafeNormal2D();
-	FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
-	//OrientateCharacter(Direction.Rotation());
+	SpawnLoc = SpawnLoc != FVector::Zero() ? SpawnLoc : GetAvatarActorFromActorInfo()->GetActorLocation();
 	
+	FVector Direction;
+	if (bIgnorePitch) Direction = (TargetLocation - SpawnLoc).GetSafeNormal2D();
+	else Direction = (TargetLocation - SpawnLoc).GetSafeNormal();
+	//OrientateCharacter(Direction.Rotation());
+
 	FTransform ProjectileTransform;
 	ProjectileTransform.SetRotation(Direction.Rotation().Quaternion());
-	SpawnLocation = SpawnLocation != FVector::Zero() ? SpawnLocation : GetAvatarActorFromActorInfo()->GetActorLocation();
-	ProjectileTransform.SetLocation(SpawnLocation);
+	ProjectileTransform.SetLocation(SpawnLoc);
 	ProjectileTransform.SetScale3D(ProjectileScale);
-	Projectile->SetActorScale3D(ProjectileScale);
 	Projectile->SetSpecHandle(MakeGameplayEffect().Data);
 	
 	Projectile->FinishSpawning(ProjectileTransform);
+}
+
+void UProjectileAbility::SpawnProjectileAtSocketLocation(const FVector& TargetLocation, bool bIgnorePitch, FName SocketName, FVector ProjectileScale)
+{
+    if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
+	FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
+	SpawnProjectile(TargetLocation, SpawnLocation, ProjectileScale, bIgnorePitch);
+}
+
+void UProjectileAbility::SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, FVector SpawnLoc, bool bIgnorePitch,
+	FVector ProjectileScale)
+{
+	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
+	SpawnProjectile(TargetLocation, SpawnLoc, ProjectileScale, bIgnorePitch);
 }

@@ -6,6 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
 
@@ -32,7 +34,8 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	SetReplicateMovement(true);
-	UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent());
+	if (BulletParticle) UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent())->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
+	if (OpeningParticle) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), OpeningParticle, GetActorTransform())->SetWorldScale3D(FVector::One() * OpeningParticleMultiply);
 }
 
 void AProjectile::Tick(float DeltaTime)
@@ -51,7 +54,7 @@ void AProjectile::OnProjectileOverlap(
 	{
 		AttackableActor->ApplyEffectSpecToSelf(*EffectSpec.Get());
 	}
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitFleshParticle : HitWallParticle, SweepResult.ImpactPoint);
+	if (HitCharacterParticle && HitCharacterParticle) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitCharacterParticle : HitWorldParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);;
 	Destroy();
 }
 

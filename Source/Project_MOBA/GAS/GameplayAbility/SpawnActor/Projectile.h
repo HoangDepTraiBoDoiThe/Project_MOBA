@@ -33,12 +33,26 @@ protected:
 	TObjectPtr<UBoxComponent> BoxComponent;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	float BulletParticleMultiply{1};
+	// Extra main particle
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UParticleSystem> BulletParticle;
+	
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UParticleSystem> HitWallParticle;
+	float OpeningParticleMultiply{1};
+	// Spawn particle, like postal.
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UParticleSystem> HitFleshParticle;
+	TObjectPtr<UParticleSystem> OpeningParticle;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float HitParticleMultiply{1};
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UParticleSystem> HitWorldParticle;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UParticleSystem> HitCharacterParticle;
+	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
