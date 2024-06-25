@@ -17,13 +17,14 @@ class PROJECT_MOBA_API UHeroInfosDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE const TArray<FHeroInfosStruct>* GetHeroInfosStruct() const { return &HeroInfosStructs; }
-	TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetInputActionInfos(const FGameplayTag& HeroTag);
+	FORCEINLINE const TArray<FHeroInfosStruct>* GetHeroInfosStructs() const;
+	FORCEINLINE const FPlayerInfosStruct* GetPlayerInfosStruct() const { return &PlayerInfosStruct; }
+	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetInputActionInfos(const FGameplayTag& HeroTag) const;
 	TArray<TSubclassOf<UGameplayAbility>>* GetStartupAbilities(const FGameplayTag& HeroTag);
 
 protected:
 	UPROPERTY(EditAnywhere)
-	TArray<FHeroInfosStruct> HeroInfosStructs;
+	FPlayerInfosStruct PlayerInfosStruct;
 
 private:
 	

@@ -30,7 +30,7 @@ public:
 	APlayerCharacter();
 	FORCEINLINE UHeroInfosDataAsset* GetHeroInfosDataAsset() const {return HeroInfos;}
 	TArray<TSubclassOf<UGameplayAbility>>* GetHeroStartupAbilities() const;
-	TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
+	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
 
 	FGameplayTag GetHeroTag() const {return HeroTag;}
 

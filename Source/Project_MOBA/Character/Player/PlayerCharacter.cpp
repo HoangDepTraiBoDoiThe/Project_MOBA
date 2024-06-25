@@ -72,7 +72,7 @@ TArray<TSubclassOf<UGameplayAbility>>* APlayerCharacter::GetHeroStartupAbilities
 	return HeroInfos->GetStartupAbilities(GetHeroTag());
 }
 
-TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInputActionInfos() const
+const TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInputActionInfos() const
 {
 	return HeroInfos->GetInputActionInfos(GetHeroTag());
 }

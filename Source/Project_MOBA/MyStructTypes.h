@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,7 +5,6 @@
 #include "GameplayTagContainer.h"
 #include "InputAction.h"
 #include "MyStructTypes.generated.h"
-
 
 /**
  * 
@@ -21,12 +19,21 @@ struct FHeroInfosStruct
 
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag HeroTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+};
+
+USTRUCT(BlueprintType)
+struct FPlayerInfosStruct
+{
+	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos = TMap<TObjectPtr<UInputAction>, FGameplayTag>();
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	TArray<FHeroInfosStruct> HeroInfosStructs;
 };
 
 UCLASS()

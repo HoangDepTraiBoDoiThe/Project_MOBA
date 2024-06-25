@@ -19,6 +19,8 @@ public:
   *	Hero tags
   */
  FGameplayTag Hero_Murdock;
+ FGameplayTag Hero_Gideon;
+ FGameplayTag Hero_GrimEXE;
 
 /*
  *	Vital attributes
@@ -73,9 +75,21 @@ public:
  /*
   * Ability Input Tags 
   */
- FGameplayTag Control_Movement;
  FGameplayTag Control_LMB;
  FGameplayTag Control_RMB;
+ FGameplayTag Control_Q;
+ FGameplayTag Control_W;
+ FGameplayTag Control_E;
+ FGameplayTag Control_R;
+ FGameplayTag Control_D;
+ FGameplayTag Control_F;
+ FGameplayTag Control_1;
+ FGameplayTag Control_2;
+ FGameplayTag Control_3;
+ FGameplayTag Control_4;
+ FGameplayTag Control_5;
+ FGameplayTag Control_6;
+ FGameplayTag Control_Movement;
  FGameplayTag Test_Ability_1;
 
  /*

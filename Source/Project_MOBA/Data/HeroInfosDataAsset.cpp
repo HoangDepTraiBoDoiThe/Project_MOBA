@@ -2,25 +2,23 @@
 
 #include "HeroInfosDataAsset.h"
 
-TMap<TObjectPtr<UInputAction>, FGameplayTag>* UHeroInfosDataAsset::GetInputActionInfos(const FGameplayTag& HeroTag)
+const TArray<FHeroInfosStruct>* UHeroInfosDataAsset::GetHeroInfosStructs() const
 {
-	for (auto& HeroInfo : HeroInfosStructs)
-	{
-		if (HeroTag.MatchesTagExact(HeroTag))
-		{
-			return &HeroInfo.InputActionInfos;
-		}
-	}
-	return nullptr;
+	return &PlayerInfosStruct.HeroInfosStructs;
+}
+
+const TMap<TObjectPtr<UInputAction>, FGameplayTag>* UHeroInfosDataAsset::GetInputActionInfos(const FGameplayTag& HeroTag) const
+{
+	return &PlayerInfosStruct.InputActionInfos;
 }
 
 TArray<TSubclassOf<UGameplayAbility>>* UHeroInfosDataAsset::GetStartupAbilities(const FGameplayTag& HeroTag)
 {
-	for (auto& HeroInfo : HeroInfosStructs)
+	for (auto& [HeroTag, StartupAbilities] : PlayerInfosStruct.HeroInfosStructs)
 	{
 		if (HeroTag.MatchesTagExact(HeroTag))
 		{
-			return &HeroInfo.StartupAbilities;
+			return &StartupAbilities;
 		}
 	}
 	return nullptr;

@@ -18,18 +18,28 @@ MyGameplayTagsManager& MyGameplayTagsManager::Get()
 
 void MyGameplayTagsManager::InitNativeGameplayTags()
 {
-/*
- *	Hero tags
- */
+	/*
+	 *	Hero tags
+	 */
 	MyGameplayTagsManager::GameplayTags.Hero_Murdock = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Hero.Murdock"),
 		FString(
 			"")
 	);
-	
-/*
- *	Vital attributes
- */
+	MyGameplayTagsManager::GameplayTags.Hero_Gideon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Hero.Gideon"),
+		FString(
+			"")
+	);
+	MyGameplayTagsManager::GameplayTags.Hero_GrimEXE = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Hero.GrimEXE"),
+		FString(
+			"")
+	);
+
+	/*
+	 *	Vital attributes
+	 */
 	MyGameplayTagsManager::GameplayTags.Attribute_Vital_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Vital.HitPoint"),
 		FString(
@@ -158,10 +168,46 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 		FString("Test_Ability_1"));
 	MyGameplayTagsManager::GameplayTags.Control_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Input.Control_LMB"),
-		FString("Left mouse button"));
+		FString(""));
 	MyGameplayTagsManager::GameplayTags.Control_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Input.Control_RMB"),
-		FString("Right mouse button"));
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_Q = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.Q"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_W = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.W"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_E = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.E"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_R = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.R"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_D = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.D"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_F = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.F"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.1"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.2"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.3"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.4"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_5 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.5"),
+		FString(""));
+	MyGameplayTagsManager::GameplayTags.Control_6 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.6"),
+		FString(""));
 	/*
 	 * Ability Cooldown and Cost 
 	 */
