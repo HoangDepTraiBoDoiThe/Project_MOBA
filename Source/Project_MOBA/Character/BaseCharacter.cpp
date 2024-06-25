@@ -46,7 +46,7 @@ UMyAbilitySystemComponent* ABaseCharacter::GetMyASC()
 
 void ABaseCharacter::ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply)
 {
-	MyAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(SpecToApply);
+	 FActiveGameplayEffectHandle ActiveGameplayEffectHandle = MyAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(SpecToApply);
 }
 
 FVector ABaseCharacter::GetWeaponSocketLocationByName(FName SocketName)

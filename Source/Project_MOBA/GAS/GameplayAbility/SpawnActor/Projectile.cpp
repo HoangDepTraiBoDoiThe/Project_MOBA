@@ -51,7 +51,7 @@ void AProjectile::OnProjectileOverlap(
 	{
 		AttackableActor->ApplyEffectSpecToSelf(*EffectSpec.Get());
 	}
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitFleshParticle : HitWallParticle, GetActorLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitFleshParticle : HitWallParticle, SweepResult.ImpactPoint);
 	Destroy();
 }
 

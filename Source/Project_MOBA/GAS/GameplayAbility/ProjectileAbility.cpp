@@ -4,7 +4,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
-#include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 #include "SpawnActor/Projectile.h"
 
 UProjectileAbility::UProjectileAbility()
@@ -16,7 +15,7 @@ FGameplayEffectSpecHandle UProjectileAbility::MakeGameplayEffect()
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponentFromActorInfo()->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponentFromActorInfo()->MakeOutgoingSpec(Effect, 1, ContextHandle);
 
-	SpecHandle.Data.Get()->SetSetByCallerMagnitude(MyGameplayTagsManager::Get().DamageType_Elemental_Fire, 10);
+	//SpecHandle.Data.Get()->SetSetByCallerMagnitude(MyGameplayTagsManager::Get().DamageType_Elemental_Fire, 10);
 	return SpecHandle;
 }
 
@@ -24,8 +23,9 @@ void UProjectileAbility::SpawnProjectile(const FVector& TargetLocation, FName So
 {
     if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()));
+	Projectile->SetOwner(GetAvatarActorFromActorInfo());
 
-	const FVector Direction = (TargetLocation - GetAvatarActorFromActorInfo()->GetActorLocation()).GetSafeNormal2D(0);
+	const FVector Direction = (TargetLocation - GetAvatarActorFromActorInfo()->GetActorLocation()).GetSafeNormal2D();
 	FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
 	//OrientateCharacter(Direction.Rotation());
 	

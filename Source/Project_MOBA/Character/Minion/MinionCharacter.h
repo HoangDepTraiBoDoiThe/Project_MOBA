@@ -28,6 +28,7 @@ public:
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void PostInitializeComponents() override;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;

@@ -4,13 +4,14 @@
 #include "MinionCharacter.h"
 
 #include "Controller/MyAIController.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 
 AMinionCharacter::AMinionCharacter()
 {
 	MyAbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(FName("Ability system component"));
-	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("Attribute set"));
+	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("BaseAttributeSet"));
 	MyAbilitySystemComponent->ReplicationMode = EGameplayEffectReplicationMode::Minimal;
 }
 
@@ -19,7 +20,13 @@ void AMinionCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MyAbilitySystemComponent->InitAbilityActorInfo(this, this);
-	
+
+	MyAbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddLambda(
+	[this] (UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle)
+	{
+		const FGameplayEffectSpec* TestEffectSpec = &EffectSpec;
+	}
+);
 }
 
 AMyAIController* AMinionCharacter::GetMyAIController()
@@ -35,4 +42,9 @@ void AMinionCharacter::PossessedBy(AController* NewController)
 
 	AMyAIController* AIController = Cast<AMyAIController>(NewController);
 	if (AIController) AIController->SetupBehavior(BehaviorTree);
+}
+
+void AMinionCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 }

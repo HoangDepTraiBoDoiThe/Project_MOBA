@@ -33,9 +33,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category=GAS)
+	UPROPERTY()
 	TObjectPtr<UMyAbilitySystemComponent> MyAbilitySystemComponent;
-	UPROPERTY(VisibleAnywhere, Category=GAS)
-	TObjectPtr<UBaseAttributeSet> BaseAttributeSet;
+	UPROPERTY()
+	UBaseAttributeSet* BaseAttributeSet;
 
 };

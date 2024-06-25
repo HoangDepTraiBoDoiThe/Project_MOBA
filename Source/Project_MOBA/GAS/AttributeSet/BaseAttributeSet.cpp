@@ -4,6 +4,7 @@
 #include "BaseAttributeSet.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -38,6 +39,33 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 }
 
 #pragma region Rep Notify Functions
+void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+    Super::PreAttributeChange(Attribute, NewValue);
+
+    if (Attribute == GetHitPointAttribute())
+    {
+        NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHitPoint());
+    }
+    if (Attribute == GetMaxManaAttribute())
+    {
+        NewValue = (FMath::Clamp(NewValue, 0.f, GetMaxMana()));
+    }
+}
+
+void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+    Super::PostGameplayEffectExecute(Data);
+    if (Data.EvaluatedData.Attribute == GetHitPointAttribute())
+    {
+        SetHitPoint(FMath::Clamp(Data.EvaluatedData.Attribute.GetNumericValue(this), 0.f, GetMaxHitPoint()));
+    }
+    if (Data.EvaluatedData.Attribute == GetMaxManaAttribute())
+    {
+        SetMana(FMath::Clamp(Data.EvaluatedData.Attribute.GetNumericValue(this), 0.f, GetMaxMana()));
+    }
+}
+
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& OldValue) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, HitPoint, OldValue);

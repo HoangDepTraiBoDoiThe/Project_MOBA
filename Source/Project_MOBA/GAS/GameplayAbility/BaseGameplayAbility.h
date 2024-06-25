@@ -13,5 +13,7 @@ UCLASS()
 class PROJECT_MOBA_API UBaseGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
+public:
+	UBaseGameplayAbility();
 };

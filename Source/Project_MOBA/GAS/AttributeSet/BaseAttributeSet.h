@@ -49,6 +49,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChance)
 
 protected:
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 private:
 #pragma region Rep Notify Functions
