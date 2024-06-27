@@ -76,8 +76,7 @@ void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
 
 void AProjectile::Destroyed()
 {
-	
-	BoxComponent->OnComponentBeginOverlap.Clear();
+	if (BoxComponent) BoxComponent->OnComponentBeginOverlap.Clear();
 	Super::Destroyed();
 }
 

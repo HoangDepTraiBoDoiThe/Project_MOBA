@@ -52,7 +52,7 @@ void UProjectileAbility::SpawnProjectileAtSocketLocation(const FVector& TargetLo
 	SpawnProjectile(TargetLocation, SpawnLocation, ProjectileScale, bIgnorePitch);
 }
 
-void UProjectileAbility::SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, FVector SpawnLoc, bool bIgnorePitch,
+void UProjectileAbility::SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, bool bIgnorePitch, FVector SpawnLoc,
 	FVector ProjectileScale)
 {
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;

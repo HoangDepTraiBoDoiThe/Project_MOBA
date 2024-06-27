@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectileAtSocketLocation(const FVector& TargetLocation, bool bIgnorePitch, FName SocketLocation = "PuzzleSocket", FVector ProjectileScale = FVector(1, 1, 1));
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, FVector SpawnLoc, bool bIgnorePitch, FVector ProjectileScale = FVector(1, 1, 1));
+	void SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, bool bIgnorePitch, FVector SpawnLoc, FVector ProjectileScale = FVector(1, 1, 1));
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

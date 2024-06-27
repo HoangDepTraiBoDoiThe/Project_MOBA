@@ -16,4 +16,9 @@ class PROJECT_MOBA_API UBaseGameplayAbility : public UGameplayAbility
 
 public:
 	UBaseGameplayAbility();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UAnimMontage> AbilityAnimMontage;
+	
 };
