@@ -26,7 +26,7 @@ void AProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnProjectileOverlap);
+	if (BoxComponent) BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnProjectileOverlap);
 }
 
 void AProjectile::BeginPlay()
