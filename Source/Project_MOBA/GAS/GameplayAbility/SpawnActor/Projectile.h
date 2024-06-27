@@ -21,6 +21,7 @@ public:
 	AProjectile();
 	virtual void Tick(float DeltaTime) override;
 	void SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec);
+	FORCEINLINE UProjectileMovementComponent* GetProjectileMovementComponent() const {return ProjectileMovementComponent;}
 
 protected:
 	virtual void BeginPlay() override;

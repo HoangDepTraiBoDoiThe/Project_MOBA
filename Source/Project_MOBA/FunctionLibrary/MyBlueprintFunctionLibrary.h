@@ -6,6 +6,10 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "MyBlueprintFunctionLibrary.generated.h"
 
+class AAreaOfEffectActor;
+struct FGameplayEffectSpecHandle;
+class UAbilitySystemComponent;
+class AProjectile;
 /**
  * 
  */
@@ -18,5 +22,11 @@ public:
 	static void GetFilteredActorListFromComponentList(const UObject* WorldContextObject, const FVector SpherePos,
 														 float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter,
 														 const TArray<AActor*>& ActorsToIgnore, TArray<AActor*>& OutActors);
+
+	UFUNCTION(BlueprintCallable, Category=Spawning)
+	static AProjectile* SpawnProjectile(const UObject* WorldContextObject, TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle, FVector SpawnLocation, const FVector& TargetLocation, FVector ProjectileScale, bool bIgnorePitch, AActor* Owner = nullptr, APawn* Instigator = nullptr, bool bMoving = false, const float ActorInitialSpeed = 0);
+	UFUNCTION(BlueprintCallable)
+	static FGameplayEffectSpecHandle MakeMyGameplayEffectSpecHandle(const UAbilitySystemComponent* ASC, TSubclassOf<UGameplayEffect> EffectClass, int32 EffectLevel = 1);
+
 private:
 };

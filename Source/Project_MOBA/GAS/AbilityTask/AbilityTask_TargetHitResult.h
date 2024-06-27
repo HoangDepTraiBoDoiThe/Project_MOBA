@@ -33,6 +33,9 @@ protected:
 	UFUNCTION()
 	void OnTargetDataHitResultCallback(FHitResult HitResult);
 
+	UPROPERTY(EditAnywhere)
+	bool bIgnorePitch;
+
 private:
 	FDelegateHandle TargetDataCallBackDelegateHandle;
 	

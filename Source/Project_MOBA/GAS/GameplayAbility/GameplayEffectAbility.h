@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BaseGameplayAbility.h"
-#include "DamageAbility.generated.h"
+#include "GameplayEffectAbility.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECT_MOBA_API UDamageAbility : public UBaseGameplayAbility
+class PROJECT_MOBA_API UGameplayEffectAbility : public UBaseGameplayAbility
 {
 	GENERATED_BODY()
 

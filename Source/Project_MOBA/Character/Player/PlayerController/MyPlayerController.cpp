@@ -28,7 +28,6 @@ void AMyPlayerController::BeginPlay()
 	InputModeGameAndUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetShowMouseCursor(true);
 	SetInputMode(InputModeGameAndUI);
-
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
