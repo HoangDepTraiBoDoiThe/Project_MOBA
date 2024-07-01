@@ -3,12 +3,13 @@
 
 #include "Projectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
-#include "Project_MOBA/Interface/AttackableInterface.h"
 
 AProjectile::AProjectile()
 {
@@ -33,6 +34,9 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TimerManager = &GetWorld()->GetTimerManager();
+	TimerManager->SetTimer(AutoDestroyTimerHande, this, &ThisClass::OneDestroyTimerCallback, 10);
+	
 	SetReplicateMovement(true);
 	if (BulletParticle) UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent())->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
 	for (auto& Particle : OpeningParticles)
@@ -59,19 +63,23 @@ void AProjectile::OnProjectileOverlap(
 	UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	IAttackableInterface* AttackableActor = Cast<IAttackableInterface>(OtherActor);
-	if (AttackableActor && OtherActor == Owner) return;
-	if (AttackableActor && HasAuthority())
+	if (OtherActor == Owner) return;
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+	if (HasAuthority() && TargetASC) TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpec.Get());
+
+	if (bShouldDestroyOnOver)
 	{
-		AttackableActor->ApplyEffectSpecToSelf(*EffectSpec.Get());
+		const bool bCharacter = IsValid(Cast<ABaseCharacter>(OtherActor));
+		if (bCharacter && HitCharacterParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
+		}
+		else if (HitWorldParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
+		}
+		Destroy();
 	}
-	if (HitCharacterParticle && HitWorldParticle)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitCharacterParticle : HitWorldParticle,
-			SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
-	}
-	if (bShouldDestroyOnOver) Destroy();
 }
 
 void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
@@ -79,11 +87,17 @@ void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
 	EffectSpec = InSpec;
 }
 
+void AProjectile::OneDestroyTimerCallback()
+{
+	Destroy();
+}
 void AProjectile::Destroyed()
 {
 	if (CollisionComponent) CollisionComponent->OnComponentBeginOverlap.Clear();
+	TimerManager->ClearTimer(AutoDestroyTimerHande);
 	Super::Destroyed();
 }
+
 
 
 

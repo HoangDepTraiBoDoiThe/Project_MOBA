@@ -10,7 +10,7 @@
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
-#include "Project_MOBA/Data/HeroInfosDataAsset.h"
+#include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 
@@ -75,7 +75,7 @@ void AMyPlayerController::AcknowledgePossession(APawn* P)
 	if (UMyEnhancedInputComponent* EnhancedInputComponent = Cast<UMyEnhancedInputComponent>(InputComponent))
 	{
 		if (!GetPlayerCharacter()) return;
-		const TMap<TObjectPtr<UInputAction>, FGameplayTag>* InputInfos = PlayerCharacter->GetHeroInfosDataAsset()->GetInputActionInfos(PlayerCharacter->GetHeroTag());
+		const TMap<TObjectPtr<UInputAction>, FGameplayTag>* InputInfos = PlayerCharacter->GetHeroInputActionInfos();
 		EnhancedInputComponent->SetupInputActions(*InputInfos, this, &ThisClass::OnInputPressed, &ThisClass::OnInputHeld, &ThisClass::OnInputReleased);
 	}
 }
@@ -127,7 +127,7 @@ void AMyPlayerController::OnInputPressed(FGameplayTag InputTag)
 	}
 	else
 	{
-		bool bSuccessfull = GetPlayerCharacter()->GetMyASC()->TryActivateAbilityByInputTag(InputTag);
+		bool bSuccessfull = GetPlayerCharacter()->GetMyAbilitySystemComponent()->TryActivateAbilityByInputTag(InputTag);
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *InputTag.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
 	}
 }

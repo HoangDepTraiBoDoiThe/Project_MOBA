@@ -25,6 +25,4 @@ class PROJECT_MOBA_API IAttackableInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() = 0;
-	virtual UMyAbilitySystemComponent* GetMyASC() = 0;
-	virtual void ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply) = 0;
 };

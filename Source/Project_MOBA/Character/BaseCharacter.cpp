@@ -3,6 +3,7 @@
 
 #include "BaseCharacter.h"
 
+#include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 
 ABaseCharacter::ABaseCharacter()
@@ -34,22 +35,22 @@ UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 	return MyAbilitySystemComponent;
 }
 
+UMyAbilitySystemComponent* ABaseCharacter::GetMyAbilitySystemComponent() const
+{
+	return MyAbilitySystemComponent;
+}
+
 USkeletalMeshComponent* ABaseCharacter::GetAttackableActorMesh()
 {
 	return GetMesh();
 }
 
-UMyAbilitySystemComponent* ABaseCharacter::GetMyASC()
-{
-	return MyAbilitySystemComponent;
-}
-
-void ABaseCharacter::ApplyEffectSpecToSelf(const FGameplayEffectSpec& SpecToApply)
-{
-	 FActiveGameplayEffectHandle ActiveGameplayEffectHandle = MyAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(SpecToApply);
-}
-
-FVector ABaseCharacter::GetWeaponSocketLocationByName(FName SocketName)
+FVector ABaseCharacter::GetWeaponSocketLocationByName(const FName SocketName)
 {
 	return GetMesh()->GetSocketLocation(SocketName);
+}
+
+TArray<TSubclassOf<UGameplayAbility>>* ABaseCharacter::GetCharacterStartupAbilities() const
+{
+	return CharacterInfos.Get()->GetStartupAbilities(GetCharacterTag());
 }

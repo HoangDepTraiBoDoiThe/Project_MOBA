@@ -3,7 +3,6 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "InputAction.h"
 #include "MyStructTypes.generated.h"
 
 /**
@@ -14,33 +13,30 @@ class UGameplayEffect;
 class UGameplayAbility;
 
 USTRUCT(BlueprintType)
-struct FHeroInfosStruct
+struct FCharacterSpecificInfosStruct
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	FGameplayTag HeroTag = FGameplayTag();
+	FGameplayTag CharacterTag = FGameplayTag();
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> DefaultGE_PrimaryAttributeValues; 
-
-	UPROPERTY(EditDefaultsOnly)
-	TArray<TSubclassOf<UGameplayEffect>> DefaultGEs_SecondaryAttributeValues;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
 
 USTRUCT(BlueprintType)
-struct FPlayerInfosStruct
+struct FCharacterInfosStruct
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(EditDefaultsOnly)
-	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos = TMap<TObjectPtr<UInputAction>, FGameplayTag>();
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FHeroInfosStruct> HeroInfosStructs;
+	TArray<FCharacterSpecificInfosStruct> CharacterInfosStructs;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UGameplayEffect>> DefaultGEs_SecondaryAttributeValues;
 };
 
 UCLASS()

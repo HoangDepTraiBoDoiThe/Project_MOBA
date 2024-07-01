@@ -4,7 +4,6 @@
 #include "MinionCharacter.h"
 
 #include "Controller/MyAIController.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 
@@ -19,14 +18,6 @@ void AMinionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MyAbilitySystemComponent->InitAbilityActorInfo(this, this);
-
-	MyAbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddLambda(
-	[this] (UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle)
-	{
-		const FGameplayEffectSpec* TestEffectSpec = &EffectSpec;
-	}
-);
 }
 
 AMyAIController* AMinionCharacter::GetMyAIController()
@@ -38,7 +29,8 @@ AMyAIController* AMinionCharacter::GetMyAIController()
 void AMinionCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	GetMyAIController();
+
+	MyAbilitySystemComponent->ActorASCInitialize(this, this);
 
 	AMyAIController* AIController = Cast<AMyAIController>(NewController);
 	if (AIController) AIController->SetupBehavior(BehaviorTree);

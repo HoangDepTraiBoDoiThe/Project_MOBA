@@ -30,6 +30,7 @@ protected:
 	void OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	virtual void PostInitializeComponents() override;
 	virtual void Destroyed() override;
+	void OneDestroyTimerCallback();
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USphereComponent> CollisionComponent;
@@ -37,6 +38,8 @@ protected:
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
 	UPROPERTY(EditAnywhere)
 	bool bShouldDestroyOnOver{true};
+
+#pragma region Particle
 	UPROPERTY(EditDefaultsOnly)
 	float BulletParticleMultiply{1};
 	// Extra main particle
@@ -57,10 +60,16 @@ protected:
 	TObjectPtr<UParticleSystem> HitWorldParticle;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UParticleSystem> HitCharacterParticle;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UParticleSystem> NoHitParticle;
+#pragma endregion 
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
 	TSharedPtr<FGameplayEffectSpec> EffectSpec;
 
+	FTimerManager* TimerManager;
+	FTimerHandle AutoDestroyTimerHande;
+	
 };

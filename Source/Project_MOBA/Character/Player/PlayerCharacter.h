@@ -12,7 +12,7 @@ class AMyPlayerController;
 class USplineComponent;
 class AMyPlayerState;
 struct FGameplayTag;
-class UHeroInfosDataAsset;
+class UCharacterInfosDataAsset;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
@@ -28,11 +28,7 @@ class PROJECT_MOBA_API APlayerCharacter : public ABaseCharacter
 
 public:
 	APlayerCharacter();
-	FORCEINLINE UHeroInfosDataAsset* GetHeroInfosDataAsset() const {return HeroInfos;}
-	TArray<TSubclassOf<UGameplayAbility>>* GetHeroStartupAbilities() const;
 	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
-
-	FGameplayTag GetHeroTag() const {return HeroTag;}
 
 	AMyPlayerState* GetMyPlayerState();
 	AMyPlayerController* GetMyPlayerController();
@@ -51,10 +47,10 @@ protected:
 
 	void PlayerInitializeGASInfos();
 
-	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
-	FGameplayTag HeroTag;
-	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
-	TObjectPtr<UHeroInfosDataAsset> HeroInfos;
+		
+	UPROPERTY(EditDefaultsOnly)
+	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos;
+
 
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 	TObjectPtr<AMyPlayerController> MyPlayerController;

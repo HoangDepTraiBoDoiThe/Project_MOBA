@@ -15,14 +15,17 @@ class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponen
 {
 	GENERATED_BODY()
 
+	//TODO: This could be used for other actors that implementing this ASC, not just BasePlayerCharacter. 
+	
 public:
 	bool TryActivateAbilityByInputTag(const FGameplayTag InputTag);
 
 
+	void ReceiveAndBindCallBackToDependencies();
 	/*
-	 *Give abilities, default effects, etc to player
+	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
-	void PlayerASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
+	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
 
 protected:
 	void ApplyDefaultGEs();
@@ -30,7 +33,7 @@ protected:
 	
 private:
 	UPROPERTY()
-	TObjectPtr<APlayerCharacter> PlayerCharacter;
+	TObjectPtr<ABaseCharacter> BaseCharacter;
 
-	APlayerCharacter* GetPlayerCharacter();
+	ABaseCharacter* GetBaseCharacter();
 };

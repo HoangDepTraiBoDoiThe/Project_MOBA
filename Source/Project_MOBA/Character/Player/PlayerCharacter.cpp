@@ -8,7 +8,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "PlayerController/MyPlayerController.h"
 #include "PLayerState/MyPlayerState.h"
-#include "Project_MOBA/Data/HeroInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 
@@ -49,7 +48,7 @@ void APlayerCharacter::PlayerInitializeGASInfos()
 	BaseAttributeSet = MyPlayerState->GetBaseAttributeSet();
 	if (HasAuthority())
 	{
-		MyAbilitySystemComponent->PlayerASCInitialize(GetMyPlayerState(), this);
+		MyAbilitySystemComponent->ActorASCInitialize(GetMyPlayerState(), this);
 	}
 }
 
@@ -65,12 +64,11 @@ AMyPlayerController* APlayerCharacter::GetMyPlayerController()
 	return MyPlayerController;
 }
 
-TArray<TSubclassOf<UGameplayAbility>>* APlayerCharacter::GetHeroStartupAbilities() const
-{
-	return HeroInfos->GetStartupAbilities(GetHeroTag());
-}
-
 const TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInputActionInfos() const
 {
-	return HeroInfos->GetInputActionInfos(GetHeroTag());
+	for (auto& Pair : InputActionInfos)
+	{
+		return &InputActionInfos;
+	}
+	return nullptr;
 }
