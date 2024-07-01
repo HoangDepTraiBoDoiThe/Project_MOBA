@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "MyGameModeBase.generated.h"
 
+class UGameplayEffect;
 /**
  * 
  */
@@ -13,5 +14,5 @@ UCLASS()
 class PROJECT_MOBA_API AMyGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 };

@@ -10,6 +10,7 @@
  * 
  */
 
+class UGameplayEffect;
 class UGameplayAbility;
 
 USTRUCT(BlueprintType)
@@ -20,6 +21,12 @@ struct FHeroInfosStruct
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag HeroTag = FGameplayTag();
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> DefaultGE_PrimaryAttributeValues; 
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UGameplayEffect>> DefaultGEs_SecondaryAttributeValues;
+	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };

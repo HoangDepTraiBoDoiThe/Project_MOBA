@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "MyAbilitySystemComponent.generated.h"
 
 /**
@@ -17,14 +18,19 @@ class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponen
 public:
 	bool TryActivateAbilityByInputTag(const FGameplayTag InputTag);
 
+
 	/*
 	 *Give abilities, default effects, etc to player
 	 */
 	void PlayerASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
 
 protected:
-
-private:
-
+	void ApplyDefaultGEs();
+	void GiveStartupAbilities();
 	
+private:
+	UPROPERTY()
+	TObjectPtr<APlayerCharacter> PlayerCharacter;
+
+	APlayerCharacter* GetPlayerCharacter();
 };

@@ -21,6 +21,7 @@ public:
 	FORCEINLINE const FPlayerInfosStruct* GetPlayerInfosStruct() const { return &PlayerInfosStruct; }
 	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetInputActionInfos(const FGameplayTag& HeroTag) const;
 	TArray<TSubclassOf<UGameplayAbility>>* GetStartupAbilities(const FGameplayTag& HeroTag);
+	void GetDefaultGEs(const FGameplayTag& HeroTag, TSubclassOf<UGameplayEffect>& PrimaryGE, TArray<TSubclassOf<UGameplayEffect>>& SecondaryGEs);
 
 protected:
 	UPROPERTY(EditAnywhere)

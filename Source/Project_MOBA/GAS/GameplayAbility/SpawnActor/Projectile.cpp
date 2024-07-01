@@ -65,7 +65,12 @@ void AProjectile::OnProjectileOverlap(
 	{
 		AttackableActor->ApplyEffectSpecToSelf(*EffectSpec.Get());
 	}
-	if (HitCharacterParticle && HitCharacterParticle) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitCharacterParticle : HitWorldParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);;
+	if (HitCharacterParticle && HitWorldParticle)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitCharacterParticle : HitWorldParticle,
+			SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
+	}
 	if (bShouldDestroyOnOver) Destroy();
 }
 

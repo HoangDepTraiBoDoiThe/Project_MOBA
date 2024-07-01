@@ -50,8 +50,6 @@ void APlayerCharacter::PlayerInitializeGASInfos()
 	if (HasAuthority())
 	{
 		MyAbilitySystemComponent->PlayerASCInitialize(GetMyPlayerState(), this);
-		BaseAttributeSet->SetMaxHitPoint(200);
-		BaseAttributeSet->SetHitPoint(100);
 	}
 }
 
