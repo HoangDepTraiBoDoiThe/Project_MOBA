@@ -19,9 +19,9 @@ public:
 	UProjectileEffectAbility();
 
 	UFUNCTION(BlueprintCallable)
-	AProjectile* SpawnProjectileAtSocket(const FVector& TargetLocation, bool bIgnorePitch, FName SocketName = "Muzzle", FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
+	AProjectile* SpawnProjectileAtSocket(FVector TargetLocation, bool bIgnorePitch, FName SocketName = "Muzzle", FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
 	UFUNCTION(BlueprintCallable)
-	AProjectile* SpawnProjectileAtSelectedLocation(const FVector& TargetLocation, bool bIgnorePitch, FVector SpawnLocation, FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
+	AProjectile* SpawnProjectileAtSelectedLocation(FVector TargetLocation, bool bIgnorePitch, FVector SpawnLocation, FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

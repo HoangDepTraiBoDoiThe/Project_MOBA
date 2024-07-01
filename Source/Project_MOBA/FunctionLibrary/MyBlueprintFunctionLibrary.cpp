@@ -40,8 +40,7 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
                                                           const TSubclassOf<AProjectile> ProjectileToSpawn,
                                                           const FGameplayEffectSpecHandle& EffectSpecHandle,
                                                           FVector SpawnLocation,
-                                                          const FVector& TargetLocation, const FVector ProjectileScale,
-                                                          const bool bIgnorePitch, AActor* Owner, APawn* Instigator,
+                                                          const FVector& TargetLocation, const FVector ProjectileScale, AActor* Owner, APawn* Instigator,
                                                           const bool bMoving, const float ActorInitialSpeed)
 {
 	UWorld* World = WorldContextObject->GetWorld();
@@ -57,9 +56,7 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
 		                ? SpawnLocation
 		                : (Owner != nullptr ? Owner->GetActorLocation() : FVector::Zero());
 
-	FVector Direction;
-	if (bIgnorePitch) Direction = (TargetLocation - SpawnLocation).GetSafeNormal2D();
-	else Direction = (TargetLocation - SpawnLocation).GetSafeNormal();
+	const FVector Direction = (TargetLocation - SpawnLocation).GetSafeNormal();
 	//OrientateCharacter(Direction.Rotation());
 
 	FTransform ProjectileTransform;

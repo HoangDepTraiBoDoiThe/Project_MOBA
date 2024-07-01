@@ -3,10 +3,9 @@
 
 #include "Projectile.h"
 
-#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "Project_MOBA/Interface/AttackableInterface.h"
@@ -16,9 +15,10 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bReplicates = true;
-	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("UBoxComponent"));
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("MeshComponent"));
-	SetRootComponent(BoxComponent);
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(FName("Root Component"));
+	SetRootComponent(CollisionComponent);
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh Component"));
+	MeshComponent->SetupAttachment(GetRootComponent());
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovementComponent"));
 }
 
@@ -26,7 +26,7 @@ void AProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (BoxComponent) BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnProjectileOverlap);
+	if (CollisionComponent) CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnProjectileOverlap);
 }
 
 void AProjectile::BeginPlay()
@@ -66,7 +66,7 @@ void AProjectile::OnProjectileOverlap(
 		AttackableActor->ApplyEffectSpecToSelf(*EffectSpec.Get());
 	}
 	if (HitCharacterParticle && HitCharacterParticle) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Cast<ABaseCharacter>(AttackableActor) ? HitCharacterParticle : HitWorldParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);;
-	Destroy();
+	if (bShouldDestroyOnOver) Destroy();
 }
 
 void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
@@ -76,7 +76,7 @@ void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
 
 void AProjectile::Destroyed()
 {
-	if (BoxComponent) BoxComponent->OnComponentBeginOverlap.Clear();
+	if (CollisionComponent) CollisionComponent->OnComponentBeginOverlap.Clear();
 	Super::Destroyed();
 }
 

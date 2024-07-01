@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
+class USphereComponent;
 class ABaseCharacter;
 class IAttackableInterface;
 class UBoxComponent;
@@ -25,16 +26,17 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	virtual void PostInitializeComponents() override;
 	virtual void Destroyed() override;
 
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UBoxComponent> BoxComponent;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USphereComponent> CollisionComponent;
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
-
+	UPROPERTY(EditAnywhere)
+	bool bShouldDestroyOnOver{true};
 	UPROPERTY(EditDefaultsOnly)
 	float BulletParticleMultiply{1};
 	// Extra main particle
