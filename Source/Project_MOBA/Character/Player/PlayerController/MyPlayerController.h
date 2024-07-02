@@ -7,7 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
-class IAttackableInterface;
+class ICombatInterface;
 class USplineComponent;
 class AMyPlayerState;
 class APlayerCharacter;
@@ -50,7 +50,7 @@ protected:
 	TArray<TEnumAsByte<EObjectTypeQuery>> CursorTraceObjectTypes;
 	
 private:
-	void bShouldHighlight(IAttackableInterface* Actor, bool b) const;
+	void bShouldHighlight(ICombatInterface* Actor, bool b) const;
 	
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
@@ -65,6 +65,6 @@ private:
 	FVector DestinyLocation;
 
 	// Highlighting
-	IAttackableInterface* CurrentTargetActorUnderMouse;
-	IAttackableInterface* PreviousTargetActorUnderMouse;
+	ICombatInterface* CurrentTargetActorUnderMouse;
+	ICombatInterface* PreviousTargetActorUnderMouse;
 };

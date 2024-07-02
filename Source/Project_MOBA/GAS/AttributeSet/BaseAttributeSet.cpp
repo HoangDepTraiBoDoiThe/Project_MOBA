@@ -64,6 +64,11 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
     {
         SetMana(FMath::Clamp(Data.EvaluatedData.Attribute.GetNumericValue(this), 0.f, GetMaxMana()));
     }
+
+    if (GetHitPoint() <= 0)
+    {
+        
+    }
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& OldValue) const

@@ -46,7 +46,7 @@ void AMyPlayerController::HighlightingActor()
 
 	PreviousTargetActorUnderMouse = CurrentTargetActorUnderMouse;
 	if (HitResult.bBlockingHit)
-		CurrentTargetActorUnderMouse = Cast<IAttackableInterface>(HitResult.GetActor());
+		CurrentTargetActorUnderMouse = Cast<ICombatInterface>(HitResult.GetActor());
 	else CurrentTargetActorUnderMouse = nullptr;
 
 	if (CurrentTargetActorUnderMouse && Cast<APlayerCharacter>(HitResult.GetActor()) != GetPlayerCharacter())
@@ -140,7 +140,7 @@ void AMyPlayerController::OnInputReleased(FGameplayTag InputTag)
 {
 }
 
-void AMyPlayerController::bShouldHighlight(IAttackableInterface* Actor, bool b) const
+void AMyPlayerController::bShouldHighlight(ICombatInterface* Actor, bool b) const
 {
 	if (!Actor) return;
 	Actor->GetAttackableActorMesh()->bRenderCustomDepth = b;

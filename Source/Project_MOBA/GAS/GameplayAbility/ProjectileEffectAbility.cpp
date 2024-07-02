@@ -29,8 +29,8 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     	FVector WorldDirection;
 	    Cast<APlayerCharacter>(GetAvatarActorFromActorInfo())->GetMyPlayerController()->DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
 
-    	DrawDebugLine(GetWorld(), WorldLocation, WorldLocation + WorldDirection * 2000, FColor::Yellow, true, 5);
-    	DrawDebugSphere(GetWorld(), WorldLocation, .5f, 6, FColor::Yellow, true, 5.f);
+    	/*DrawDebugLine(GetWorld(), WorldLocation, WorldLocation + WorldDirection * 2000, FColor::Yellow, true, 5);
+    	DrawDebugSphere(GetWorld(), WorldLocation, .5f, 6, FColor::Yellow, true, 5.f);*/
 		// ---------------------------------------------------------------
 
     	/*
@@ -45,11 +45,11 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     	float Distance2Adjust = FVector::Dist(SpawnLocation, HitResult.ImpactPoint);
     	TargetLocation -= WorldDirection * Distance2Adjust;
 
-    	DrawDebugLine(GetWorld(), SpawnLocation, EndLoc, FColor::Red, true, 5);
+    	/*DrawDebugLine(GetWorld(), SpawnLocation, EndLoc, FColor::Red, true, 5);
     	DrawDebugLine(GetWorld(), SpawnLocation, TargetLocation, FColor::Blue, true, 5);
     	DrawDebugSphere(GetWorld(), TargetLocation, 20.f, 6, FColor::Green, true, 5.f);
     	DrawDebugSphere(GetWorld(), SpawnLocation, 10.f, 6, FColor::Green, true, 5.f);
-    	DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 6, FColor::Red, true, 5.f);
+    	DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 6, FColor::Red, true, 5.f);*/
     	// ---------------------------------------------------------------
     }
 	

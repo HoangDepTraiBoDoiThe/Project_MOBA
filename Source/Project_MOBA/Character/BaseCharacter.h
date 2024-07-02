@@ -6,7 +6,6 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
-#include "Project_MOBA/Interface/AttackableInterface.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
@@ -17,7 +16,7 @@ class UBaseAttributeSet;
 class UMyAbilitySystemComponent;
 
 UCLASS()
-class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public IAttackableInterface, public ICombatInterface
+class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
