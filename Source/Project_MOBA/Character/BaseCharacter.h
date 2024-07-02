@@ -30,7 +30,7 @@ public:
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const {return BaseAttributeSet;}
 
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
-	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
+	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;	
 
 	FORCEINLINE FGameplayTag GetCharacterTag() const {return CharacterTag;}
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const {return CharacterInfos;}

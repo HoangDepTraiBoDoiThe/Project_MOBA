@@ -35,7 +35,7 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	TimerManager = &GetWorld()->GetTimerManager();
-	TimerManager->SetTimer(AutoDestroyTimerHande, this, &ThisClass::OneDestroyTimerCallback, 10);
+	TimerManager->SetTimer(AutoDestroyTimerHandle, this, &ThisClass::OneDestroyTimerCallback, 10);
 	
 	SetReplicateMovement(true);
 	if (BulletParticle) UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent())->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
@@ -69,7 +69,7 @@ void AProjectile::OnProjectileOverlap(
 
 	if (bShouldDestroyOnOver)
 	{
-		const bool bCharacter = IsValid(Cast<ABaseCharacter>(OtherActor));
+		const bool bCharacter = Cast<ABaseCharacter>(OtherActor) != nullptr;
 		if (bCharacter && HitCharacterParticle)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
@@ -94,7 +94,7 @@ void AProjectile::OneDestroyTimerCallback()
 void AProjectile::Destroyed()
 {
 	if (CollisionComponent) CollisionComponent->OnComponentBeginOverlap.Clear();
-	TimerManager->ClearTimer(AutoDestroyTimerHande);
+	TimerManager->ClearTimer(AutoDestroyTimerHandle);
 	Super::Destroyed();
 }
 

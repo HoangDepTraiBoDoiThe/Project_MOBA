@@ -19,22 +19,39 @@ MyGameplayTagsManager& MyGameplayTagsManager::Get()
 void MyGameplayTagsManager::InitNativeGameplayTags()
 {
 	/*
-	 *	Hero tags
+	 *	Character tags
 	 */
-	MyGameplayTagsManager::GameplayTags.Hero_Murdock = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Hero.Murdock"),
+	MyGameplayTagsManager::GameplayTags.Character_Hero_Murdock = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Hero.Murdock"),
 		FString(
 			"")
 	);
-	MyGameplayTagsManager::GameplayTags.Hero_Gideon = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Hero.Gideon"),
+	MyGameplayTagsManager::GameplayTags.Character_Hero_Gideon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Hero.Gideon"),
 		FString(
 			"")
 	);
-	MyGameplayTagsManager::GameplayTags.Hero_GrimEXE = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Hero.GrimEXE"),
+	MyGameplayTagsManager::GameplayTags.Character_Hero_GrimEXE = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Hero.GrimEXE"),
 		FString(
 			"")
+	);
+	MyGameplayTagsManager::GameplayTags.Character_Minion_Normal_Mele = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Minion.Normal.Mele"),
+		FString(
+			"")
+	);
+	MyGameplayTagsManager::GameplayTags.Character_Minion_Normal_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.Minion.Normal.Range"),
+			FString("")
+		);
+	MyGameplayTagsManager::GameplayTags.Character_Minion_Super_Mele = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Minion.Super.Range"),
+		FString("")
+	);
+	MyGameplayTagsManager::GameplayTags.Character_Minion_Super_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Character.Minion.Super.Range"),
+		FString("")
 	);
 
 	/*

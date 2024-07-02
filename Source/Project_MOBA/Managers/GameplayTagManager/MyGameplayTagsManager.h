@@ -16,11 +16,15 @@ public:
  static void InitNativeGameplayTags();
 
  /*
-  *	Hero tags
+  *	Character tags
   */
- FGameplayTag Hero_Murdock;
- FGameplayTag Hero_Gideon;
- FGameplayTag Hero_GrimEXE;
+ FGameplayTag Character_Hero_Murdock;
+ FGameplayTag Character_Hero_Gideon;
+ FGameplayTag Character_Hero_GrimEXE;
+ FGameplayTag Character_Minion_Normal_Mele;
+ FGameplayTag Character_Minion_Normal_Range;
+ FGameplayTag Character_Minion_Super_Mele;
+ FGameplayTag Character_Minion_Super_Range;
 
 /*
  *	Vital attributes
