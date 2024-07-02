@@ -47,7 +47,7 @@ void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
     {
         NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHitPoint());
     }
-    if (Attribute == GetMaxManaAttribute())
+    if (Attribute == GetManaAttribute())
     {
         NewValue = (FMath::Clamp(NewValue, 0.f, GetMaxMana()));
     }
