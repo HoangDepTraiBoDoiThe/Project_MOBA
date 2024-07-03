@@ -7,6 +7,7 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class UGameplayEffect;
 class UGameplayAbility;
 class AMyPlayerController;
 class USplineComponent;
@@ -38,6 +39,10 @@ public:
 	virtual int32 GetXPReward() override;
 	virtual void IncreaseXP2Give(const int32 XPAmount) override;
 
+	const TMap<FName, FGameplayTag>& GetRewardAttributeMap() const {return RewardAttributeMap;}
+	TObjectPtr<UCurveTable> GetRewardTable() const {return RewardTable;}
+	TSubclassOf<UGameplayEffect> GetRewardGE() const {return RewardGE;}
+
 	int32 GetCharacterLevel();
 
 protected:
@@ -57,6 +62,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos;
 
+	UPROPERTY(EditAnywhere)
+	TMap<FName, FGameplayTag> RewardAttributeMap;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UCurveTable> RewardTable;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayEffect> RewardGE;
 
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 	TObjectPtr<AMyPlayerController> MyPlayerController;

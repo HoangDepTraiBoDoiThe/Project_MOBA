@@ -40,10 +40,6 @@ struct FRewardForPlayerStruct
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 XPRequireForTheNextLevel = 0;
-
-	UPROPERTY(EditDefaultsOnly)
-	TMap<FGameplayTag, TObjectPtr<UCurveTable>> AttributeRewardTables = TMap<FGameplayTag, TObjectPtr<UCurveTable>>();
-	
 };
 
 USTRUCT(BlueprintType)

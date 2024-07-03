@@ -32,16 +32,29 @@ UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
 void AMyPlayerState::RewardPlayer(const int32 XP2Increase)
 {
 	const int32 TotalXP = XP + XP2Increase;
-	FRewardForPlayerStruct RewardForPlayer;
-	GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetRewardForPlayersByXP(RewardForPlayer, TotalXP, GetPlayerLevel());
-	GiveRewardToPlayer(RewardForPlayer, TotalXP);
+	SetXP(TotalXP);
+	const int32 LevelAtTotalXP = GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetLevelAtXP(TotalXP, GetPlayerLevel());
+	if (GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer();
 }
 
-void AMyPlayerState::GiveRewardToPlayer(const FRewardForPlayerStruct& Reward, const int32 TotalXP )
+void AMyPlayerState::GiveRewardToPlayer()
 {
 	LevelUp();
-	SetXP(TotalXP);
-	// TODO: Give Reward To Player.
+	UCurveTable* RewardTable = GetPlayerCharacter()->GetRewardTable();
+	TMap<FName, FGameplayTag> RewardAttributeMap = GetPlayerCharacter()->GetRewardAttributeMap();
+	if (RewardTable)
+	{
+		TSubclassOf<UGameplayEffect> RewardGE = GetPlayerCharacter()->GetRewardGE();
+		const FGameplayEffectSpecHandle RewardHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(RewardGE, 1, GetAbilitySystemComponent()->MakeEffectContext());
+		const TMap<FName, FSimpleCurve*> RewardRowMap = RewardTable->GetSimpleCurveRowMap();
+		for (const auto& Pair : RewardAttributeMap)
+		{
+			const FSimpleCurve* AttributeRow = RewardRowMap.FindRef(Pair.Key);
+			const int32 AttributeRewardPoints = AttributeRow->Eval(GetPlayerLevel());
+			RewardHandle.Data->SetSetByCallerMagnitude(Pair.Value, AttributeRewardPoints);
+		}
+		GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*RewardHandle.Data);
+	}
 }
 
 void AMyPlayerState::SetXP(const int32 XP2Set)

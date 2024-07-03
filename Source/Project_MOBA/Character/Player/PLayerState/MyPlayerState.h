@@ -35,7 +35,7 @@ public:
 	int32 GetPlayerLevel() const {return PlayerLevel;}
 	void LevelUp();
 	void SetCharacterLevel(const int32 Level);
-	void GiveRewardToPlayer(const FRewardForPlayerStruct& Reward, const int32 TotalXP );
+	void GiveRewardToPlayer();
 
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 	

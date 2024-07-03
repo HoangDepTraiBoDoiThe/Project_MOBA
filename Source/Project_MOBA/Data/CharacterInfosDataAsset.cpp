@@ -51,16 +51,14 @@ TObjectPtr<UAnimMontage> UCharacterInfosDataAsset::GetMontageByTag(const FGamepl
 	return nullptr;
 }
 
-void UCharacterInfosDataAsset::GetRewardForPlayersByXP(FRewardForPlayerStruct& RewardForPlayer, const int32 XP2Check,
-	const int32 StartCheckAtLevel)
+int32 UCharacterInfosDataAsset::GetLevelAtXP(const int32 XP2Check, const int32 StartCheckAtLevel)
 {
 	for (int32 i = StartCheckAtLevel; i < CharacterInfosStruct.RewardForPlayers.Num(); i++)
 	{
 		if (CharacterInfosStruct.RewardForPlayers[i].XPRequireForTheNextLevel > XP2Check)
 		{
-			RewardForPlayer = CharacterInfosStruct.RewardForPlayers[i];
-			return;
+			return i;
 		}
 	}
-	RewardForPlayer = CharacterInfosStruct.RewardForPlayers[-1];
+	return 18;
 }
