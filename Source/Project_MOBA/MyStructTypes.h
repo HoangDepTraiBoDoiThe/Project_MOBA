@@ -9,6 +9,7 @@
  * 
  */
 
+class UBaseGameplayAbility;
 class UGameplayEffect;
 class UGameplayAbility;
 
@@ -25,6 +26,12 @@ struct FCharacterSpecificInfosStruct
 	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="Animation montages")
+	TMap<FGameplayTag, TObjectPtr<UAnimMontage>> CharacterMontages;
+
+	UPROPERTY(EditDefaultsOnly, Category="Particles")
+	TArray<TObjectPtr<UParticleSystem>> DieParticleSystems;
 };
 
 USTRUCT(BlueprintType)
@@ -33,7 +40,10 @@ struct FCharacterInfosStruct
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FCharacterSpecificInfosStruct> CharacterInfosStructs;
+	TArray<FCharacterSpecificInfosStruct> CharacterSpecificInfosStructs;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UBaseGameplayAbility>> PassiveAbilitiesClasses;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<UGameplayEffect>> DefaultGEs_SecondaryAttributeValues;

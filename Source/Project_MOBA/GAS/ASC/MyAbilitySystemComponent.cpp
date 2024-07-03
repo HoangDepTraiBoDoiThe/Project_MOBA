@@ -17,11 +17,11 @@ void UMyAbilitySystemComponent::ActorASCInitialize(AActor* InOwnerActor, AActor*
 	ReceiveAndBindCallBackToDependencies();
 }
 
-bool UMyAbilitySystemComponent::TryActivateAbilityByInputTag(const FGameplayTag InputTag)
+bool UMyAbilitySystemComponent::TryActivateAbilityByTag(const FGameplayTag AbilityTag)
 {
 	for (const auto& Ability : GetActivatableAbilities())
 	{
-		if (Ability.Ability->AbilityTags.HasTagExact(InputTag))
+		if (Ability.Ability->AbilityTags.HasTagExact(AbilityTag))
 			return TryActivateAbility(Ability.Handle);
 	}		
 	return false;
@@ -45,9 +45,14 @@ void UMyAbilitySystemComponent::ApplyDefaultGEs()
 
 void UMyAbilitySystemComponent::GiveStartupAbilities()
 {
-	TArray<TSubclassOf<UGameplayAbility>>* AbilityClasses = GetBaseCharacter()->GetCharacterStartupAbilities();
-	if (!AbilityClasses || AbilityClasses->Num() == 0) return;
-	for (const auto& AbilityClass : *AbilityClasses)
+	TArray<TSubclassOf<UGameplayAbility>> AbilityClasses = GetBaseCharacter()->GetCharacterStartupAbilities();
+	const TArray<TSubclassOf<UBaseGameplayAbility>>& AbilityPassiveClasses = GetBaseCharacter()->GetCharacterInfosDataAsset()->GetPassiveAbilities();
+	for (const auto& AbilityClass : AbilityClasses)
+	{
+		FGameplayAbilitySpec Ability = FGameplayAbilitySpec(AbilityClass, 1);
+		GiveAbility(Ability);
+	}
+	for (const auto& AbilityClass : AbilityPassiveClasses)
 	{
 		FGameplayAbilitySpec Ability = FGameplayAbilitySpec(AbilityClass, 1);
 		GiveAbility(Ability);

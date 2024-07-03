@@ -22,6 +22,8 @@ public:
 	AMinionCharacter* GetMinionCharacter();
 
 	void SetupBehavior(UBehaviorTree* BehaviorTree);
+
+	FORCEINLINE UBehaviorTreeComponent* GetBehaviorTreeComponent() const {return BTComponent;}
 	
 protected:
 	UPROPERTY(EditAnywhere)

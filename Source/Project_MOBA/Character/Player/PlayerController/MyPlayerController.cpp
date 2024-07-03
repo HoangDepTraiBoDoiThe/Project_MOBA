@@ -127,7 +127,7 @@ void AMyPlayerController::OnInputPressed(FGameplayTag InputTag)
 	}
 	else
 	{
-		bool bSuccessfull = GetPlayerCharacter()->GetMyAbilitySystemComponent()->TryActivateAbilityByInputTag(InputTag);
+		bool bSuccessfull = GetPlayerCharacter()->GetMyAbilitySystemComponent()->TryActivateAbilityByTag(InputTag);
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *InputTag.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
 	}
 }

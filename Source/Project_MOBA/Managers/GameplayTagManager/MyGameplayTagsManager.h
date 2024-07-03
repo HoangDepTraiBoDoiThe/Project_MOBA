@@ -110,8 +110,10 @@ public:
  FGameplayTag Ability_Availability_Equipped;
  
  /*
-  *	Ability  Tags
+  *	Ability Tags
   */
+ FGameplayTag Ability_Passive_Die;
+ FGameplayTag Ability_Passive_CanNotDie;
  FGameplayTag Ability_Projectile_FireBall;
  FGameplayTag Ability_Projectile_LightingBall;
 

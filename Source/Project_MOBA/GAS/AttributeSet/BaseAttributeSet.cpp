@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
+#include "Project_MOBA/Interface/CombatInterface.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
 {
@@ -65,9 +66,9 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
         SetMana(FMath::Clamp(Data.EvaluatedData.Attribute.GetNumericValue(this), 0.f, GetMaxMana()));
     }
 
-    if (GetHitPoint() <= 0)
+    if (Data.EvaluatedData.Attribute == GetHitPointAttribute() && GetHitPoint() <= 0)
     {
-        
+        Cast<ICombatInterface>(GetActorInfo()->AvatarActor)->Die();
     }
 }
 

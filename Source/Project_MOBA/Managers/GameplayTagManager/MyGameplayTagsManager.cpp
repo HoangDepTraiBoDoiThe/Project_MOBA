@@ -228,6 +228,12 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	/*
 	 * Ability Cooldown and Cost 
 	 */
+	GameplayTags.Ability_Passive_CanNotDie = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Passive.CanNotDie"),
+		FString("Counter of Die tag. Who ever has this tag can not be killed."));
+	GameplayTags.Ability_Passive_Die = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Passive.Die"),
+		FString("Who ever has this tag can not be killed."));
 	GameplayTags.Ability_Cooldown_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Ability.Cooldown.FireBolt"),
 		FString(""));

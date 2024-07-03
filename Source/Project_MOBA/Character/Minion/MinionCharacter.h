@@ -22,6 +22,7 @@ class PROJECT_MOBA_API AMinionCharacter : public ABaseCharacter
 public:
 	AMinionCharacter();
 	virtual void BeginPlay() override;
+	virtual void Die() override;
 	UBehaviorTree* GetMinionBehaviorTree() const {return BehaviorTree;}
 
 	AMyAIController* GetMyAIController();
@@ -29,9 +30,6 @@ public:
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;
-	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;

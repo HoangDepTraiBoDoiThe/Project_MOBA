@@ -3,6 +3,7 @@
 
 #include "MinionCharacter.h"
 
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Controller/MyAIController.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
@@ -18,6 +19,12 @@ void AMinionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+void AMinionCharacter::Die()
+{
+	Super::Die();
+	Cast<AMyAIController>(GetController())->GetBehaviorTreeComponent()->StopLogic("Death");
 }
 
 AMyAIController* AMinionCharacter::GetMyAIController()

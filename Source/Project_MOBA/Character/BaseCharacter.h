@@ -26,14 +26,23 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UMyAbilitySystemComponent* GetMyAbilitySystemComponent() const;
-	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const {return BaseAttributeSet;}
+	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const { return BaseAttributeSet; }
 
+	// ICombatInterface override funcions.
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
-	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;	
+	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
+	virtual void Die() override;
+	UFUNCTION(BlueprintCallable)
+	virtual void Death();
 
-	FORCEINLINE FGameplayTag GetCharacterTag() const {return CharacterTag;}
-	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const {return CharacterInfos;}
-	TArray<TSubclassOf<UGameplayAbility>>* GetCharacterStartupAbilities() const;
+	FORCEINLINE FGameplayTag GetCharacterTag() const { return CharacterTag; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }
+	UFUNCTION(BlueprintCallable)
+	const UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
+	UFUNCTION(BlueprintCallable)
+	TArray<UParticleSystem*> GetParticleSystems() const;
+	TArray<TSubclassOf<UGameplayAbility>> GetCharacterStartupAbilities() const;
 
 protected:
 	virtual void BeginPlay() override;
@@ -43,9 +52,9 @@ protected:
 	UPROPERTY()
 	UBaseAttributeSet* BaseAttributeSet;
 
-	UPROPERTY(EditDefaultsOnly, Category= "Hero info")
+	UPROPERTY(EditDefaultsOnly, Category= "Character info|Character Specific")
 	FGameplayTag CharacterTag;
-	
+
 	UPROPERTY(EditAnywhere, Category= "Character info")
 	TObjectPtr<UCharacterInfosDataAsset> CharacterInfos;
 };
