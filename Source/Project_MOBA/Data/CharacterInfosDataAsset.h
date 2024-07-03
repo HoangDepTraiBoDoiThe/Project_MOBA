@@ -23,6 +23,7 @@ public:
 	TArray<TSubclassOf<UBaseGameplayAbility>>& GetPassiveAbilities();
 	void GetDefaultGEs(const FGameplayTag& CharacterTag, TSubclassOf<UGameplayEffect>& PrimaryGE, TArray<TSubclassOf<UGameplayEffect>>& SecondaryGEs);
 	void GetParticleSystems(const FGameplayTag& CharacterTag, TArray<TObjectPtr<UParticleSystem>>& OutParticleSystems);
+	TObjectPtr<UAnimMontage> GetMontageByTag(const FGameplayTag& CharacterTag, const FGameplayTag& MontageTag);
 
 protected:
 	UPROPERTY(EditAnywhere)

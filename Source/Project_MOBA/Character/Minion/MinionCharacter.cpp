@@ -5,6 +5,8 @@
 
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Controller/MyAIController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 
@@ -23,8 +25,8 @@ void AMinionCharacter::BeginPlay()
 
 void AMinionCharacter::Die()
 {
-	Super::Die();
 	Cast<AMyAIController>(GetController())->GetBehaviorTreeComponent()->StopLogic("Death");
+	Super::Die();
 }
 
 AMyAIController* AMinionCharacter::GetMyAIController()
@@ -46,4 +48,16 @@ void AMinionCharacter::PossessedBy(AController* NewController)
 void AMinionCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+}
+
+void AMinionCharacter::Destroyed()
+{
+	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;
+	CharacterInfos->GetParticleSystems(GetCharacterTag(), OutParticleSystems);
+	for (const auto& Item : OutParticleSystems)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Item, GetActorTransform());
+	}
+	
+	Super::Destroyed();
 }

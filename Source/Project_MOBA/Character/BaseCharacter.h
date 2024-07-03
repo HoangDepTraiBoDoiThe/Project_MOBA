@@ -36,12 +36,9 @@ public:
 	virtual void Death();
 
 	FORCEINLINE FGameplayTag GetCharacterTag() const { return CharacterTag; }
-	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }
 	UFUNCTION(BlueprintCallable)
-	const UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
-	UFUNCTION(BlueprintCallable)
-	TArray<UParticleSystem*> GetParticleSystems() const;
+	UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
 	TArray<TSubclassOf<UGameplayAbility>> GetCharacterStartupAbilities() const;
 
 protected:

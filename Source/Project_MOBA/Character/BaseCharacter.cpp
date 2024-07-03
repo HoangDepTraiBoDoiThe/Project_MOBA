@@ -75,19 +75,14 @@ void ABaseCharacter::Death()
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionResponseToAllChannels(ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	GetMesh()->SetEnableGravity(true);
+	GetCharacterMovement()->AddImpulse(FVector::DownVector * 10000);
 }
 
 
-const UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag) const
+UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag) const
 {
-	return nullptr;
-}
-
-TArray<UParticleSystem*> ABaseCharacter::GetParticleSystems() const
-{
-	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;
-	CharacterInfos->GetParticleSystems(GetCharacterTag(), OutParticleSystems);
-	return OutParticleSystems;
+	return CharacterInfos->GetMontageByTag(GetCharacterTag(), Tag);
 }
 
 TArray<TSubclassOf<UGameplayAbility>> ABaseCharacter::GetCharacterStartupAbilities() const

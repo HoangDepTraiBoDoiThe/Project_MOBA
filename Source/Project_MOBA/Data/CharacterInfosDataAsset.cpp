@@ -40,3 +40,13 @@ void UCharacterInfosDataAsset::GetParticleSystems(const FGameplayTag& CharacterT
 		OutParticleSystems = Pair.DieParticleSystems;
 	}
 }
+
+TObjectPtr<UAnimMontage> UCharacterInfosDataAsset::GetMontageByTag(const FGameplayTag& CharacterTag, const FGameplayTag& MontageTag)
+{
+	for (auto& Pair : CharacterInfosStruct.CharacterSpecificInfosStructs)
+	{
+		if (Pair.CharacterTag.MatchesTagExact(CharacterTag))
+			return Pair.CharacterMontages.FindRef(MontageTag);
+	}
+	return nullptr;
+}
