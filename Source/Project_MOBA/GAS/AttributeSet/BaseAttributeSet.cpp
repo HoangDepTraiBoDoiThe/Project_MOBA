@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
+#include "Project_MOBA/Character/Player/PlayerCharacter.h"
+#include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -66,10 +68,27 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
         SetMana(FMath::Clamp(Data.EvaluatedData.Attribute.GetNumericValue(this), 0.f, GetMaxMana()));
     }
 
-    if (Data.EvaluatedData.Attribute == GetHitPointAttribute() && GetHitPoint() <= 0)
+    if (Data.EvaluatedData.Attribute == GetDamageIncomingAttribute())
     {
-        Cast<ICombatInterface>(GetActorInfo()->AvatarActor)->Die();
+        const float IncomingDamage = -Data.EvaluatedData.Attribute.GetNumericValue(this);
+        SetHitPoint(IncomingDamage);
+        if (GetHitPoint() <= 0)
+        {
+            const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
+
+            const UAbilitySystemComponent* ASC = Data.EffectSpec.GetContext().GetInstigatorAbilitySystemComponent();
+            AMyPlayerState* PlayerState = Cast<APlayerCharacter>(ASC->GetAvatarActor())->GetMyPlayerState();
+            PlayerState->RewardPlayer(XP2Reward);
+            GetThisCombatActor()->Die();
+        }
     }
+}
+
+ICombatInterface* UBaseAttributeSet::GetThisCombatActor()
+{
+    if (!ThisCombatActor)
+        ThisCombatActor = Cast<ICombatInterface>(GetActorInfo()->AvatarActor);
+    return ThisCombatActor;
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& OldValue) const

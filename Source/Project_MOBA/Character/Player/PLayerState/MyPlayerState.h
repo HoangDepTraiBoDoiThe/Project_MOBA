@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerState.h"
 #include "MyPlayerState.generated.h"
 
+struct FRewardForPlayerStruct;
+class APlayerCharacter;
 class UAbilitySystemComponent;
 class UBaseAttributeSet;
 /**
@@ -20,13 +22,39 @@ class PROJECT_MOBA_API AMyPlayerState : public APlayerState, public  IAbilitySys
 public:
 	AMyPlayerState();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;;
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const {return BaseAttributeSet;}
+
+	// Experience
+	FORCEINLINE int32 GetXP() const {return XP;}
+	FORCEINLINE int32 GetXP2Give() const {return XP2Give;}
+	void SetXP(const int32 XP2Set);
+	void RewardPlayer(int32 XP2Increase = 1);
+	void IncreaseXP2Give(int32 XP2GiveAmount);
+	int32 GetPlayerLevel() const {return PlayerLevel;}
+	void LevelUp();
+	void SetCharacterLevel(const int32 Level);
+	void GiveRewardToPlayer(const FRewardForPlayerStruct& Reward, const int32 TotalXP );
+
+	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
+	
 protected:
+	UFUNCTION()
+	void RepNotify_XP(const int32 OldValue);
+	
 	UPROPERTY(VisibleAnywhere, Category=GAS)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(VisibleAnywhere, Category=GAS)
 	TObjectPtr<UBaseAttributeSet> BaseAttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=RepNotify_XP)
+	int32 XP{1};
+	int32 PlayerLevel{1};
+	int32 XP2Give{1};
+
+	UPROPERTY()
+	APlayerCharacter* PlayerCharacter;
 	
 private:
 

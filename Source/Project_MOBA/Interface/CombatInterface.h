@@ -24,5 +24,8 @@ class PROJECT_MOBA_API ICombatInterface
 public:
 	virtual FVector GetWeaponSocketLocationByName(FName SocketName = "PuzzleSocket") = 0;
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() = 0;
+	virtual int32 GetXP() = 0;
+	virtual int32 GetXPReward() = 0;
+	virtual void IncreaseXP2Give(const int32 XPAmount) = 0;
 	virtual void Die() = 0;	
 };

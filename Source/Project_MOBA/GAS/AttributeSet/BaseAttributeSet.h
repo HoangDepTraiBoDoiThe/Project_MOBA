@@ -16,6 +16,9 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class ICombatInterface;
+class APlayerCharacter;
+
 UCLASS()
 class PROJECT_MOBA_API UBaseAttributeSet : public UAttributeSet
 {
@@ -24,6 +27,8 @@ class PROJECT_MOBA_API UBaseAttributeSet : public UAttributeSet
 public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	ICombatInterface* GetThisCombatActor();
+	
 	// Vital attributes
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPoint)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Mana)
@@ -48,11 +53,18 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitMultiply)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChance)
 
+	// Meta attributes
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, XPIncoming)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, DamageIncoming)
+
+
 protected:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 private:
+	ICombatInterface* ThisCombatActor;
+	
 #pragma region Rep Notify Functions
 	// Vital attributes
 	UFUNCTION()
@@ -176,7 +188,9 @@ private:
 #pragma endregion
 	
 #pragma region Meta attributes
+	UPROPERTY()
 	FGameplayAttributeData XPIncoming;
+	UPROPERTY()
 	FGameplayAttributeData DamageIncoming;
 #pragma endregion
 };

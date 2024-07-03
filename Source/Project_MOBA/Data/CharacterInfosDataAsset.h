@@ -24,6 +24,7 @@ public:
 	void GetDefaultGEs(const FGameplayTag& CharacterTag, TSubclassOf<UGameplayEffect>& PrimaryGE, TArray<TSubclassOf<UGameplayEffect>>& SecondaryGEs);
 	void GetParticleSystems(const FGameplayTag& CharacterTag, TArray<TObjectPtr<UParticleSystem>>& OutParticleSystems);
 	TObjectPtr<UAnimMontage> GetMontageByTag(const FGameplayTag& CharacterTag, const FGameplayTag& MontageTag);
+	void GetRewardForPlayersByXP(FRewardForPlayerStruct& RewardForPlayer, const int32 XP2Check, const int32 StartCheckAtLevel = 1);
 
 protected:
 	UPROPERTY(EditAnywhere)

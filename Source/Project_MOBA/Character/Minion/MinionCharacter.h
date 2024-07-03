@@ -27,6 +27,11 @@ public:
 
 	AMyAIController* GetMyAIController();
 
+	// ICombatInterface override funcions.
+	virtual void IncreaseXP2Give(const int32 XPAmount) override;
+	virtual int32 GetXP() override;
+	virtual int32 GetXPReward() override;
+	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;
@@ -37,6 +42,10 @@ protected:
 
 	TObjectPtr<AMyAIController> MyAIController;
 
+	int32 XP{1};
+	UPROPERTY(EditDefaultsOnly)
+	int32 XP2Give{1};
+	
 private:
 	
 };

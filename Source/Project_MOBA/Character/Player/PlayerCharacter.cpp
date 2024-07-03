@@ -64,6 +64,26 @@ AMyPlayerController* APlayerCharacter::GetMyPlayerController()
 	return MyPlayerController;
 }
 
+int32 APlayerCharacter::GetXP()
+{
+	return GetMyPlayerState()->GetXP();
+}
+
+int32 APlayerCharacter::GetXPReward()
+{
+	return GetMyPlayerState()->GetXP2Give();
+}
+
+void APlayerCharacter::IncreaseXP2Give(const int32 XPAmount)
+{
+	return GetMyPlayerState()->IncreaseXP2Give(XPAmount);
+}
+
+int32 APlayerCharacter::GetCharacterLevel()
+{
+	return GetMyPlayerState()->GetPlayerLevel();
+}
+
 const TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInputActionInfos() const
 {
 	for (auto& Pair : InputActionInfos)

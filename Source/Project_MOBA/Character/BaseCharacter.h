@@ -34,6 +34,9 @@ public:
 	virtual void Die() override;
 	UFUNCTION(BlueprintCallable)
 	virtual void Death();
+	virtual int32 GetXP() override {return 0;}
+	virtual int32 GetXPReward() override {return 0;}
+	virtual void IncreaseXP2Give(const int32 XPAmount) override {}
 
 	FORCEINLINE FGameplayTag GetCharacterTag() const { return CharacterTag; }
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }

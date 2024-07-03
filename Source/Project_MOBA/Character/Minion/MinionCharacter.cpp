@@ -50,6 +50,21 @@ void AMinionCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
+void AMinionCharacter::IncreaseXP2Give(const int32 XPAmount)
+{
+	XP2Give += XPAmount;
+}
+
+int32 AMinionCharacter::GetXP()
+{
+	return XP;
+}
+
+int32 AMinionCharacter::GetXPReward()
+{
+	return XP2Give;
+}
+
 void AMinionCharacter::Destroyed()
 {
 	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;

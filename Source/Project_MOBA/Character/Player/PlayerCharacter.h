@@ -32,7 +32,14 @@ public:
 
 	AMyPlayerState* GetMyPlayerState();
 	AMyPlayerController* GetMyPlayerController();
-	
+
+	// ICombatInterface override funcions.
+	virtual int32 GetXP() override;
+	virtual int32 GetXPReward() override;
+	virtual void IncreaseXP2Give(const int32 XPAmount) override;
+
+	int32 GetCharacterLevel();
+
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
@@ -46,8 +53,7 @@ protected:
 	virtual void OnRep_PlayerState() override;
 
 	void PlayerInitializeGASInfos();
-
-		
+	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos;
 

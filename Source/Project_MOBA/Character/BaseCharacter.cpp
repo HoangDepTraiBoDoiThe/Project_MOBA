@@ -3,10 +3,8 @@
 
 #include "BaseCharacter.h"
 
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Minion/Controller/MyAIController.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
@@ -78,7 +76,6 @@ void ABaseCharacter::Death()
 	GetMesh()->SetEnableGravity(true);
 	GetCharacterMovement()->AddImpulse(FVector::DownVector * 10000);
 }
-
 
 UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag) const
 {
