@@ -80,6 +80,10 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 		FName("Attribute.Primary.Resilience"),
 		FString("Impacts the character's resistances, including 'Armor' and 'Armor penetration.'"));
 
+	MyGameplayTagsManager::GameplayTags.Attribute_Primary_Resistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Primary.Resistance"),
+		FString("Impacts the character's resistances, including 'Armor' and 'Armor penetration.'"));
+
 	MyGameplayTagsManager::GameplayTags.Attribute_Primary_Vigor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Primary.Vigor"),
 		FString("Impacts the character's 'Maximum HitPoint' and 'Heal Regeneration.'"));

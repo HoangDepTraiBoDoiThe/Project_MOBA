@@ -34,7 +34,7 @@ void AMyPlayerState::RewardPlayer(const int32 XP2Increase)
 	const int32 TotalXP = XP + XP2Increase;
 	SetXP(TotalXP);
 	const int32 LevelAtTotalXP = GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetLevelAtXP(TotalXP, GetPlayerLevel());
-	if (GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer();
+	if (GetPlayerLevel() < 18 && GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer();
 }
 
 void AMyPlayerState::GiveRewardToPlayer()
