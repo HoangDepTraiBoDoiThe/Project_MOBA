@@ -30,26 +30,28 @@ class PROJECT_MOBA_API APlayerCharacter : public ABaseCharacter
 
 public:
 	APlayerCharacter();
-	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
 
+	// Dependencies
 	AMyPlayerState* GetMyPlayerState();
 	AMyPlayerController* GetMyPlayerController();
 	AMyHUD* GetMyHUD();
-
-	// ICombatInterface override funcions.
-	virtual int32 GetXP() override;
-	virtual int32 GetXPReward() override;
-	virtual void IncreaseXP2Give(const int32 XPAmount) override;
-
+	
 	// Experience
 	const TMap<FName, FGameplayTag>& GetRewardAttributeMap() const {return RewardAttributeMap;}
 	TObjectPtr<UCurveTable> GetRewardTable() const {return RewardTable;}
 	TSubclassOf<UGameplayEffect> GetRewardGE() const {return RewardGE;}
 	FORCEINLINE TObjectPtr<UParticleSystem> GetLevelUpParticleSystem() const {return LevelUpParticleSystem;}
-
 	int32 GetCharacterLevel();
+	// Experience subset: ICombatInterface override funcions.
+	virtual int32 GetXP() override;
+	virtual int32 GetXPReward() override;
+	virtual void IncreaseXP2Give(const int32 XPAmount) override;
+
+	// Other
+	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
 
 protected:
+	// Components
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
 	UPROPERTY(EditAnywhere)
@@ -60,7 +62,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
-
 	void PlayerInitializeGASInfos();
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -76,6 +77,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UParticleSystem> LevelUpParticleSystem;
 
+	// Dependencies
 	TObjectPtr<AMyHUD> MyHUD;
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 	TObjectPtr<AMyPlayerController> MyPlayerController;
