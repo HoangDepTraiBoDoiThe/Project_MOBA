@@ -49,6 +49,7 @@ public:
 
 	// Other
 	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
+	TObjectPtr<UCurveTable> GetHeroAbilityBaseDamageInfos() const {return HeroAbilityBaseDamageInfos;}
 
 protected:
 	// Components
@@ -63,9 +64,12 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	void PlayerInitializeGASInfos();
-	
+
+	// Others
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UCurveTable> HeroAbilityBaseDamageInfos;
 
 	// Experience 
 	UPROPERTY(EditAnywhere)

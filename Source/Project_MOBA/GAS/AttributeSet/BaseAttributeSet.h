@@ -57,14 +57,6 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, XPIncoming)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, DamageIncoming)
 
-
-protected:
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-
-private:
-	ICombatInterface* ThisCombatActor;
-	
 #pragma region Rep Notify Functions
 	// Vital attributes
 	UFUNCTION()
@@ -193,4 +185,12 @@ private:
 	UPROPERTY()
 	FGameplayAttributeData DamageIncoming;
 #pragma endregion
+
+protected:
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+private:
+	ICombatInterface* ThisCombatActor;
+	
 };

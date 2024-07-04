@@ -9,17 +9,30 @@
 /**
  * 
  */
+USTRUCT()
+struct FMyEffectTypeStruct
+{
+	GENERATED_BODY()
+
+	FMyEffectTypeStruct() {}
+	explicit FMyEffectTypeStruct(const float EffectValue) : EffectValue(EffectValue) {}
+
+	UPROPERTY(EditDefaultsOnly)
+	float EffectValue = 1;
+};
+
 UCLASS()
 class PROJECT_MOBA_API UGameplayEffectAbility : public UBaseGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	const TMap<FGameplayTag, float>& GetDamageTypes() const {return DamageTypes;}
+	const TMap<FGameplayTag, FMyEffectTypeStruct>& GetEffectTypeMap() const {return EffectTypeMap;}
 
 protected:
 	virtual void OrientateCharacter(FRotator Rotator);
-	
-	TMap<FGameplayTag, float> DamageTypes;
+
+	UPROPERTY(EditAnywhere)
+	TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap;
 	
 };

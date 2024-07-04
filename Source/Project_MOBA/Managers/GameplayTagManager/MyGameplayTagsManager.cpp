@@ -135,9 +135,9 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	/*
 	*	Damage type Tags
 	*/
-	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Physical = UGameplayTagsManager::Get().
+	MyGameplayTagsManager::GameplayTags.DamageType_Physical_Base = UGameplayTagsManager::Get().
 		AddNativeGameplayTag(
-			FName("DamageType.Elemental.Physical"),
+			FName("DamageType.Physical.Basel"),
 			FString(""));
 	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Fire"),
@@ -148,11 +148,21 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Wind"),
 		FString(""));
+	MyGameplayTagsManager::GameplayTags.DamageType_Elemental_Magic = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("DamageType.Elemental.Magic"),
+		FString(""));
 
-	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Physical, FName("Physical"));
-	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Fire, FName("Fire"));
-	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Water, FName("Water"));
-	GameplayTags.DamageTypeNames.Add(MyGameplayTagsManager::Get().DamageType_Elemental_Wind, FName("Wind"));
+	Get().DamageTypes.Add(Get().DamageType_Physical_Base);
+	Get().DamageTypes.Add(Get().DamageType_Elemental_Fire);
+	Get().DamageTypes.Add(Get().DamageType_Elemental_Magic);
+	Get().DamageTypes.Add(Get().DamageType_Elemental_Wind);
+	Get().DamageTypes.Add(Get().DamageType_Elemental_Water);
+
+	GameplayTags.DamageTypeNames.Add(Get().DamageType_Physical_Base, FName("PhysicalBase"));
+	GameplayTags.DamageTypeNames.Add(Get().DamageType_Elemental_Fire, FName("Fire"));
+	GameplayTags.DamageTypeNames.Add(Get().DamageType_Elemental_Water, FName("Water"));
+	GameplayTags.DamageTypeNames.Add(Get().DamageType_Elemental_Wind, FName("Wind"));
+	GameplayTags.DamageTypeNames.Add(Get().DamageType_Elemental_Magic, FName("Magic"));
 
 	MyGameplayTagsManager::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().
 		AddNativeGameplayTag(

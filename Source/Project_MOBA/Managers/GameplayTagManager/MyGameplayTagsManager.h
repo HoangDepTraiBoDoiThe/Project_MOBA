@@ -59,10 +59,12 @@ public:
  /*
   *	Damage type Tags
   */
- FGameplayTag DamageType_Elemental_Physical;
+ FGameplayTag DamageType_Physical_Base;
  FGameplayTag DamageType_Elemental_Fire;
  FGameplayTag DamageType_Elemental_Water;
  FGameplayTag DamageType_Elemental_Wind;
+ FGameplayTag DamageType_Elemental_Magic;
+ TArray<FGameplayTag> DamageTypes;
  TMap<FGameplayTag, FName> DamageTypeNames;
 
  FGameplayTag Attribute_Resistance_Physical;
