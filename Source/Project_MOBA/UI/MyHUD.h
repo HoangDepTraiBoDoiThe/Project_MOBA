@@ -14,6 +14,7 @@ class PROJECT_MOBA_API AMyHUD : public AHUD
 {
 	GENERATED_BODY()
 
-	
+public:
+	void InitializeUI();
 	
 };
