@@ -14,6 +14,8 @@ class UBaseAttributeSet;
 /**
  * 
  */
+DECLARE_DELEGATE_OneParam(FAbilityPointSignature, int32 CharacterLevel)
+
 UCLASS()
 class PROJECT_MOBA_API AMyPlayerState : public APlayerState, public  IAbilitySystemInterface
 {
@@ -38,10 +40,15 @@ public:
 	void GiveRewardToPlayer();
 
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
+
+	// Delegates
+	FAbilityPointSignature AbilityPointDelegate;
 	
 protected:
 	UFUNCTION()
 	void RepNotify_XP(const int32 OldValue);
+	UFUNCTION()
+	void RepNotify_PlayerLevel(const int32 OldValue);
 	
 	UPROPERTY(VisibleAnywhere, Category=GAS)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -50,6 +57,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=RepNotify_XP)
 	int32 XP{1};
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=RepNotify_PlayerLevel)
 	int32 PlayerLevel{1};
 	int32 XP2Give{1};
 

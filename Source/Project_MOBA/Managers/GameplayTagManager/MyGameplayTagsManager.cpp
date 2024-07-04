@@ -229,6 +229,26 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	MyGameplayTagsManager::GameplayTags.Control_6 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Input.6"),
 		FString(""));
+
+	/*
+	* Primary Abilities  
+	*/
+	GameplayTags.Ability_Primary_Q = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Ability.Primary.Q"),
+	FString(""));
+
+	GameplayTags.Ability_Primary_W = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Ability.Primary.W"),
+	FString(""));
+
+	GameplayTags.Ability_Primary_E = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Ability.Primary.E"),
+	FString(""));
+
+	GameplayTags.Ability_Primary_R = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Ability.Primary.R"),
+	FString(""));
+
 	/*
 	 * Ability Cooldown and Cost 
 	 */

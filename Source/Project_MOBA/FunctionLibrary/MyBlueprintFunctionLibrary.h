@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "MyBlueprintFunctionLibrary.generated.h"
 
+struct FWidgetControllerStruct;
+class UMainWidgetController;
 class UGameplayEffect;
 class AAreaOfEffectActor;
 struct FGameplayEffectSpecHandle;
@@ -28,6 +30,10 @@ public:
 	static AProjectile* SpawnProjectile(const UObject* WorldContextObject, TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle, FVector SpawnLocation, const FVector& TargetLocation, FVector ProjectileScale, AActor* Owner = nullptr, APawn* Instigator = nullptr, bool bMoving = false, const float ActorInitialSpeed = 0);
 	UFUNCTION(BlueprintCallable)
 	static FGameplayEffectSpecHandle MakeMyGameplayEffectSpecHandle(const UAbilitySystemComponent* ASC, TSubclassOf<UGameplayEffect> EffectClass, int32 EffectLevel = 1);
+
+	static FWidgetControllerStruct* MakeWidgetControllerInfos(const UObject* WorldContextObject);
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(DefaultToSelf = "WorldContextObject"))
+	static UMainWidgetController* GetMainWidgetController(const UObject* WorldContextObject);
 
 private:
 };

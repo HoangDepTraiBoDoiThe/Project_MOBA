@@ -2,6 +2,7 @@
 
 #include "MyPlayerState.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
@@ -21,6 +22,7 @@ void AMyPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(AMyPlayerState, XP, COND_InitialOrOwner);
+	DOREPLIFETIME(AMyPlayerState, PlayerLevel);
 }
 
 UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
@@ -57,6 +59,13 @@ void AMyPlayerState::GiveRewardToPlayer()
 	}
 }
 
+void AMyPlayerState::LevelUp()
+{
+	PlayerLevel += 1;
+	AbilityPointDelegate.Execute(PlayerLevel);
+	UGameplayStatics::SpawnEmitterAttached(GetPlayerCharacter()->GetLevelUpParticleSystem(), GetPlayerCharacter()->GetMesh());
+}
+
 void AMyPlayerState::SetXP(const int32 XP2Set)
 {
 	XP = XP2Set;
@@ -65,11 +74,6 @@ void AMyPlayerState::SetXP(const int32 XP2Set)
 void AMyPlayerState::IncreaseXP2Give(const int32 XP2GiveAmount)
 {
 	XP += XP2GiveAmount;
-}
-
-void AMyPlayerState::LevelUp()
-{
-	PlayerLevel += 1;
 }
 
 void AMyPlayerState::SetCharacterLevel(const int32 Level)
@@ -86,4 +90,8 @@ APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
 void AMyPlayerState::RepNotify_XP(const int32 OldValue)
 {
 	
+}
+
+void AMyPlayerState::RepNotify_PlayerLevel(const int32 OldValue)
+{
 }

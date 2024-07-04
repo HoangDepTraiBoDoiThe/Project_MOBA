@@ -9,8 +9,13 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
+#include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
+#include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
+#include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/GameplayAbility/SpawnActor/AreaOfEffectActor.h"
 #include "Project_MOBA/GAS/GameplayAbility/SpawnActor/Projectile.h"
+#include "Project_MOBA/UI/MyHUD.h"
+#include "Project_MOBA/UI/WidgetController/BaseWidgetController.h"
 
 void UMyBlueprintFunctionLibrary::GetFilteredActorListFromComponentList(const UObject* WorldContextObject, const FVector SpherePos,
                                                                         float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter,
@@ -82,4 +87,22 @@ FGameplayEffectSpecHandle UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecH
 
 	//SpecHandle.Data.Get()->SetSetByCallerMagnitude(MyGameplayTagsManager::Get().DamageType_Elemental_Fire, 10);
 	return SpecHandle;
+}
+
+UMainWidgetController* UMyBlueprintFunctionLibrary::GetMainWidgetController(const UObject* WorldContextObject)
+{
+	const FWidgetControllerStruct* WidgetControllerInfos = MakeWidgetControllerInfos(WorldContextObject);
+	AMyHUD* MyHUD = Cast<AMyHUD>(WidgetControllerInfos->PC->GetHUD());
+	return MyHUD->GetMainWidgetController(*WidgetControllerInfos);
+}
+
+FWidgetControllerStruct* UMyBlueprintFunctionLibrary::MakeWidgetControllerInfos(const UObject* WorldContextObject)
+{
+	const UWorld* WorldContext = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::Assert);
+	AMyPlayerController* PC = Cast<AMyPlayerController>( WorldContext->GetFirstLocalPlayerFromController()->GetPlayerController(WorldContext));
+	AMyPlayerState* PS = PC->GetMyPlayerState();
+	UMyAbilitySystemComponent* ASC = PC->GetPlayerCharacter()->GetMyAbilitySystemComponent();
+	UBaseAttributeSet* AS = PS->GetBaseAttributeSet();
+	
+	return new FWidgetControllerStruct(PC, PS, ASC, AS);
 }

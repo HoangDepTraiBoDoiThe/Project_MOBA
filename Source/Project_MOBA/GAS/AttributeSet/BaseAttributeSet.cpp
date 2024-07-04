@@ -70,8 +70,8 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
     if (Data.EvaluatedData.Attribute == GetDamageIncomingAttribute())
     {
-        const float IncomingDamage = -Data.EvaluatedData.Attribute.GetNumericValue(this);
-        SetHitPoint(IncomingDamage);
+        const float IncomingDamage = Data.EvaluatedData.Attribute.GetNumericValue(this);
+        SetHitPoint(GetHitPoint() - IncomingDamage);
         if (GetHitPoint() <= 0)
         {
             const int32 XP2Reward = GetThisCombatActor()->GetXPReward();

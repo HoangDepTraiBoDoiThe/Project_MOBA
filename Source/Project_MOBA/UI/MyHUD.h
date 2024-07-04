@@ -6,6 +6,9 @@
 #include "GameFramework/HUD.h"
 #include "MyHUD.generated.h"
 
+class UBaseUserWidget;
+struct FWidgetControllerStruct;
+class UMainWidgetController;
 /**
  * 
  */
@@ -16,5 +19,14 @@ class PROJECT_MOBA_API AMyHUD : public AHUD
 
 public:
 	void InitializeUI();
+	UMainWidgetController* GetMainWidgetController(const FWidgetControllerStruct& WidgetControllerStruct);
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> MainWidgetClass;
+	
+private:
+	UPROPERTY()
+	UMainWidgetController* MainWidgetController; 
 	
 };

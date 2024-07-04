@@ -112,6 +112,11 @@ public:
  /*
   *	Ability Tags
   */
+ FGameplayTag Ability_Primary_Q;
+ FGameplayTag Ability_Primary_W;
+ FGameplayTag Ability_Primary_E;
+ FGameplayTag Ability_Primary_R;
+ 
  FGameplayTag Ability_Passive_Die;
  FGameplayTag Ability_Passive_CanNotDie;
  FGameplayTag Ability_Projectile_FireBall;

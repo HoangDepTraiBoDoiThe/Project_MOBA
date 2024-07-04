@@ -10,6 +10,7 @@
 #include "PLayerState/MyPlayerState.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
+#include "Project_MOBA/UI/MyHUD.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -32,6 +33,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	PlayerInitializeGASInfos();
+	GetMyHUD()->InitializeUI();
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -50,6 +52,12 @@ void APlayerCharacter::PlayerInitializeGASInfos()
 	{
 		MyAbilitySystemComponent->ActorASCInitialize(GetMyPlayerState(), this);
 	}
+}
+
+AMyHUD* APlayerCharacter::GetMyHUD()
+{
+	if (!MyHUD) MyHUD = Cast<AMyHUD>(GetMyPlayerController()->GetHUD());
+	return MyHUD;
 }
 
 AMyPlayerState* APlayerCharacter::GetMyPlayerState()

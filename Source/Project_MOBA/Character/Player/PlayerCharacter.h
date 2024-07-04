@@ -7,6 +7,7 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class AMyHUD;
 class UGameplayEffect;
 class UGameplayAbility;
 class AMyPlayerController;
@@ -33,15 +34,18 @@ public:
 
 	AMyPlayerState* GetMyPlayerState();
 	AMyPlayerController* GetMyPlayerController();
+	AMyHUD* GetMyHUD();
 
 	// ICombatInterface override funcions.
 	virtual int32 GetXP() override;
 	virtual int32 GetXPReward() override;
 	virtual void IncreaseXP2Give(const int32 XPAmount) override;
 
+	// Experience
 	const TMap<FName, FGameplayTag>& GetRewardAttributeMap() const {return RewardAttributeMap;}
 	TObjectPtr<UCurveTable> GetRewardTable() const {return RewardTable;}
 	TSubclassOf<UGameplayEffect> GetRewardGE() const {return RewardGE;}
+	FORCEINLINE TObjectPtr<UParticleSystem> GetLevelUpParticleSystem() const {return LevelUpParticleSystem;}
 
 	int32 GetCharacterLevel();
 
@@ -62,13 +66,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputActionInfos;
 
+	// Experience 
 	UPROPERTY(EditAnywhere)
 	TMap<FName, FGameplayTag> RewardAttributeMap;
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCurveTable> RewardTable;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> RewardGE;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> LevelUpParticleSystem;
 
+	TObjectPtr<AMyHUD> MyHUD;
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 	TObjectPtr<AMyPlayerController> MyPlayerController;
 	

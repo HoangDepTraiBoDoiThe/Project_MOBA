@@ -19,11 +19,11 @@ struct FWidgetControllerStruct
 	GENERATED_BODY()
 
 	FWidgetControllerStruct(){}
-	FWidgetControllerStruct(APlayerController* PC, AMyPlayerState* PS, UMyAbilitySystemComponent* ASC, UBaseAttributeSet* AS)
+	FWidgetControllerStruct(AMyPlayerController* PC, AMyPlayerState* PS, UMyAbilitySystemComponent* ASC, UBaseAttributeSet* AS)
 		: PC(PC), PS(PS), ASC(ASC), AS(AS) {}
 	
 	UPROPERTY()
-	TObjectPtr<APlayerController> PC = nullptr;
+	TObjectPtr<AMyPlayerController> PC = nullptr;
 	UPROPERTY()
 	TObjectPtr<AMyPlayerState> PS = nullptr;
 	UPROPERTY()
@@ -40,8 +40,9 @@ class PROJECT_MOBA_API UBaseWidgetController : public UObject
 	
 public:
 	UBaseWidgetController();
+	virtual void SetupWidgetController(FWidgetControllerStruct ControllerStruct);
 
 protected:
-	FWidgetControllerStruct WidgetControllerStruct;
+	FWidgetControllerStruct* WidgetControllerInfos;
 
 };
