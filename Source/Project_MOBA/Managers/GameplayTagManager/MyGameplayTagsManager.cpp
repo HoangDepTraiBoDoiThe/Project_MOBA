@@ -243,6 +243,9 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	/*
 	* Primary Abilities  
 	*/
+	GameplayTags.Ability_Primary_Primary = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Ability.Primary.Primary"),
+	FString(""));
 	GameplayTags.Ability_Primary_Q = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Ability.Primary.Q"),
 	FString(""));

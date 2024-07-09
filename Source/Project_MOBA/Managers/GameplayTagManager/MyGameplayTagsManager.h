@@ -114,6 +114,7 @@ public:
  /*
   *	Ability Tags
   */
+ FGameplayTag Ability_Primary_Primary;
  FGameplayTag Ability_Primary_Q;
  FGameplayTag Ability_Primary_W;
  FGameplayTag Ability_Primary_E;
