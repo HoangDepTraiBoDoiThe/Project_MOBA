@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "PlayerController/MyPlayerController.h"
 #include "PLayerState/MyPlayerState.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
@@ -40,6 +41,15 @@ void APlayerCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 	PlayerInitializeGASInfos();
+	if (GetMyPlayerController() && GetMyPlayerController()->IsLocalController() && GetMyHUD() && GetMyPlayerState())
+	{
+		GetMyHUD()->InitializeUI();
+	}
+}
+
+void APlayerCharacter::OnRep_Controller()
+{
+	Super::OnRep_Controller();
 }
 
 void APlayerCharacter::PlayerInitializeGASInfos()
@@ -56,7 +66,7 @@ void APlayerCharacter::PlayerInitializeGASInfos()
 
 AMyHUD* APlayerCharacter::GetMyHUD()
 {
-	if (!MyHUD) MyHUD = Cast<AMyHUD>(GetMyPlayerController()->GetHUD());
+	if (!MyHUD) MyHUD = GetMyPlayerController()->GetHUD<AMyHUD>();
 	return MyHUD;
 }
 
