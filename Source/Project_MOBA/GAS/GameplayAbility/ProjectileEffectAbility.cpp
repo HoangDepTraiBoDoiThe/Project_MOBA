@@ -14,7 +14,9 @@ UProjectileEffectAbility::UProjectileEffectAbility()
 
 AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLocation, const bool bIgnorePitch, const FName SocketName, const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
 {
+    /*
     if (!GetAvatarActorFromActorInfo()->HasAuthority()) return nullptr;
+    */
     const FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
     const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass, GetAbilityLevel());
     for (const auto& Pair : EffectTypeMap)

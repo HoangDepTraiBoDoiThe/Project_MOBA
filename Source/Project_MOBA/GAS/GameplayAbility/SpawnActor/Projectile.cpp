@@ -13,9 +13,9 @@
 
 AProjectile::AProjectile()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	bReplicates = true;
+	bReplicates = false;
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(FName("Root Component"));
 	SetRootComponent(CollisionComponent);
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh Component"));
@@ -72,11 +72,11 @@ void AProjectile::OnProjectileOverlap(
 		const bool bCharacter = Cast<ABaseCharacter>(OtherActor) != nullptr;
 		if (bCharacter && HitCharacterParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint)->SetRelativeScale3D(FVector::One() * HitParticleMultiply);
 		}
 		else if (HitWorldParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint)->SetWorldScale3D(FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint)->SetRelativeScale3D(FVector::One() * HitParticleMultiply);
 		}
 		Destroy();
 	}
