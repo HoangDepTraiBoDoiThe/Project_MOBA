@@ -6,7 +6,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "PlayerController/MyPlayerController.h"
 #include "PLayerState/MyPlayerState.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
@@ -34,7 +33,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	PlayerInitializeGASInfos();
-	GetMyHUD()->InitializeUI();
+	if (IsLocallyControlled()) GetMyHUD()->InitializeUI();
 }
 
 void APlayerCharacter::OnRep_PlayerState()
