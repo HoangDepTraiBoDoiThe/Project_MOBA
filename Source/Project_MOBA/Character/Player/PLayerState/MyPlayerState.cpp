@@ -2,6 +2,7 @@
 
 #include "MyPlayerState.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
@@ -62,7 +63,7 @@ void AMyPlayerState::GiveRewardToPlayer()
 void AMyPlayerState::LevelUp()
 {
 	PlayerLevel += 1;
-	AbilityPointDelegate.Execute(PlayerLevel);
+	OnLeveling();
 	UGameplayStatics::SpawnEmitterAttached(GetPlayerCharacter()->GetLevelUpParticleSystem(), GetPlayerCharacter()->GetMesh());
 }
 
@@ -94,4 +95,13 @@ void AMyPlayerState::RepNotify_XP(const int32 OldValue)
 
 void AMyPlayerState::RepNotify_PlayerLevel(const int32 OldValue)
 {
+	OnLeveling();
+}
+
+void AMyPlayerState::OnLeveling()
+{
+	if (AbilityPointDelegate.ExecuteIfBound(PlayerLevel))
+	{
+		UGameplayStatics::SpawnEmitterAttached(LevelUpParticle, GetPlayerCharacter()->GetMesh(), NAME_None, FVector(ForceInit), FRotator::ZeroRotator, FVector(1), EAttachLocation::SnapToTarget);
+	}
 }

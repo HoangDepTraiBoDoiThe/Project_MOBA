@@ -47,6 +47,7 @@ public:
 protected:
 	UFUNCTION()
 	void RepNotify_XP(const int32 OldValue);
+	void OnLeveling();
 	UFUNCTION()
 	void RepNotify_PlayerLevel(const int32 OldValue);
 	
@@ -55,6 +56,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category=GAS)
 	TObjectPtr<UBaseAttributeSet> BaseAttributeSet;
 
+	// Experience
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> LevelUpParticle;
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=RepNotify_XP)
 	int32 XP{1};
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=RepNotify_PlayerLevel)
