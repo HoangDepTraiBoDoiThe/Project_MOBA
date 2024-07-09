@@ -26,8 +26,8 @@ void UDamageExecMagCal::Execute_Implementation(const FGameplayEffectCustomExecut
 	{
 		const CaptureDefStruct* CaptureInfo = DamageTypeTagToCaptureDefStructMap.Find(DamageTypeTag);
 		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(DamageTypeTag, false);
-		float SourceDamageBoostMag;
-		float TargetDamageResistMag;
+		float SourceDamageBoostMag = 0;
+		float TargetDamageResistMag = 0;
 		if (CaptureInfo)
 		{
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureInfo->SourceDamageBoostType, FAggregatorEvaluateParameters(), SourceDamageBoostMag);
