@@ -71,6 +71,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
     if (Data.EvaluatedData.Attribute == GetDamageIncomingAttribute())
     {
         const float IncomingDamage = Data.EvaluatedData.Attribute.GetNumericValue(this);
+        SetDamageIncoming(0);
         SetHitPoint(GetHitPoint() - IncomingDamage);
         if (GetHitPoint() <= 0 && !Death)
         {
