@@ -73,13 +73,14 @@ void AProjectile::SetupDestroyTimer()
 void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor == Owner) return;
-	if (HasAuthority())
+	bool isCombatActor = OtherActor->Implements<UCombatInterface>();
+	if (HasAuthority() && isCombatActor)
 	{
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 		if (TargetASC)
 		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
-			TargetsOnArea.AddUnique(TargetASC);
+			FActiveGameplayEffectHandle Handle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
+			TargetsOnArea.Add(TargetASC, Handle);
 		}
 	}
 
@@ -105,8 +106,7 @@ void AProjectile::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	if (OtherActor == Owner || !HasAuthority() || !isCombatActor) return;
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
-		TargetsOnArea.Remove(TargetASC);
-		TargetASC->RemoveActiveEffectsWithTags(FGameplayTagContainer(AbilityTag));
+		TargetASC->RemoveActiveGameplayEffect(TargetsOnArea.FindAndRemoveChecked(TargetASC));
 	}
 }
 
@@ -123,9 +123,9 @@ void AProjectile::OnDestroyTimerCallBack()
 void AProjectile::RemoveEffectAllTargetsOnArea()
 {
 	if (!HasAuthority()) return;
-	for (const auto& TargetASC : TargetsOnArea)
+	for (const auto& Pair : TargetsOnArea)
 	{
-		TargetASC->RemoveActiveEffectsWithTags(FGameplayTagContainer(AbilityTag));
+		Pair.Key->RemoveActiveGameplayEffect(Pair.Value);
 	}
 	TargetsOnArea.Empty();
 }

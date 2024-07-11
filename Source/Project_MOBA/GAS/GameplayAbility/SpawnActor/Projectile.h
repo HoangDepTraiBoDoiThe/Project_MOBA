@@ -56,7 +56,8 @@ protected:
     TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
     FGameplayTag AbilityTag;
-    TArray<UAbilitySystemComponent*> TargetsOnArea;
+    UPROPERTY()
+    TMap<UAbilitySystemComponent*, FActiveGameplayEffectHandle> TargetsOnArea;
 
     // Behavior
     UPROPERTY(EditAnywhere, Category = "Behavior")

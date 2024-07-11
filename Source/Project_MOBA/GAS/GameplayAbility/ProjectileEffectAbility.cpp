@@ -22,7 +22,6 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     for (const auto& Pair : EffectTypeMap)
     {
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, Pair.Value.EffectValue);
-    	EffectSpecHandle.Data->Tag(GetAbilityTag());
     }
 
     if (bIgnorePitch)
