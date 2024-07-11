@@ -3,8 +3,10 @@
 
 #include "BaseCharacter.h"
 
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Project_MOBA/Project_MOBA.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
@@ -12,7 +14,9 @@
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+	GetMesh()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -64,6 +68,7 @@ void ABaseCharacter::Die()
 	MovementProperties.bCanSwim = false;
 	GetCharacterMovement()->MovementState = MovementProperties;
 	GetCharacterMovement()->MaxWalkSpeed = 0.f;
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
 	bool bSuccessfull = MyAbilitySystemComponent->TryActivateAbilityByTag(MyGameplayTagsManager::Get().Ability_Passive_Die);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *MyGameplayTagsManager::Get().Ability_Passive_Die.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
 }

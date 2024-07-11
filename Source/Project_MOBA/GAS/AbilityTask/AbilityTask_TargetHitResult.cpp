@@ -3,6 +3,7 @@
 #include "AbilityTask_TargetHitResult.h"
 
 #include "AbilitySystemComponent.h"
+#include "Project_MOBA/Project_MOBA.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 
@@ -26,9 +27,6 @@ void UAbilityTask_TargetHitResult::Activate()
 		if (!AbilitySystemComponent->CallReplicatedTargetDataDelegatesIfSet(GetAbilitySpecHandle(), GetActivationPredictionKey()))
 			SetWaitingOnRemotePlayerData();
 	}
-
-	FHitResult HitResult;
-	Cast<APlayerCharacter>(GetAvatarActor())->GetMyPlayerController()->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
 }
 
 void UAbilityTask_TargetHitResult::StartSendingTargetDataToServer()
@@ -36,7 +34,11 @@ void UAbilityTask_TargetHitResult::StartSendingTargetDataToServer()
 	FScopedPredictionWindow PredictionWindow(AbilitySystemComponent.Get());
 	
 	FHitResult HitResult;
-	Cast<APlayerCharacter>(GetAvatarActor())->GetMyPlayerController()->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	TArray<TEnumAsByte<EObjectTypeQuery>> Objects;
+	Objects.AddUnique(EOTQ_GroundObject);
+	Objects.AddUnique(EOTQ_TurretObject);
+	Objects.AddUnique(EOTQ_CharacterObject);
+	Cast<APlayerCharacter>(GetAvatarActor())->GetMyPlayerController()->GetHitResultUnderCursorForObjects(Objects, false, HitResult);
 	FGameplayAbilityTargetData_SingleTargetHit* TargetData_Cursor = new FGameplayAbilityTargetData_SingleTargetHit();
 	TargetData_Cursor->HitResult = HitResult;
 	FGameplayAbilityTargetDataHandle TargetDataHandle;

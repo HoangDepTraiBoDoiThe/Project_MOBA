@@ -104,7 +104,8 @@ void AProjectile::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 {
 	bool isCombatActor = OtherActor->Implements<UCombatInterface>();
 	if (OtherActor == Owner || !HasAuthority() || !isCombatActor) return;
-	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+	if (TargetASC && !TargetsOnArea.IsEmpty())
 	{
 		TargetASC->RemoveActiveGameplayEffect(TargetsOnArea.FindAndRemoveChecked(TargetASC));
 	}
