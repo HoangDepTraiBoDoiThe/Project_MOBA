@@ -25,8 +25,6 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UGameplayEffect> EffectClass;
-	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AProjectile> ProjectileClassToSpawn;
 	
 private:

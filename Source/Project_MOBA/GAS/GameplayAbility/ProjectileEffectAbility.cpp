@@ -66,6 +66,11 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSelectedLocation(FVector
                                                                  const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
 {
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return nullptr;
+	
 	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass);
+	for (const auto& Pair : EffectTypeMap)
+	{
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, Pair.Value.EffectValue);
+	}
 	return UMyBlueprintFunctionLibrary::SpawnProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, TargetLocation, ProjectileScale, GetAbilityTag(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()), bMoving, ProjectileSpeed);
 }

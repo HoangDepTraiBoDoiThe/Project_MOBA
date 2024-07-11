@@ -30,9 +30,12 @@ public:
 	const TMap<FGameplayTag, FMyEffectTypeStruct>& GetEffectTypeMap() const {return EffectTypeMap;}
 
 protected:
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void OrientateCharacter(FRotator Rotator);
-
+	
 	UPROPERTY(EditAnywhere)
 	TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> EffectClass;
 };
