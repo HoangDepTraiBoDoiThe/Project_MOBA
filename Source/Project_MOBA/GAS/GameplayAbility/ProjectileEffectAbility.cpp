@@ -18,10 +18,11 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     if (!GetAvatarActorFromActorInfo()->HasAuthority()) return nullptr;
     */
     const FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
-    const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass, GetAbilityLevel());
+    FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass, GetAbilityLevel());
     for (const auto& Pair : EffectTypeMap)
     {
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, Pair.Value.EffectValue);
+    	EffectSpecHandle.Data->Tag(GetAbilityTag());
     }
 
     if (bIgnorePitch)

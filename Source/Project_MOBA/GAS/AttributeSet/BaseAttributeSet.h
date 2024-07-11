@@ -192,5 +192,6 @@ protected:
 
 private:
 	ICombatInterface* ThisCombatActor;
+	bool Death{false};
 	
 };

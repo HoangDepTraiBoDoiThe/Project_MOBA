@@ -72,8 +72,9 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
     {
         const float IncomingDamage = Data.EvaluatedData.Attribute.GetNumericValue(this);
         SetHitPoint(GetHitPoint() - IncomingDamage);
-        if (GetHitPoint() <= 0)
+        if (GetHitPoint() <= 0 && !Death)
         {
+            Death = true;
             const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
 
             const UAbilitySystemComponent* ASC = Data.EffectSpec.GetContext().GetInstigatorAbilitySystemComponent();
