@@ -6,13 +6,11 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 #include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
-#include "Project_MOBA/GAS/GameplayAbility/SpawnActor/AreaOfEffectActor.h"
 #include "Project_MOBA/GAS/GameplayAbility/SpawnActor/Projectile.h"
 #include "Project_MOBA/UI/MyHUD.h"
 #include "Project_MOBA/UI/WidgetController/BaseWidgetController.h"
@@ -45,7 +43,7 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
                                                           const TSubclassOf<AProjectile> ProjectileToSpawn,
                                                           const FGameplayEffectSpecHandle& EffectSpecHandle,
                                                           FVector SpawnLocation,
-                                                          const FVector& TargetLocation, const FVector ProjectileScale, AActor* Owner, APawn* Instigator,
+                                                          const FVector& TargetLocation, const FVector ProjectileScale, FGameplayTag AbilityTag, AActor* Owner, APawn* Instigator,
                                                           const bool bMoving, const float ActorInitialSpeed)
 {
 	UWorld* World = WorldContextObject->GetWorld();
@@ -68,7 +66,8 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
 	ProjectileTransform.SetRotation(Direction.Rotation().Quaternion());
 	ProjectileTransform.SetLocation(SpawnLocation);
 	ProjectileTransform.SetScale3D(ProjectileScale);
-	Projectile->SetSpecHandle(EffectSpecHandle.Data);
+	Projectile->SetSpecHandle(EffectSpecHandle);
+	Projectile->SetAbilityTag(AbilityTag);
 
 	if (Projectile->GetProjectileMovementComponent())
 	{

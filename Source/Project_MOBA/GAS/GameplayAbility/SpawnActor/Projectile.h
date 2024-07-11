@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
@@ -22,7 +23,8 @@ public:
 
     virtual void Tick(float DeltaTime) override;
     
-    void SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec);
+    void SetSpecHandle(const FGameplayEffectSpecHandle& InSpecHandle);
+    FORCEINLINE void SetAbilityTag(const FGameplayTag& _AbilityTag) {AbilityTag = _AbilityTag;}
     
     FORCEINLINE UProjectileMovementComponent* GetProjectileMovementComponent() const { return ProjectileMovementComponent; }
 
@@ -33,8 +35,8 @@ protected:
 
     UFUNCTION(BlueprintCallable)
     void OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-    void OneDestroyTimerCallback();
+    
+    void OnDestroyTimerCallback();
 
     // Components
     UPROPERTY(EditAnywhere, Category = "Components")
@@ -46,11 +48,14 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Components")
     TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
+    FGameplayTag AbilityTag;
+
     // Behavior
     UPROPERTY(EditAnywhere, Category = "Behavior")
     bool bShouldDestroyOnOver{true};
 
     // Particles
+    TObjectPtr<UParticleSystemComponent> MainParticleSystemComponent;
     UPROPERTY(EditDefaultsOnly, Category = "Particles|Bullet")
     float BulletParticleMultiply{1.0f};
 
@@ -78,8 +83,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Particles|Hit")
     TObjectPtr<UParticleSystem> NoHitParticle;
 
+    FGameplayEffectSpecHandle EffectSpecHandle;
+    
 private:
-    TSharedPtr<FGameplayEffectSpec> EffectSpec;
 
     FTimerManager* TimerManager;
     FTimerHandle AutoDestroyTimerHandle;

@@ -16,9 +16,13 @@ class PROJECT_MOBA_API UBaseGameplayAbility : public UGameplayAbility
 
 public:
 	UBaseGameplayAbility();
+	FGameplayTag GetAbilityTag() const {return AbilityTag;}
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAnimMontage> AbilityAnimMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag AbilityTag;
 	
 };

@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "ThumbnailHelpers.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -35,20 +36,18 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	TimerManager = &GetWorld()->GetTimerManager();
-	TimerManager->SetTimer(AutoDestroyTimerHandle, this, &ThisClass::OneDestroyTimerCallback, 10);
+	TimerManager->SetTimer(AutoDestroyTimerHandle, this, &ThisClass::OnDestroyTimerCallback, 5);
 	
-	SetReplicateMovement(true);
-	if (BulletParticle) UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent())->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
+	if (BulletParticle)
+	{
+		MainParticleSystemComponent = UGameplayStatics::SpawnEmitterAttached(BulletParticle, GetRootComponent(), NAME_None, FVector(ForceInit), FRotator::ZeroRotator, GetActorScale() * FVector::One() * BulletParticleMultiply	);
+		if (MainParticleSystemComponent) MainParticleSystemComponent->SetWorldScale3D(FVector::One() * BulletParticleMultiply);
+	}
 	for (auto& Particle : OpeningParticles)
 	{
-		if (Particle)
+		if (IsValid(Particle))
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, GetActorLocation(),
-			                                         bShouldRotateOpeningParticle
-				                                         ? GetActorRotation()
-				                                         : FVector::Zero().Rotation(),
-			                                         GetActorScale())->SetWorldScale3D(
-				FVector::One() * OpeningParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, GetActorLocation(), bShouldRotateOpeningParticle ? GetActorRotation() : FVector::Zero().Rotation(), GetActorScale() * FVector::One() * OpeningParticleMultiply);
 		}
 	}
 }
@@ -59,35 +58,33 @@ void AProjectile::Tick(float DeltaTime)
 
 }
 
-void AProjectile::OnProjectileOverlap(
-	UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
+void AProjectile::OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor == Owner) return;
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
-	if (HasAuthority() && TargetASC) TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpec.Get());
+	if (HasAuthority() && TargetASC) TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
 
 	if (bShouldDestroyOnOver)
 	{
 		const bool bCharacter = Cast<ABaseCharacter>(OtherActor) != nullptr;
 		if (bCharacter && HitCharacterParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
 		}
 		else if (HitWorldParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
 		}
 		Destroy();
 	}
 }
 
-void AProjectile::SetSpecHandle(const TSharedPtr<FGameplayEffectSpec>& InSpec)
+void AProjectile::SetSpecHandle(const FGameplayEffectSpecHandle& InSpecHandle)
 {
-	EffectSpec = InSpec;
+	EffectSpecHandle = InSpecHandle;
 }
 
-void AProjectile::OneDestroyTimerCallback()
+void AProjectile::OnDestroyTimerCallback()
 {
 	Destroy();
 }
