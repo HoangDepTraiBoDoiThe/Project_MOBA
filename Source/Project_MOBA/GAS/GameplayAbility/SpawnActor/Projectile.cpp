@@ -107,7 +107,12 @@ void AProjectile::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 	if (TargetASC && !TargetsOnArea.IsEmpty())
 	{
-		TargetASC->RemoveActiveGameplayEffect(TargetsOnArea.FindAndRemoveChecked(TargetASC));
+		FActiveGameplayEffectHandle ActiveGameplayEffectHandle;
+		if (TargetsOnArea.RemoveAndCopyValue(TargetASC, ActiveGameplayEffectHandle))
+		{
+			TargetASC->RemoveActiveGameplayEffect(ActiveGameplayEffectHandle);
+			
+		}
 	}
 }
 

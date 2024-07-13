@@ -38,20 +38,20 @@ public:
 	void RewardPlayer(int32 XP2Increase = 1);
 	void IncreaseXP2Give(int32 XP2GiveAmount);
 	int32 GetPlayerLevel() const {return PlayerLevel;}
-	void LevelUp();
-	void SetCharacterLevel(const int32 Level);
-	void GiveRewardToPlayer();
+	void LevelUp(const int32 NewLevel);
+	void GiveRewardToPlayer(const int32 LevelAtTotalXP);
 
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 
 	// Delegates
 	FAbilityPointSignature AbilityPointDelegate;
 	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
+	FOnIntPropertyChangeTwoParamSignature OnLevelChangeDelegate;
 
 protected:
 	UFUNCTION()
 	void RepNotify_XP(const int32 OldValue) const;
-	void OnLeveling();
+	void OnLeveling(const int32 OldValue);
 	UFUNCTION()
 	void RepNotify_PlayerLevel(const int32 OldValue);
 	

@@ -78,19 +78,19 @@ FRewardForPlayerStruct UCharacterInfosDataAsset::GetRewardStructAtXP(const int32
 void UCharacterInfosDataAsset::GetXPInfos(const int32 CurrentXP, const int32 OldXP, int32& Loop, int32& XPForCurrentLevel, int32& XPForNextLevel)
 {
 	int32 OldLevel = 0;
-	int32 CurrentLevel = 0;
+	bool bGotLevelAtOldXPValue = false;
 	for (int32 i = 1; i < CharacterInfosStruct.RewardsForPlayerStructs.Num(); i++)
 	{
-		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > OldXP)
+		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > OldXP && !bGotLevelAtOldXPValue)
 		{
+			bGotLevelAtOldXPValue = true;
 			OldLevel = i;
 		}
 		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > CurrentXP)
 		{
-			CurrentLevel = i;
 			XPForCurrentLevel = CharacterInfosStruct.RewardsForPlayerStructs[i - 1].XPRequireForTheNextLevel;
 			XPForNextLevel = CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel;
-			Loop = CurrentLevel - OldLevel;
+			Loop = i - OldLevel;
 			return;
 		}
 	}

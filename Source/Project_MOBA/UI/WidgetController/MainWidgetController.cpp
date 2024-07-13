@@ -56,6 +56,11 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies() const
 		WidgetControllerInfos->PC->GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetXPInfos(NewValue, OldValue, Loop, XPForCurrentLevel, XPForNextLevel);
 		OnCharacterXPToViewSignature.Broadcast(Loop, NewValue, XPForCurrentLevel, XPForNextLevel);
 	});
+	WidgetControllerInfos->PS->OnLevelChangeDelegate.AddLambda(
+		[this] (const int32 NewValue, const int32 OldValue)
+	{
+		OnCharacterLevelToViewSignature.Broadcast(OldValue, NewValue);
+	});
 
 	BroadCastInitialValues();
 }

@@ -37,12 +37,13 @@ void AMyPlayerState::RewardPlayer(const int32 XP2Increase)
 	IncreaseXP(XP2Increase);
 	const int32 TotalXP = XP + XP2Increase;
 	const int32 LevelAtTotalXP = GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetLevelAtXP(TotalXP, GetPlayerLevel());
-	if (GetPlayerLevel() < 18 && GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer();
+	if (GetPlayerLevel() < 18 && GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer(TotalXP);
 }
 
-void AMyPlayerState::GiveRewardToPlayer()
+void AMyPlayerState::GiveRewardToPlayer(const int32 LevelAtTotalXP)
 {
-	LevelUp();
+	const int32 CharacterNewLevel = GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetLevelAtXP(LevelAtTotalXP);
+	LevelUp(CharacterNewLevel);
 	UCurveTable* RewardTable = GetPlayerCharacter()->GetRewardTable();
 	TMap<FName, FGameplayTag> RewardAttributeMap = GetPlayerCharacter()->GetRewardAttributeMap();
 	if (RewardTable)
@@ -60,10 +61,11 @@ void AMyPlayerState::GiveRewardToPlayer()
 	}
 }
 
-void AMyPlayerState::LevelUp()
+void AMyPlayerState::LevelUp(const int32 NewLevel)
 {
-	PlayerLevel += 1;
-	OnLeveling();
+	const int32 OldValue = PlayerLevel;
+	PlayerLevel = NewLevel;
+	OnLeveling(OldValue);
 	UGameplayStatics::SpawnEmitterAttached(GetPlayerCharacter()->GetLevelUpParticleSystem(), GetPlayerCharacter()->GetMesh());
 }
 
@@ -79,11 +81,6 @@ void AMyPlayerState::IncreaseXP2Give(const int32 XP2GiveAmount)
 	XP2Give += XP2GiveAmount;
 }
 
-void AMyPlayerState::SetCharacterLevel(const int32 Level)
-{
-	PlayerLevel = Level;
-}
-
 APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
 {
 	if (!PlayerCharacter) PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
@@ -97,13 +94,14 @@ void AMyPlayerState::RepNotify_XP(const int32 OldValue) const
 
 void AMyPlayerState::RepNotify_PlayerLevel(const int32 OldValue)
 {
-	OnLeveling();
+	OnLeveling(OldValue);
 }
 
-void AMyPlayerState::OnLeveling()
+void AMyPlayerState::OnLeveling(const int32 OldValue)
 {
 	if (AbilityPointDelegate.ExecuteIfBound(PlayerLevel))
 	{
 		UGameplayStatics::SpawnEmitterAttached(LevelUpParticle, GetPlayerCharacter()->GetMesh(), NAME_None, FVector(ForceInit), FRotator::ZeroRotator, FVector(1), EAttachLocation::SnapToTarget);
 	}
+	OnLevelChangeDelegate.Broadcast(PlayerLevel, OldValue);
 }
