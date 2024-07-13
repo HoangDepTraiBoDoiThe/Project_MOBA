@@ -69,6 +69,18 @@ void UMyAbilitySystemComponent::ReceiveAndBindCallBackToDependencies()
 {
 	TArray<FGameplayAttribute> Attributes;
 	GetAllAttributes(Attributes);
+
+	TArray<FGameplayAttribute> OutAttributes;
+	GetAllAttributes(OutAttributes);
+	for (const auto& Attribute : OutAttributes)
+	{
+		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
+			[this] (const FOnAttributeChangeData& AttributeChangeData)
+			{
+				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(AttributeChangeData);
+			});
+	}
+
 	for (const FGameplayAttribute& Attribute : Attributes)
 	{
 		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(

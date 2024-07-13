@@ -14,6 +14,9 @@ class UBaseAttributeSet;
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnIntPropertyChangeTwoParamSignature, const int32 New, const int32 Old)
+
+
 DECLARE_DELEGATE_OneParam(FAbilityPointSignature, int32 CharacterLevel)
 
 UCLASS()
@@ -31,7 +34,7 @@ public:
 	// Experience
 	FORCEINLINE int32 GetXP() const {return XP;}
 	FORCEINLINE int32 GetXP2Give() const {return XP2Give;}
-	void SetXP(const int32 XP2Set);
+	void IncreaseXP(int32 XPAmount);
 	void RewardPlayer(int32 XP2Increase = 1);
 	void IncreaseXP2Give(int32 XP2GiveAmount);
 	int32 GetPlayerLevel() const {return PlayerLevel;}
@@ -43,10 +46,11 @@ public:
 
 	// Delegates
 	FAbilityPointSignature AbilityPointDelegate;
-	
+	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
+
 protected:
 	UFUNCTION()
-	void RepNotify_XP(const int32 OldValue);
+	void RepNotify_XP(const int32 OldValue) const;
 	void OnLeveling();
 	UFUNCTION()
 	void RepNotify_PlayerLevel(const int32 OldValue);

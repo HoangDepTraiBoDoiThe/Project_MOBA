@@ -42,6 +42,10 @@ public:
 	UBaseWidgetController();
 	virtual void SetupWidgetController(FWidgetControllerStruct ControllerStruct);
 
+	// Attributes
+	UFUNCTION(BlueprintCallable)
+	virtual void BroadCastInitialValues() const {}
+	
 protected:
 	FWidgetControllerStruct* WidgetControllerInfos;
 

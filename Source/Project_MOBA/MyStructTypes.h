@@ -57,7 +57,7 @@ struct FCharacterInfosStruct
 	TArray<TSubclassOf<UGameplayEffect>> DefaultGEs_SecondaryAttributeValues = TArray<TSubclassOf<UGameplayEffect>>();
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FRewardForPlayerStruct> RewardForPlayers = TArray<FRewardForPlayerStruct>();
+	TArray<FRewardForPlayerStruct> RewardsForPlayerStructs = TArray<FRewardForPlayerStruct>();
 };
 
 UCLASS()

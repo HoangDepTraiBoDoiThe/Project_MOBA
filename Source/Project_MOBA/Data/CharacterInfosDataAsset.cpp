@@ -53,12 +53,45 @@ TObjectPtr<UAnimMontage> UCharacterInfosDataAsset::GetMontageByTag(const FGamepl
 
 int32 UCharacterInfosDataAsset::GetLevelAtXP(const int32 XP2Check, const int32 StartCheckAtLevel)
 {
-	for (int32 i = StartCheckAtLevel; i < CharacterInfosStruct.RewardForPlayers.Num(); i++)
+	for (int32 i = StartCheckAtLevel; i < CharacterInfosStruct.RewardsForPlayerStructs.Num(); i++)
 	{
-		if (CharacterInfosStruct.RewardForPlayers[i].XPRequireForTheNextLevel > XP2Check)
+		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > XP2Check)
 		{
 			return i;
 		}
 	}
 	return 18;
+}
+
+FRewardForPlayerStruct UCharacterInfosDataAsset::GetRewardStructAtXP(const int32 XP2Check)
+{
+	for (int32 i = 1; i < CharacterInfosStruct.RewardsForPlayerStructs.Num(); i++)
+	{
+		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > XP2Check)
+		{
+			return CharacterInfosStruct.RewardsForPlayerStructs[i];
+		}
+	}
+	return CharacterInfosStruct.RewardsForPlayerStructs[19];
+}
+
+void UCharacterInfosDataAsset::GetXPInfos(const int32 CurrentXP, const int32 OldXP, int32& Loop, int32& XPForCurrentLevel, int32& XPForNextLevel)
+{
+	int32 OldLevel = 0;
+	int32 CurrentLevel = 0;
+	for (int32 i = 1; i < CharacterInfosStruct.RewardsForPlayerStructs.Num(); i++)
+	{
+		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > OldXP)
+		{
+			OldLevel = i;
+		}
+		if (CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel > CurrentXP)
+		{
+			CurrentLevel = i;
+			XPForCurrentLevel = CharacterInfosStruct.RewardsForPlayerStructs[i - 1].XPRequireForTheNextLevel;
+			XPForNextLevel = CharacterInfosStruct.RewardsForPlayerStructs[i].XPRequireForTheNextLevel;
+			Loop = CurrentLevel - OldLevel;
+			return;
+		}
+	}
 }

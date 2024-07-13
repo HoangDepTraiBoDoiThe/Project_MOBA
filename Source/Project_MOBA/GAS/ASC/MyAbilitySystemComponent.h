@@ -10,6 +10,8 @@
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeBroadcastToControllerSignature, const FOnAttributeChangeData&)
+
 UCLASS()
 class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -29,10 +31,12 @@ public:
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
 
+	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
+
 protected:
 	void ApplyDefaultGEs();
 	void GiveStartupAbilities();
-	
+
 private:
 	UPROPERTY()
 	TObjectPtr<ABaseCharacter> BaseCharacter;

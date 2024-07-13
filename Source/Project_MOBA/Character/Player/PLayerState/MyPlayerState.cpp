@@ -34,8 +34,8 @@ UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
 
 void AMyPlayerState::RewardPlayer(const int32 XP2Increase)
 {
+	IncreaseXP(XP2Increase);
 	const int32 TotalXP = XP + XP2Increase;
-	SetXP(TotalXP);
 	const int32 LevelAtTotalXP = GetPlayerCharacter()->GetCharacterInfosDataAsset()->GetLevelAtXP(TotalXP, GetPlayerLevel());
 	if (GetPlayerLevel() < 18 && GetPlayerLevel() < LevelAtTotalXP) GiveRewardToPlayer();
 }
@@ -67,14 +67,16 @@ void AMyPlayerState::LevelUp()
 	UGameplayStatics::SpawnEmitterAttached(GetPlayerCharacter()->GetLevelUpParticleSystem(), GetPlayerCharacter()->GetMesh());
 }
 
-void AMyPlayerState::SetXP(const int32 XP2Set)
+void AMyPlayerState::IncreaseXP(int32 XPAmount)
 {
-	XP = XP2Set;
+	const int32 OldValue = XP;
+	XP += XPAmount;
+	OnXPChangeDelegate.Broadcast(XP, OldValue);
 }
 
 void AMyPlayerState::IncreaseXP2Give(const int32 XP2GiveAmount)
 {
-	XP += XP2GiveAmount;
+	XP2Give += XP2GiveAmount;
 }
 
 void AMyPlayerState::SetCharacterLevel(const int32 Level)
@@ -88,9 +90,9 @@ APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
 	return PlayerCharacter;
 }
 
-void AMyPlayerState::RepNotify_XP(const int32 OldValue)
+void AMyPlayerState::RepNotify_XP(const int32 OldValue) const
 {
-	
+	OnXPChangeDelegate.Broadcast(OldValue, XP);
 }
 
 void AMyPlayerState::RepNotify_PlayerLevel(const int32 OldValue)

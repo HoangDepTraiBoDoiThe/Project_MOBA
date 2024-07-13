@@ -25,6 +25,8 @@ public:
 	void GetParticleSystems(const FGameplayTag& CharacterTag, TArray<TObjectPtr<UParticleSystem>>& OutParticleSystems);
 	TObjectPtr<UAnimMontage> GetMontageByTag(const FGameplayTag& CharacterTag, const FGameplayTag& MontageTag);
 	int32 GetLevelAtXP(const int32 XP2Check, const int32 StartCheckAtLevel = 1);
+	FRewardForPlayerStruct GetRewardStructAtXP(const int32 XP2Check);
+	void GetXPInfos(const int32 CurrentXP, const int32 OldXP, int32& Loop, int32& XPForCurrentLevel, int32& XPForNextLevel);
 
 protected:
 	UPROPERTY(EditAnywhere)
