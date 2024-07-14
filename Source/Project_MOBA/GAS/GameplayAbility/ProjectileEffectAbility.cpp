@@ -21,7 +21,8 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass, GetAbilityLevel());
     for (const auto& Pair : EffectTypeMap)
     {
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, Pair.Value.EffectValue);
+    	const float BaseDamageAtAbilityLevel = Pair.Value.EffectValue.GetValueAtLevel(GetAbilityLevel());
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
     }
 
     if (bIgnorePitch)
@@ -70,7 +71,8 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSelectedLocation(FVector
 	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass);
 	for (const auto& Pair : EffectTypeMap)
 	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, Pair.Value.EffectValue);
+		const float BaseDamageAtAbilityLevel = Pair.Value.EffectValue.GetValueAtLevel(GetAbilityLevel());
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
 	}
 	return UMyBlueprintFunctionLibrary::SpawnProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, TargetLocation, ProjectileScale, GetAbilityTag(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()), bMoving, ProjectileSpeed);
 }

@@ -15,10 +15,9 @@ struct FMyEffectTypeStruct
 	GENERATED_BODY()
 
 	FMyEffectTypeStruct() {}
-	explicit FMyEffectTypeStruct(const float EffectValue) : EffectValue(EffectValue) {}
 
 	UPROPERTY(EditDefaultsOnly)
-	float EffectValue = 1;
+	FScalableFloat EffectValue = 1;
 };
 
 UCLASS()
