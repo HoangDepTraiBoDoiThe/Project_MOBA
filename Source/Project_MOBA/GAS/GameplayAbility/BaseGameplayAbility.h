@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 #include "BaseGameplayAbility.generated.h"
 
 /**
@@ -24,5 +25,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FGameplayTag AbilityTag;
-	
 };

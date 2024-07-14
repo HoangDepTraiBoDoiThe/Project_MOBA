@@ -9,6 +9,7 @@
 #include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
+struct FCharacterAbilityStruct;
 class UGameplayAbility;
 class UCharacterInfosDataAsset;
 class UAbilitySystemComponent;
@@ -42,7 +43,7 @@ public:
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }
 	UFUNCTION(BlueprintCallable)
 	UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
-	TArray<TSubclassOf<UGameplayAbility>> GetCharacterStartupAbilities() const;
+	TArray<FCharacterAbilityStruct> GetCharacterStartupAbilities() const;
 
 protected:
 	virtual void BeginPlay() override;

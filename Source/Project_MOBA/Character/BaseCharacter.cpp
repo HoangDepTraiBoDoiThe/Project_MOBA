@@ -87,9 +87,9 @@ UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag) const
 	return CharacterInfos->GetMontageByTag(GetCharacterTag(), Tag);
 }
 
-TArray<TSubclassOf<UGameplayAbility>> ABaseCharacter::GetCharacterStartupAbilities() const
+TArray<FCharacterAbilityStruct> ABaseCharacter::GetCharacterStartupAbilities() const
 {
-	TArray<TSubclassOf<UGameplayAbility>> OutStartupAbilities;
+	TArray<FCharacterAbilityStruct> OutStartupAbilities;
 	CharacterInfos.Get()->GetStartupAbilities(GetCharacterTag(), OutStartupAbilities);
 	return OutStartupAbilities;
 }

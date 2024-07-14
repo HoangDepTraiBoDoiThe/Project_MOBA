@@ -104,9 +104,9 @@ public:
   FGameplayTag Ability_Cooldown_FireBolt;
 
  /*
-  *	Ability Availability Status Tags
+  *	Ability Availability Unlock State
   */
- FGameplayTag Ability_Availability_NotUnlockable;
+ FGameplayTag Ability_Availability_FullyUpgraded;
  FGameplayTag Ability_Availability_Unlockable;
  FGameplayTag Ability_Availability_Unlocked;
  FGameplayTag Ability_Availability_Equipped;

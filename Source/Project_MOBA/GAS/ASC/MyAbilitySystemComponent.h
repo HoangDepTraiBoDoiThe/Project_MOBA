@@ -10,7 +10,8 @@
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeBroadcastToControllerSignature, const FOnAttributeChangeData&)
+DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueBroadcastToControllerSignature, const FOnAttributeChangeData&)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FGameplayAbilityStatusToControllerSignature, const FGameplayTag AbilityTag, const FGameplayTag UnlockState)
 
 UCLASS()
 class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponent
@@ -30,12 +31,17 @@ public:
 	TArray<FGameplayTag> GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
-
-	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
+	void BroadCastAbilityUIData();
+	FGameplayTag GetAbilityUnlockStateByAbilitySpec(const FGameplayAbilitySpec& AbilitySpec);
+	
+	FGameplayAttributevalueBroadcastToControllerSignature OnNewAttributeValueBroadcastToControllerDelegate;
+	FGameplayAbilityStatusToControllerSignature OnGameplayAbilityStatusToControllerDelegate;
 
 protected:
 	void ApplyDefaultGEs();
 	void GiveStartupAbilities();
+	UFUNCTION(Client, Reliable)
+	void ClientOnAbilityStatusChange(FGameplayTag AbilityTag, FGameplayTag AbilityState);
 
 private:
 	UPROPERTY()

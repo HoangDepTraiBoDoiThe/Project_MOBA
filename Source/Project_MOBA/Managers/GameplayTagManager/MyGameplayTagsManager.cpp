@@ -280,10 +280,10 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 		FString("OnHitReact"));
 
 	/*
-	 *	Ability Availability Status Tags
+	 *	Ability Availability Unlock State
 	 */
-	GameplayTags.Ability_Availability_NotUnlockable = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Ability.Availability.NotUnlockable"),
+	GameplayTags.Ability_Availability_FullyUpgraded = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Availability.FullyUpgraded"),
 		FString(""));
 	GameplayTags.Ability_Availability_Unlockable = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Ability.Availability.Unlockable"),

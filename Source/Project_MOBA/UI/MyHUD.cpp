@@ -24,5 +24,5 @@ UMainWidgetController* AMyHUD::GetMainWidgetController(const FWidgetControllerSt
 		MainWidgetController->SetupWidgetController(WidgetControllerStruct);
 		Cast<UBaseWidgetController>(MainWidgetController)->BroadCastInitialValues();
 	}
-	return MainWidgetController;
+	return MainWidgetController; 
 }

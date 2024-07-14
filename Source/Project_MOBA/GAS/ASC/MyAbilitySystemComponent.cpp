@@ -49,20 +49,48 @@ void UMyAbilitySystemComponent::ApplyDefaultGEs()
 
 void UMyAbilitySystemComponent::GiveStartupAbilities()
 {
-	TArray<TSubclassOf<UGameplayAbility>> AbilityClasses = GetBaseCharacter()->GetCharacterStartupAbilities();
-	const TArray<TSubclassOf<UBaseGameplayAbility>>& AbilityPassiveClasses = GetBaseCharacter()->
-	                                                                         GetCharacterInfosDataAsset()->
-	                                                                         GetPassiveAbilities();
-	for (const auto& AbilityClass : AbilityClasses)
+	TArray<FCharacterAbilityStruct> AbilityData = GetBaseCharacter()->GetCharacterStartupAbilities();
+	for (const auto& Struct : AbilityData)
 	{
-		FGameplayAbilitySpec Ability = FGameplayAbilitySpec(AbilityClass, 1);
-		GiveAbility(Ability);
+		if (Struct.ShouldGiveAbilityOnStart)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Struct.Ability, 1);
+			GiveAbility(AbilitySpec);
+			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
+			AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
+		}
 	}
+	
+	const TArray<TSubclassOf<UBaseGameplayAbility>> AbilityPassiveClasses = GetBaseCharacter()->GetCharacterInfosDataAsset()->GetPassiveAbilities();
 	for (const auto& AbilityClass : AbilityPassiveClasses)
 	{
-		FGameplayAbilitySpec Ability = FGameplayAbilitySpec(AbilityClass, 1);
-		GiveAbility(Ability);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		GiveAbility(AbilitySpec);
+		FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
+		AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
 	}
+}
+
+void UMyAbilitySystemComponent::BroadCastAbilityUIData()
+{
+	for (const auto& AbilitySpec : GetActivatableAbilities())
+	{
+		const FGameplayTag AbilityTag = Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->GetAbilityTag();
+		const FGameplayTag AbilityState = GetAbilityUnlockStateByAbilitySpec(AbilitySpec);
+		OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, AbilityState);
+	}
+}
+
+FGameplayTag UMyAbilitySystemComponent::GetAbilityUnlockStateByAbilitySpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const auto& Tag : AbilitySpec.DynamicAbilityTags)
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag("Ability.Availability"))) return Tag;
+	return FGameplayTag();
+}
+
+void UMyAbilitySystemComponent::ClientOnAbilityStatusChange_Implementation(FGameplayTag AbilityTag, FGameplayTag AbilityState)
+{
+	OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, AbilityState);
 }
 
 void UMyAbilitySystemComponent::ReceiveAndBindCallBackToDependencies()
@@ -70,25 +98,15 @@ void UMyAbilitySystemComponent::ReceiveAndBindCallBackToDependencies()
 	TArray<FGameplayAttribute> Attributes;
 	GetAllAttributes(Attributes);
 
-	TArray<FGameplayAttribute> OutAttributes;
-	GetAllAttributes(OutAttributes);
-	for (const auto& Attribute : OutAttributes)
+	for (const auto& Attribute : Attributes)
 	{
 		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
 			[this] (const FOnAttributeChangeData& AttributeChangeData)
 			{
-				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(AttributeChangeData);
+				OnNewAttributeValueBroadcastToControllerDelegate.Broadcast(AttributeChangeData);
 			});
 	}
 
-	for (const FGameplayAttribute& Attribute : Attributes)
-	{
-		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
-			[this](const FOnAttributeChangeData& AttributeChangeData)
-			{
-			}
-		);
-	}
 	OnGameplayEffectAppliedDelegateToSelf.AddLambda(
 		[this](UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec,
 		       FActiveGameplayEffectHandle EffectHandle)
@@ -130,7 +148,7 @@ TArray<FGameplayTag> UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const 
 }
 
 void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGameplayTag AbilityTag,
-	const int32 CharacterLevel)
+                                                                     const int32 CharacterLevel)
 {
 	ABILITYLIST_SCOPE_LOCK()
 	for (auto& AbilitySpec : GetActivatableAbilities())

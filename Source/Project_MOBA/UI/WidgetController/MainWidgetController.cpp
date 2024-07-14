@@ -6,6 +6,8 @@
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
+#include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
+#include "Project_MOBA/UI/MyHUD.h"
 
 UMainWidgetController::UMainWidgetController()
 {
@@ -33,9 +35,9 @@ void UMainWidgetController::BroadCastInitialValues() const
 	OnAttributeValuesSignature.Broadcast(WidgetControllerInfos->AS->GetMaxMana(), WidgetControllerInfos->AS->GetMaxManaAttribute());
 }
 
-void UMainWidgetController::BindReceivedCallBacksToDependencies() const
+void UMainWidgetController::BindReceivedCallBacksToDependencies()
 {
-	WidgetControllerInfos->ASC->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
+	WidgetControllerInfos->ASC->OnNewAttributeValueBroadcastToControllerDelegate.AddLambda(
 		[this] (const FOnAttributeChangeData& AttributeChangeData)
 		{
 			OnAttributeValuesSignature.Broadcast(AttributeChangeData.NewValue, AttributeChangeData.Attribute);
@@ -61,7 +63,42 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies() const
 	{
 		OnCharacterLevelToViewSignature.Broadcast(OldValue, NewValue);
 	});
+	WidgetControllerInfos->ASC->OnGameplayAbilityStatusToControllerDelegate.AddLambda(
+		[this] (FGameplayTag AbilityTag, FGameplayTag AbilityState)
+		{
+			const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetCharacterTag());
+			for (auto Struct : HeroUIDataData.AbilityUIData)
+			{
+				if (Struct.AbilityTag.MatchesTagExact(AbilityTag))
+				{
+					Struct.AbilityState = AbilityState;
+					OnAbilityUpdateToViewDelegate.Broadcast(Struct);
+					break;
+				}
+			}
+		});
 
 	BroadCastInitialValues();
+}
+
+void UMainWidgetController::BroadCastCurrentAttributes()
+{
+	TArray<FGameplayAttribute> Attributes;
+	WidgetControllerInfos->ASC->GetAllAttributes(Attributes);
+	for (const FGameplayAttribute& Attribute : Attributes)
+	{
+		OnAttributeValuesSignature.Broadcast(Attribute.GetNumericValue(WidgetControllerInfos->AS), Attribute);
+	}
+}
+
+void UMainWidgetController::RequestAbilityUIDataToView()
+{
+	WidgetControllerInfos->ASC->BroadCastAbilityUIData();
+}
+
+UHeroUIDataAsset* UMainWidgetController::GetHeroUIDataAsset()
+{
+	if (!HeroUIDataAsset) HeroUIDataAsset = Cast<AMyHUD>(WidgetControllerInfos->PC->GetHUD())->GetHeroUIDataAsset();
+	return HeroUIDataAsset;
 }
 

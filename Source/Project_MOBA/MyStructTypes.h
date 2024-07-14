@@ -14,6 +14,17 @@ class UGameplayEffect;
 class UGameplayAbility;
 
 USTRUCT(BlueprintType)
+struct FCharacterAbilityStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	bool ShouldGiveAbilityOnStart = false;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UBaseGameplayAbility> Ability = nullptr;
+};
+
+USTRUCT(BlueprintType)
 struct FCharacterSpecificInfosStruct
 {
 	GENERATED_BODY()
@@ -25,7 +36,7 @@ struct FCharacterSpecificInfosStruct
 	TSubclassOf<UGameplayEffect> DefaultGE_PrimaryAttributeValues = TSubclassOf<UGameplayEffect>(); 
 	
 	UPROPERTY(EditDefaultsOnly)
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities = TArray<TSubclassOf<UGameplayAbility>>();
+	TArray<FCharacterAbilityStruct> CharacterAbilities = TArray<FCharacterAbilityStruct>();
 
 	UPROPERTY(EditDefaultsOnly, Category="Animation montages")
 	TMap<FGameplayTag, TObjectPtr<UAnimMontage>> CharacterMontages = TMap<FGameplayTag, TObjectPtr<UAnimMontage>>();

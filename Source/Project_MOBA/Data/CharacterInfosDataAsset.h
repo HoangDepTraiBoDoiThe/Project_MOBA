@@ -19,8 +19,8 @@ class PROJECT_MOBA_API UCharacterInfosDataAsset : public UDataAsset
 public:
 	FORCEINLINE const TArray<FCharacterSpecificInfosStruct>* GetCharacterSpecificInfosStructs() const;
 	FORCEINLINE const FCharacterInfosStruct* GetCharacterInfosStruct() const { return &CharacterInfosStruct; }
-	void GetStartupAbilities(const FGameplayTag& CharacterTag, TArray<TSubclassOf<UGameplayAbility>>& OutStartupAbilities);
-	TArray<TSubclassOf<UBaseGameplayAbility>>& GetPassiveAbilities();
+	void GetStartupAbilities(const FGameplayTag& CharacterTag, TArray<FCharacterAbilityStruct>& OutStartupAbilities);
+	TArray<TSubclassOf<UBaseGameplayAbility>> GetPassiveAbilities();
 	void GetDefaultGEs(const FGameplayTag& CharacterTag, TSubclassOf<UGameplayEffect>& PrimaryGE, TArray<TSubclassOf<UGameplayEffect>>& SecondaryGEs);
 	void GetParticleSystems(const FGameplayTag& CharacterTag, TArray<TObjectPtr<UParticleSystem>>& OutParticleSystems);
 	TObjectPtr<UAnimMontage> GetMontageByTag(const FGameplayTag& CharacterTag, const FGameplayTag& MontageTag);

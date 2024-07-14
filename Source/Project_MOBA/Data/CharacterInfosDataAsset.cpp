@@ -6,16 +6,16 @@ const TArray<FCharacterSpecificInfosStruct>* UCharacterInfosDataAsset::GetCharac
 {
 	return &CharacterInfosStruct.CharacterSpecificInfosStructs;
 }
-void UCharacterInfosDataAsset::GetStartupAbilities(const FGameplayTag& CharacterTag, TArray<TSubclassOf<UGameplayAbility>>& OutStartupAbilities)
+void UCharacterInfosDataAsset::GetStartupAbilities(const FGameplayTag& CharacterTag, TArray<FCharacterAbilityStruct>& OutStartupAbilities)
 {
 	for (auto& Pair : CharacterInfosStruct.CharacterSpecificInfosStructs)
 	{
 		if (!Pair.CharacterTag.MatchesTagExact(CharacterTag)) continue;
-		OutStartupAbilities = Pair.StartupAbilities;
+		OutStartupAbilities = Pair.CharacterAbilities;
 	}
 }
 
-TArray<TSubclassOf<UBaseGameplayAbility>>& UCharacterInfosDataAsset::GetPassiveAbilities()
+TArray<TSubclassOf<UBaseGameplayAbility>> UCharacterInfosDataAsset::GetPassiveAbilities()
 {
 	return CharacterInfosStruct.PassiveAbilitiesClasses;
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BaseWidgetController.h"
+#include "Project_MOBA/Data/HeroUIDataAsset.h"
 #include "MainWidgetController.generated.h"
 
 /**
@@ -14,6 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityPointSpendSignature, FGamepl
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterXPToViewSignature, const int32, Loop, const int32, CurrentXP, const int32, XPForCurrentLevel, const int32, XPForNextLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterLevelToViewSignature, const int32, OldLevel, const int32, NewLevel);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAbilityUpdateToViewSignature, const FAbilityUIStruct&, HeroUIDataStruct);
 
 UCLASS()
 class PROJECT_MOBA_API UMainWidgetController : public UBaseWidgetController
@@ -22,7 +24,7 @@ class PROJECT_MOBA_API UMainWidgetController : public UBaseWidgetController
 
 public:
 	UMainWidgetController();
-	void BindReceivedCallBacksToDependencies() const;
+	void BindReceivedCallBacksToDependencies();
 	virtual void SetupWidgetController(FWidgetControllerStruct ControllerStruct) override;
 
 	UFUNCTION(BlueprintCallable)
@@ -30,7 +32,11 @@ public:
 
 	// Attributes
 	virtual void BroadCastInitialValues() const override;
-	
+	UFUNCTION(BlueprintCallable)
+	void BroadCastCurrentAttributes();
+	UFUNCTION(BlueprintCallable)
+	void RequestAbilityUIDataToView();
+
 	UPROPERTY(BlueprintAssignable)
 	FAbilityPointSpendSignature OnAbilityPointSpendDelegate;
 	UPROPERTY(BlueprintAssignable)
@@ -40,9 +46,21 @@ public:
 	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 
 	// Experience
-	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Experience")
 	FOnCharacterXPToViewSignature OnCharacterXPToViewSignature;
 	
-	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Experience")
 	FOnCharacterLevelToViewSignature OnCharacterLevelToViewSignature;
+
+	// Abilities
+	UHeroUIDataAsset* GetHeroUIDataAsset();
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
+	FOnAbilityUpdateToViewSignature OnAbilityUpdateToViewDelegate;
+	
+protected:
+
+private:
+	UPROPERTY()
+	UHeroUIDataAsset* HeroUIDataAsset;
 };
