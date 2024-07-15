@@ -28,12 +28,12 @@ public:
 	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
 	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
-	TArray<FGameplayTag> GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
+	FGameplayTagContainer GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
 	void BroadCastActivatableAbilityUIData();
 	FGameplayTag GetAbilityUnlockStateByAbilitySpec(const FGameplayAbilitySpec& AbilitySpec);
-	
+
 	FGameplayAttributevalueBroadcastToControllerSignature OnNewAttributeValueBroadcastToControllerDelegate;
 	FGameplayAbilityStatusToControllerSignature OnGameplayAbilityStatusToControllerDelegate;
 

@@ -23,7 +23,7 @@ void UMainWidgetController::SetupWidgetController(FWidgetControllerStruct Contro
 void UMainWidgetController::UpgradeAbility(const FGameplayTag& AbilityTag)
 {
 	WidgetControllerInfos->ASC->Server_LevelUpAbility(AbilityTag, WidgetControllerInfos->PS->GetPlayerLevel());
-	OnAbilityPointSpendDelegate.Broadcast(AbilityTag);
+	OnAbilityUpgradeDelegate.Broadcast();
 }
 
 void UMainWidgetController::BroadCastInitialValues() const
@@ -45,7 +45,7 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies()
 	WidgetControllerInfos->PS->AbilityPointDelegate.BindLambda(
 		[this] (const int32 CharacterLevel)
 		{
-			const TArray<FGameplayTag> Tags = WidgetControllerInfos->ASC->GetLevelUpAbleAbilityTags(CharacterLevel);
+			const FGameplayTagContainer Tags = WidgetControllerInfos->ASC->GetLevelUpAbleAbilityTags(CharacterLevel);
 			LevelUpAbleAbilityTagsDelegate.Broadcast(Tags);
 		}
 	);

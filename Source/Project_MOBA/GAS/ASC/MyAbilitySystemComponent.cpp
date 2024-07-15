@@ -120,10 +120,10 @@ void UMyAbilitySystemComponent::ReceiveAndBindCallBackToDependencies()
 	);
 }
 
-TArray<FGameplayTag> UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const int32 CharacterLevel)
+FGameplayTagContainer UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const int32 CharacterLevel)
 {
 	ABILITYLIST_SCOPE_LOCK()
-	TArray<FGameplayTag> LevelUpAbleAbilityTags = TArray<FGameplayTag>();
+	FGameplayTagContainer LevelUpAbleAbilityTags = FGameplayTagContainer();
 	FGameplayTagContainer IgnoreStates;
 	IgnoreStates.AddTagFast(MyGameplayTagsManager::Get().Ability_Availability_FullyUpgraded);
 	
@@ -142,30 +142,28 @@ TArray<FGameplayTag> UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const 
 			else bShouldAddTag = true;
 			break;
 		}
-		if (bShouldAddTag) LevelUpAbleAbilityTags.AddUnique(AbilityTag);
+		if (bShouldAddTag) LevelUpAbleAbilityTags.AddTagFast(AbilityTag);
 	}
 	return LevelUpAbleAbilityTags;
 }
 
-void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGameplayTag AbilityTag,
-                                                                     const int32 CharacterLevel)
+void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGameplayTag AbilityTag, const int32 CharacterLevel)
 {
 	ABILITYLIST_SCOPE_LOCK()
 	for (auto& AbilitySpec : GetActivatableAbilities())
 	{
 		if (!AbilitySpec.Ability->AbilityTags.HasTag(AbilityTag)) continue;
+		bool bShouldUpgrade;
+		
 		if (AbilitySpec.Ability->AbilityTags.HasTagExact(MyGameplayTagsManager::Get().Ability_Primary_R))
-		{
-			if (FMath::Floor(CharacterLevel / 6) > AbilitySpec.Level)
-			{
-				AbilitySpec.Level += 1;
-			}
-		}
-		else if (AbilitySpec.Ability->AbilityTags.HasTagExact(AbilityTag) && AbilitySpec.Level < 4)
+			bShouldUpgrade = FMath::Floor(CharacterLevel / 6) > AbilitySpec.Level;
+		else bShouldUpgrade = AbilitySpec.Ability->AbilityTags.HasTagExact(AbilityTag) && AbilitySpec.Level < 4;
+		
+		if (bShouldUpgrade)
 		{
 			AbilitySpec.Level += 1;
+			MarkAbilitySpecDirty(AbilitySpec);
 		}
-		MarkAbilitySpecDirty(AbilitySpec);
 		return;
 	}
 }

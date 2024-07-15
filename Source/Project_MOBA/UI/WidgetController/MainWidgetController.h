@@ -10,12 +10,13 @@
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLevelUpAbleAbilityTagsSignature, const TArray<FGameplayTag>&, LevelUpAbleAbilityTags);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLevelUpAbleAbilityTagsSignature, const FGameplayTagContainer&, LevelUpAbleAbilityTags);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityPointSpendSignature, FGameplayTag, AbilityTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterXPToViewSignature, const int32, Loop, const int32, CurrentXP, const int32, XPForCurrentLevel, const int32, XPForNextLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterLevelToViewSignature, const int32, OldLevel, const int32, NewLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAbilityUpdateToViewSignature, const FAbilityUIStruct&, HeroUIDataStruct);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotifyToViewSignature);
 
 UCLASS()
 class PROJECT_MOBA_API UMainWidgetController : public UBaseWidgetController
@@ -39,15 +40,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RequestAbilityUIDataToView();
 
-	UPROPERTY(BlueprintAssignable)
-	FAbilityPointSpendSignature OnAbilityPointSpendDelegate;
+	// Experience
 	UPROPERTY(BlueprintAssignable)
 	FLevelUpAbleAbilityTagsSignature LevelUpAbleAbilityTagsDelegate;
 		
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 
-	// Experience
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Experience")
 	FOnCharacterXPToViewSignature OnCharacterXPToViewSignature;
 	
@@ -59,6 +58,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
 	FOnAbilityUpdateToViewSignature OnAbilityUpdateToViewDelegate;
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
+	FNotifyToViewSignature OnAbilityUpgradeDelegate;
 	
 protected:
 
