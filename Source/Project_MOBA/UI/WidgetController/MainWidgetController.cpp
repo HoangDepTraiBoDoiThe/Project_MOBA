@@ -91,9 +91,19 @@ void UMainWidgetController::BroadCastCurrentAttributes()
 	}
 }
 
+void UMainWidgetController::RequestAbilityInitialUIData()
+{
+	const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetCharacterTag());
+	for (auto Struct : HeroUIDataData.AbilityUIData)
+	{
+		Struct.AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlockable;
+		OnAbilityUpdateToViewDelegate.Broadcast(Struct);
+	}
+}
+
 void UMainWidgetController::RequestAbilityUIDataToView()
 {
-	WidgetControllerInfos->ASC->BroadCastAbilityUIData();
+	WidgetControllerInfos->ASC->BroadCastActivatableAbilityUIData();
 }
 
 UHeroUIDataAsset* UMainWidgetController::GetHeroUIDataAsset()

@@ -35,6 +35,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void BroadCastCurrentAttributes();
 	UFUNCTION(BlueprintCallable)
+	void RequestAbilityInitialUIData();
+	UFUNCTION(BlueprintCallable)
 	void RequestAbilityUIDataToView();
 
 	UPROPERTY(BlueprintAssignable)

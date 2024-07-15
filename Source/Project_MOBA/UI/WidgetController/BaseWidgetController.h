@@ -45,6 +45,7 @@ public:
 	// Attributes
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadCastInitialValues() const {}
+	FWidgetControllerStruct* GetWidgetControllerInfos() const {return WidgetControllerInfos;}
 	
 protected:
 	FWidgetControllerStruct* WidgetControllerInfos;

@@ -31,7 +31,7 @@ public:
 	TArray<FGameplayTag> GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
-	void BroadCastAbilityUIData();
+	void BroadCastActivatableAbilityUIData();
 	FGameplayTag GetAbilityUnlockStateByAbilitySpec(const FGameplayAbilitySpec& AbilitySpec);
 	
 	FGameplayAttributevalueBroadcastToControllerSignature OnNewAttributeValueBroadcastToControllerDelegate;

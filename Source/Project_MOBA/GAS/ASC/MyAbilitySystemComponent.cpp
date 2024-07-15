@@ -55,9 +55,9 @@ void UMyAbilitySystemComponent::GiveStartupAbilities()
 		if (Struct.ShouldGiveAbilityOnStart)
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Struct.Ability, 1);
-			GiveAbility(AbilitySpec);
 			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
 			AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
+			GiveAbility(AbilitySpec);
 		}
 	}
 	
@@ -65,13 +65,13 @@ void UMyAbilitySystemComponent::GiveStartupAbilities()
 	for (const auto& AbilityClass : AbilityPassiveClasses)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		GiveAbility(AbilitySpec);
 		FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
 		AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
+		GiveAbility(AbilitySpec);
 	}
 }
 
-void UMyAbilitySystemComponent::BroadCastAbilityUIData()
+void UMyAbilitySystemComponent::BroadCastActivatableAbilityUIData()
 {
 	for (const auto& AbilitySpec : GetActivatableAbilities())
 	{
