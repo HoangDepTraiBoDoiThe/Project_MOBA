@@ -23,7 +23,7 @@ void UMainWidgetController::SetupWidgetController(FWidgetControllerStruct Contro
 void UMainWidgetController::UpgradeAbility(const FGameplayTag& AbilityTag)
 {
 	WidgetControllerInfos->ASC->Server_LevelUpAbility(AbilityTag, WidgetControllerInfos->PS->GetPlayerLevel());
-	OnAbilityUpgradeDelegate.Broadcast();
+	OnAbilityUpgradeDelegate.Broadcast(AbilityTag);
 }
 
 void UMainWidgetController::BroadCastInitialValues() const

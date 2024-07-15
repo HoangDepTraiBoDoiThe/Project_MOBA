@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterXPToViewSignature, const int32, Loop, const int32, CurrentXP, const int32, XPForCurrentLevel, const int32, XPForNextLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterLevelToViewSignature, const int32, OldLevel, const int32, NewLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAbilityUpdateToViewSignature, const FAbilityUIStruct&, HeroUIDataStruct);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotifyToViewSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifyAbilityLevelUpToViewSignature, FGameplayTag, AbilityTag);
 
 UCLASS()
 class PROJECT_MOBA_API UMainWidgetController : public UBaseWidgetController
@@ -59,7 +59,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
 	FOnAbilityUpdateToViewSignature OnAbilityUpdateToViewDelegate;
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
-	FNotifyToViewSignature OnAbilityUpgradeDelegate;
+	FNotifyAbilityLevelUpToViewSignature OnAbilityUpgradeDelegate;
 	
 protected:
 
