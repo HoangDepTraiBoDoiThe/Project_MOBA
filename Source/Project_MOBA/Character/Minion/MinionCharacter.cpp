@@ -4,10 +4,8 @@
 #include "MinionCharacter.h"
 
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "Components/WidgetComponent.h"
 #include "Controller/MyAIController.h"
 #include "Kismet/GameplayStatics.h"
-#include "Project_MOBA/Component/EnvironmentComponent.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
@@ -17,9 +15,6 @@ AMinionCharacter::AMinionCharacter()
 	MyAbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(FName("Ability system component"));
 	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("BaseAttributeSet"));
 	MyAbilitySystemComponent->ReplicationMode = EGameplayEffectReplicationMode::Minimal;
-	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(FName("Environment Component"));
-	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>("Widget Component");
-	WidgetComponent->SetupAttachment(GetRootComponent());
 }
 
 void AMinionCharacter::BeginPlay()
@@ -82,7 +77,7 @@ UBaseAttributeSet* AMinionCharacter::GetAS()
 
 UWidgetComponent* AMinionCharacter::GetWidgetComponent()
 {
-	return WidgetComponent;
+	return nullptr;
 }
 
 void AMinionCharacter::Destroyed()

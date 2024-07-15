@@ -45,16 +45,11 @@ protected:
 	virtual void PostInitializeComponents() override;
 	virtual void Destroyed() override;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UEnvironmentComponent> EnvironmentComponent;
-
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	TObjectPtr<AMyAIController> MyAIController;
-	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UWidgetComponent> WidgetComponent;
+
 	int32 XP{1};
 	UPROPERTY(EditDefaultsOnly)
 	int32 XP2Give{1};
