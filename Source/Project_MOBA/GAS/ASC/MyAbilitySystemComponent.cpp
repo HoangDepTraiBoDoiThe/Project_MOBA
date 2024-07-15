@@ -55,10 +55,13 @@ void UMyAbilitySystemComponent::GiveStartupAbilities()
 		if (Struct.ShouldGiveAbilityOnStart)
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Struct.Ability, 1);
-			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
+			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlockable;
+			AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
 			AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
 			GiveAbility(AbilitySpec);
+			continue;
 		}
+		UnlockAbleAbilityTags.AddTagFast(Struct.Ability.GetDefaultObject()->GetAbilityTag());
 	}
 	
 	const TArray<TSubclassOf<UBaseGameplayAbility>> AbilityPassiveClasses = GetBaseCharacter()->GetCharacterInfosDataAsset()->GetPassiveAbilities();
@@ -124,6 +127,7 @@ FGameplayTagContainer UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const
 {
 	ABILITYLIST_SCOPE_LOCK()
 	FGameplayTagContainer LevelUpAbleAbilityTags = FGameplayTagContainer();
+	LevelUpAbleAbilityTags.AppendTags(UnlockAbleAbilityTags);
 	FGameplayTagContainer IgnoreStates;
 	IgnoreStates.AddTagFast(MyGameplayTagsManager::Get().Ability_Availability_FullyUpgraded);
 	
@@ -147,7 +151,25 @@ FGameplayTagContainer UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const
 	return LevelUpAbleAbilityTags;
 }
 
-void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGameplayTag AbilityTag, const int32 CharacterLevel)
+bool UMyAbilitySystemComponent::UnlockAbility(FGameplayTag AbilityTag)
+{
+	TArray<FCharacterAbilityStruct> AbilityData = GetBaseCharacter()->GetCharacterStartupAbilities();
+	for (const auto& Struct : AbilityData)
+	{
+		if (AbilityTag.MatchesTagExact(Struct.Ability.GetDefaultObject()->GetAbilityTag()))
+		{
+			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Struct.Ability, 1);
+			AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
+			GiveAbility(AbilitySpec);
+			UnlockAbleAbilityTags.RemoveTag(AbilityTag);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UMyAbilitySystemComponent::AbilityLeveling(const FGameplayTag AbilityTag, const int32 CharacterLevel)
 {
 	ABILITYLIST_SCOPE_LOCK()
 	for (auto& AbilitySpec : GetActivatableAbilities())
@@ -164,8 +186,16 @@ void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGame
 			AbilitySpec.Level += 1;
 			MarkAbilitySpecDirty(AbilitySpec);
 		}
-		return;
+		return true;
 	}
+	return false;
+}
+
+void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGameplayTag AbilityTag, const int32 CharacterLevel)
+{
+	if (AbilityTag.MatchesAnyExact(UnlockAbleAbilityTags))
+		if (UnlockAbility(AbilityTag)) return;
+	AbilityLeveling(AbilityTag, CharacterLevel);
 }
 
 ABaseCharacter* UMyAbilitySystemComponent::GetBaseCharacter()

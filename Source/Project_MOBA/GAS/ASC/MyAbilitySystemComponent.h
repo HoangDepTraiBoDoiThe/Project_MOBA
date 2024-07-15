@@ -7,6 +7,7 @@
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "MyAbilitySystemComponent.generated.h"
 
+class UBaseGameplayAbility;
 /**
  * 
  */
@@ -28,7 +29,10 @@ public:
 	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
 	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
+
 	FGameplayTagContainer GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
+	bool UnlockAbility(FGameplayTag AbilityTag);
+	bool AbilityLeveling(FGameplayTag AbilityTag, int32 CharacterLevel);
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
 	void BroadCastActivatableAbilityUIData();
@@ -46,6 +50,7 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<ABaseCharacter> BaseCharacter;
+	FGameplayTagContainer UnlockAbleAbilityTags;
 
 	ABaseCharacter* GetBaseCharacter();
 };
