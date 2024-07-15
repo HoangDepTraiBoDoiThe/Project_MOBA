@@ -124,25 +124,25 @@ TArray<FGameplayTag> UMyAbilitySystemComponent::GetLevelUpAbleAbilityTags(const 
 {
 	ABILITYLIST_SCOPE_LOCK()
 	TArray<FGameplayTag> LevelUpAbleAbilityTags = TArray<FGameplayTag>();
+	FGameplayTagContainer IgnoreStates;
+	IgnoreStates.AddTagFast(MyGameplayTagsManager::Get().Ability_Availability_FullyUpgraded);
+	
 	for (const auto& AbilitySpec : GetActivatableAbilities())
 	{
-		for (auto& AbilityTag : AbilitySpec.Ability->AbilityTags)
-		{
-			if (!AbilityTag.MatchesTag(FGameplayTag::RequestGameplayTag("Ability.Primary"))) continue;
-			if (AbilitySpec.Ability->AbilityTags.HasTagExact(MyGameplayTagsManager::Get().Ability_Primary_R))
-			{
-				if (FMath::Floor(CharacterLevel / 6) > AbilitySpec.Level)
-				{
-					LevelUpAbleAbilityTags.AddUnique(AbilityTag);
-				}
-			}
-			else
-			{
-				LevelUpAbleAbilityTags.AddUnique(AbilityTag);
-			}
+		FGameplayTag AbilityTag = Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->GetAbilityTag();
+		if (!AbilityTag.MatchesTag(FGameplayTag::RequestGameplayTag("Ability.Primary"))) continue;
 
+		bool bShouldAddTag = false;
+		for (auto& DynamicTag : AbilitySpec.DynamicAbilityTags)
+		{
+			if (!DynamicTag.MatchesTag(FGameplayTag::RequestGameplayTag("Ability.Availability"))) continue;
+			if (DynamicTag.MatchesAnyExact(IgnoreStates)) break;
+			if (AbilityTag.MatchesTagExact(MyGameplayTagsManager::Get().Ability_Primary_R))
+				bShouldAddTag = FMath::Floor(CharacterLevel / 6) > AbilitySpec.Level;
+			else bShouldAddTag = true;
 			break;
 		}
+		if (bShouldAddTag) LevelUpAbleAbilityTags.AddUnique(AbilityTag);
 	}
 	return LevelUpAbleAbilityTags;
 }
