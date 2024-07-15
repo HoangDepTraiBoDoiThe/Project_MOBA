@@ -4,18 +4,21 @@
 #include "MainWidgetController.h"
 
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
+#include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
+#include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 #include "Project_MOBA/UI/MyHUD.h"
 
 UMainWidgetController::UMainWidgetController()
 {
+	WidgetControllerInfos = nullptr;
 }
 
 void UMainWidgetController::SetupWidgetController(FWidgetControllerStruct ControllerStruct)
 {
-	Super::SetupWidgetController(ControllerStruct);
+	WidgetControllerInfos = new FWidgetControllerStruct(ControllerStruct.PC, ControllerStruct.PS, ControllerStruct.ASC, ControllerStruct.AS);
 
 	BindReceivedCallBacksToDependencies();
 }
