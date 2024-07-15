@@ -12,7 +12,7 @@ class UBaseGameplayAbility;
  * 
  */
 DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueBroadcastToControllerSignature, const FOnAttributeChangeData&)
-DECLARE_MULTICAST_DELEGATE_TwoParams(FGameplayAbilityStatusToControllerSignature, const FGameplayTag AbilityTag, const FGameplayTag UnlockState)
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FGameplayAbilityStatusToControllerSignature, const FGameplayTag AbilityTag, const FGameplayTag UnlockState, int32 AbilityLevel)
 
 UCLASS()
 class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponent
@@ -22,6 +22,8 @@ class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponen
 	//TODO: This could be used for other actors that implementing this ASC, not just BasePlayerCharacter. 
 	
 public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	// For tags in Ability's tag.
 	bool TryActivateAbilityByTag(const FGameplayTag AbilityTag);
 	void ReceiveAndBindCallBackToDependencies();
@@ -35,6 +37,8 @@ public:
 	bool AbilityLeveling(FGameplayTag AbilityTag, int32 CharacterLevel);
 	UFUNCTION(Server, Reliable)
 	void Server_LevelUpAbility(const FGameplayTag AbilityTag, const int32 CharacterLevel);
+	UFUNCTION(Client, Reliable)
+	void ClientBroadCastAbilityStateUpdated(const FGameplayTag AbilityTag, const FGameplayTag UnlockState, int32 AbilityLevel);
 	void BroadCastActivatableAbilityUIData();
 	FGameplayTag GetAbilityUnlockStateByAbilitySpec(const FGameplayAbilitySpec& AbilitySpec);
 
@@ -44,12 +48,11 @@ public:
 protected:
 	void ApplyDefaultGEs();
 	void GiveStartupAbilities();
-	UFUNCTION(Client, Reliable)
-	void ClientOnAbilityStatusChange(FGameplayTag AbilityTag, FGameplayTag AbilityState);
 
 private:
 	UPROPERTY()
 	TObjectPtr<ABaseCharacter> BaseCharacter;
+	UPROPERTY(Replicated)
 	FGameplayTagContainer UnlockAbleAbilityTags;
 
 	ABaseCharacter* GetBaseCharacter();

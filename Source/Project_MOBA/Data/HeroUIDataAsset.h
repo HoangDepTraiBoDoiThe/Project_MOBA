@@ -27,6 +27,8 @@ struct FAbilityUIStruct
 	
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag AbilityState = FGameplayTag();
+	UPROPERTY(BlueprintReadOnly)
+	int32 AbilityLevel = 1;
 };
 
 USTRUCT(Blueprintable, BlueprintType)

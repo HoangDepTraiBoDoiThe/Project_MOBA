@@ -4,6 +4,7 @@
 #include "MyAbilitySystemComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Net/UnrealNetwork.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
@@ -16,6 +17,13 @@ void UMyAbilitySystemComponent::ActorASCInitialize(AActor* InOwnerActor, AActor*
 	ApplyDefaultGEs();
 	GiveStartupAbilities();
 	ReceiveAndBindCallBackToDependencies();
+}
+
+void UMyAbilitySystemComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(UMyAbilitySystemComponent, UnlockAbleAbilityTags, COND_OwnerOnly);
 }
 
 bool UMyAbilitySystemComponent::TryActivateAbilityByTag(const FGameplayTag AbilityTag)
@@ -74,13 +82,19 @@ void UMyAbilitySystemComponent::GiveStartupAbilities()
 	}
 }
 
+void UMyAbilitySystemComponent::ClientBroadCastAbilityStateUpdated_Implementation(const FGameplayTag AbilityTag, const FGameplayTag UnlockState, const int32 AbilityLevel)
+{
+	OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, UnlockState, AbilityLevel);
+}
+
 void UMyAbilitySystemComponent::BroadCastActivatableAbilityUIData()
 {
 	for (const auto& AbilitySpec : GetActivatableAbilities())
 	{
 		const FGameplayTag AbilityTag = Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->GetAbilityTag();
 		const FGameplayTag AbilityState = GetAbilityUnlockStateByAbilitySpec(AbilitySpec);
-		OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, AbilityState);
+		const int32 AbilityLevel = AbilitySpec.Level;
+		OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, AbilityState, AbilityLevel);
 	}
 }
 
@@ -89,11 +103,6 @@ FGameplayTag UMyAbilitySystemComponent::GetAbilityUnlockStateByAbilitySpec(const
 	for (const auto& Tag : AbilitySpec.DynamicAbilityTags)
 		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag("Ability.Availability"))) return Tag;
 	return FGameplayTag();
-}
-
-void UMyAbilitySystemComponent::ClientOnAbilityStatusChange_Implementation(FGameplayTag AbilityTag, FGameplayTag AbilityState)
-{
-	OnGameplayAbilityStatusToControllerDelegate.Broadcast(AbilityTag, AbilityState);
 }
 
 void UMyAbilitySystemComponent::ReceiveAndBindCallBackToDependencies()
@@ -158,10 +167,12 @@ bool UMyAbilitySystemComponent::UnlockAbility(FGameplayTag AbilityTag)
 	{
 		if (AbilityTag.MatchesTagExact(Struct.Ability.GetDefaultObject()->GetAbilityTag()))
 		{
-			FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Struct.Ability, 1);
+			const FGameplayTag AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
 			AbilitySpec.DynamicAbilityTags.AddTag(AbilityState);
 			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+			ClientBroadCastAbilityStateUpdated(AbilityTag, AbilityState, 1);
 			UnlockAbleAbilityTags.RemoveTag(AbilityTag);
 			return true;
 		}
@@ -184,7 +195,13 @@ bool UMyAbilitySystemComponent::AbilityLeveling(const FGameplayTag AbilityTag, c
 		if (bShouldUpgrade)
 		{
 			AbilitySpec.Level += 1;
+			const FGameplayTag StateUnlocked = MyGameplayTagsManager::Get().Ability_Availability_Unlocked;
+			const FGameplayTag StateFullyUpgraded = MyGameplayTagsManager::Get().Ability_Availability_FullyUpgraded;
+			const FGameplayTag AbilityState = AbilitySpec.Level == 4 ? StateFullyUpgraded : StateUnlocked;
+			AbilitySpec.DynamicAbilityTags.RemoveTag(StateUnlocked);
+			AbilitySpec.DynamicAbilityTags.AddTagFast(StateUnlocked);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientBroadCastAbilityStateUpdated(AbilityTag, AbilityState, AbilitySpec.Level);
 		}
 		return true;
 	}

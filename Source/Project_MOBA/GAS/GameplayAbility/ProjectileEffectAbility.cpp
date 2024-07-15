@@ -66,8 +66,6 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
 AProjectile* UProjectileEffectAbility::SpawnProjectileAtSelectedLocation(FVector TargetLocation, const bool bIgnorePitch, const FVector SpawnLocation,
                                                                  const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
 {
-	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return nullptr;
-	
 	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass);
 	for (const auto& Pair : EffectTypeMap)
 	{

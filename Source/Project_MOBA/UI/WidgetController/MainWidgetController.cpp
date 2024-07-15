@@ -64,7 +64,7 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies()
 		OnCharacterLevelToViewSignature.Broadcast(OldValue, NewValue);
 	});
 	WidgetControllerInfos->ASC->OnGameplayAbilityStatusToControllerDelegate.AddLambda(
-		[this] (FGameplayTag AbilityTag, FGameplayTag AbilityState)
+		[this] (const FGameplayTag AbilityTag, const FGameplayTag AbilityState, const int32 AbilityLevel)
 		{
 			const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetCharacterTag());
 			for (auto Struct : HeroUIDataData.AbilityUIData)
@@ -72,6 +72,7 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies()
 				if (Struct.AbilityTag.MatchesTagExact(AbilityTag))
 				{
 					Struct.AbilityState = AbilityState;
+					Struct.AbilityLevel = AbilityLevel;
 					OnAbilityUpdateToViewDelegate.Broadcast(Struct);
 					break;
 				}
