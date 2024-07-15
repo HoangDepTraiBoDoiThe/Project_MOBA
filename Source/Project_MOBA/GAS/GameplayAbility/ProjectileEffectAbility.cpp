@@ -18,12 +18,7 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
     if (!GetAvatarActorFromActorInfo()->HasAuthority()) return nullptr;
     */
     const FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
-    FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass, GetAbilityLevel());
-    for (const auto& Pair : EffectTypeMap)
-    {
-    	const float BaseDamageAtAbilityLevel = Pair.Value.EffectValue.GetValueAtLevel(GetAbilityLevel());
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
-    }
+	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithDamageTypeMap(EffectClass, GetAbilitySystemComponentFromActorInfo(), this, EffectTypeMap);
 
     if (bIgnorePitch)
     {
@@ -66,11 +61,6 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
 AProjectile* UProjectileEffectAbility::SpawnProjectileAtSelectedLocation(FVector TargetLocation, const bool bIgnorePitch, const FVector SpawnLocation,
                                                                  const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
 {
-	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeMyGameplayEffectSpecHandle(GetAbilitySystemComponentFromActorInfo(), EffectClass);
-	for (const auto& Pair : EffectTypeMap)
-	{
-		const float BaseDamageAtAbilityLevel = Pair.Value.EffectValue.GetValueAtLevel(GetAbilityLevel());
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
-	}
+	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithDamageTypeMap(EffectClass, GetAbilitySystemComponentFromActorInfo(), this, EffectTypeMap);
 	return UMyBlueprintFunctionLibrary::SpawnProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, TargetLocation, ProjectileScale, GetAbilityTag(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()), bMoving, ProjectileSpeed);
 }

@@ -3,6 +3,7 @@
 
 #include "BaseCharacter.h"
 
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -17,6 +18,10 @@ ABaseCharacter::ABaseCharacter()
 
 	GetMesh()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
+
+	MeleCollisionBoundary = CreateDefaultSubobject<UBoxComponent>(FName("MeleCollisionBoundary"));
+	MeleCollisionBoundary->SetCollisionResponseToAllChannels(ECR_Ignore);
+	MeleCollisionBoundary->SetupAttachment(GetMesh(), MeleSocketName);
 }
 
 void ABaseCharacter::BeginPlay()

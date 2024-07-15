@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Project_MOBA/GAS/GameplayAbility/GameplayEffectAbility.h"
 #include "MyBlueprintFunctionLibrary.generated.h"
 
 struct FGameplayTag;
@@ -35,6 +36,9 @@ public:
 	static FWidgetControllerStruct* MakeWidgetControllerInfos(const UObject* WorldContextObject);
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(DefaultToSelf = "WorldContextObject"))
 	static UMainWidgetController* GetMainWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable)
+	static FGameplayEffectSpecHandle MakeEffectSpecHandleWithDamageTypeMap(TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* OwningASC, UGameplayAbility* OwningAbility, TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap);
 
 private:
 };

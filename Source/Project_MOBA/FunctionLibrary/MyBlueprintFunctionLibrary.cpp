@@ -96,6 +96,18 @@ UMainWidgetController* UMyBlueprintFunctionLibrary::GetMainWidgetController(cons
 	return MyHUD->GetMainWidgetController(*WidgetControllerInfos);
 }
 
+FGameplayEffectSpecHandle UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithDamageTypeMap(TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* OwningASC, UGameplayAbility* OwningAbility,
+	TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap)
+{
+	const FGameplayEffectSpecHandle EffectSpecHandle = MakeMyGameplayEffectSpecHandle(OwningASC, EffectClass);
+	for (const auto& Pair : EffectTypeMap)
+	{
+		const float BaseDamageAtAbilityLevel = Pair.Value.EffectValue.GetValueAtLevel(OwningAbility->GetAbilityLevel());
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
+	}
+	return EffectSpecHandle;
+}
+
 FWidgetControllerStruct* UMyBlueprintFunctionLibrary::MakeWidgetControllerInfos(const UObject* WorldContextObject)
 {
 	const UWorld* WorldContext = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::Assert);

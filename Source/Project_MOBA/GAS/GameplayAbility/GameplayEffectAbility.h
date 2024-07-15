@@ -9,7 +9,7 @@
 /**
  * 
  */
-USTRUCT()
+USTRUCT(Blueprintable, BlueprintType)
 struct FMyEffectTypeStruct
 {
 	GENERATED_BODY()
@@ -38,9 +38,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FScalableFloat AbilityCoolDownTime;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> EffectClass;
 };

@@ -9,6 +9,7 @@
 #include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
+class UBoxComponent;
 struct FCharacterAbilityStruct;
 class UGameplayAbility;
 class UCharacterInfosDataAsset;
@@ -26,6 +27,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UFUNCTION(BlueprintCallable)
 	UMyAbilitySystemComponent* GetMyAbilitySystemComponent() const;
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const { return BaseAttributeSet; }
 
@@ -45,6 +47,9 @@ public:
 	UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
 	TArray<FCharacterAbilityStruct> GetCharacterStartupAbilities() const;
 
+	UFUNCTION(BlueprintCallable)
+	UBoxComponent* GetMeleCollisionBoundary() const {return MeleCollisionBoundary;}
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -58,4 +63,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category= "Character info")
 	TObjectPtr<UCharacterInfosDataAsset> CharacterInfos;
+
+	UPROPERTY(EditAnywhere)
+	FName MeleSocketName{"MeleWeaponSocket"};
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> MeleCollisionBoundary;
 };
