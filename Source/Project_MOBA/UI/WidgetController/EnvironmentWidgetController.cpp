@@ -16,6 +16,8 @@ void UEnvironmentWidgetController::SetupWidgetController(UMyAbilitySystemCompone
 {
 	AbilitySystemComponent = ASC;
 	BaseAttributeSet = AS;
+
+	BindCallBackAndBroadCastToDependencies();
 }
 
 void UEnvironmentWidgetController::BindCallBackAndBroadCastToDependencies()
