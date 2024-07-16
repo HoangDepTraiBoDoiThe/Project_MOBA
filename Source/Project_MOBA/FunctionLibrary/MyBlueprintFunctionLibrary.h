@@ -7,6 +7,7 @@
 #include "Project_MOBA/GAS/GameplayAbility/GameplayEffectAbility.h"
 #include "MyBlueprintFunctionLibrary.generated.h"
 
+class ICombatInterface;
 struct FGameplayTag;
 struct FWidgetControllerStruct;
 class UMainWidgetController;
@@ -24,9 +25,9 @@ class PROJECT_MOBA_API UMyBlueprintFunctionLibrary : public UBlueprintFunctionLi
 	GENERATED_BODY()
 
 public:
-	static void GetFilteredActorListFromComponentList(const UObject* WorldContextObject, const FVector SpherePos,
-														 float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter,
-														 const TArray<AActor*>& ActorsToIgnore, TArray<AActor*>& OutActors);
+	static void GetFilteredCombatActorListFromOverlappedActors(const UObject* WorldContextObject, const FVector SpherePos,
+														 float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter, FGameplayTag OwnerTeamTag,
+														 const TArray<AActor*>& ActorsToIgnore, TArray<ICombatInterface*>& OutActors);
 
 	UFUNCTION(BlueprintCallable, Category=Spawning)
 	static AProjectile* SpawnProjectile(const UObject* WorldContextObject, TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle, FVector SpawnLocation, const FVector& TargetLocation, FVector ProjectileScale, FGameplayTag AbilityTag, AActor* Owner = nullptr, APawn* Instigator = nullptr, bool bMoving = false, const float ActorInitialSpeed = 0);

@@ -40,19 +40,25 @@ public:
 	virtual int32 GetXP() override {return 0;}
 	virtual int32 GetXPReward() override {return 0;}
 	virtual void IncreaseXP2Give(const int32 XPAmount) override {}
+	UFUNCTION(BlueprintCallable)
+	virtual FGameplayTag GetTeamTag() override;
+	virtual FGameplayTag GetCharacterTag() override;
 
-	FORCEINLINE FGameplayTag GetCharacterTag() const { return CharacterTag; }
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }
 	UFUNCTION(BlueprintCallable)
-	UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag) const;
-	TArray<FCharacterAbilityStruct> GetCharacterStartupAbilities() const;
+	UAnimMontage* GetAnimMontageByTag(FGameplayTag Tag);
+	TArray<FCharacterAbilityStruct> GetCharacterStartupAbilities();
 
 	UFUNCTION(BlueprintCallable)
 	UBoxComponent* GetMeleCollisionBoundary() const {return MeleCollisionBoundary;}
 
+
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)
+	FGameplayTag TeamTag;
+	
 	UPROPERTY()
 	TObjectPtr<UMyAbilitySystemComponent> MyAbilitySystemComponent;
 	UPROPERTY()

@@ -12,23 +12,35 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
+	SetTargetTerritory();
+	
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.AddUnique(AIOwner->GetPawn());
 	const FVector Origin = AIOwner->GetPawn()->GetActorLocation();
 
-	TArray<AActor*> OutActors;
-	UMyBlueprintFunctionLibrary::GetFilteredActorListFromComponentList(GetWorld(), Origin, SearchRadius, ObjectTypeQueries, UCombatInterface::StaticClass(), ActorsToIgnore, OutActors);
+	TArray<ICombatInterface*> OutCombatActors;
+	ICombatInterface* CombatOwner = Cast<ICombatInterface>(AIOwner->GetPawn());
+	const FGameplayTag TeamTag = CombatOwner->GetTeamTag();
+	
+	UMyBlueprintFunctionLibrary::GetFilteredCombatActorListFromOverlappedActors(GetWorld(), Origin, SearchRadius, ObjectTypeQueries, UCombatInterface::StaticClass(), TeamTag, ActorsToIgnore, OutCombatActors);
 	/*
 	UKismetSystemLibrary::DrawDebugCapsule(GetWorld(), Origin, SearchRadius, SearchRadius, FRotator());
 	*/
-
-	for (AActor* Actor : OutActors)
+	
+	for (const FGameplayTag TargetType : TargetActorClassTypes)
 	{
-		if (Actor->Implements<UCombatInterface>())
+		for (ICombatInterface* OverlappedActor : OutCombatActors)
 		{
-			UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetActor, Actor);
+			const FGameplayTag ActorCharacterTag = OverlappedActor->GetCharacterTag();
+			if (!ActorCharacterTag.MatchesTag(TargetType)) continue;
+			
+			UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_CurrentTargetActor, Cast<AActor>(OverlappedActor));
 			return;
 		}
-		UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetActor, nullptr);
 	}
 }
+
+ void UBTService_FindTarget::SetTargetTerritory()
+ {
+	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Territory);
+ }

@@ -19,6 +19,21 @@ MyGameplayTagsManager& MyGameplayTagsManager::Get()
 void MyGameplayTagsManager::InitNativeGameplayTags()
 {
 	/*
+	 *	Team tags
+	 */
+	MyGameplayTagsManager::GameplayTags.Team_White = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Team.White"),
+		FString(
+			"")
+	);
+	
+	MyGameplayTagsManager::GameplayTags.Team_Black = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Team.Black"),
+		FString(
+			"")
+	);
+	
+	/*
 	 *	Character tags
 	 */
 	MyGameplayTagsManager::GameplayTags.Character_Hero_Murdock = UGameplayTagsManager::Get().AddNativeGameplayTag(

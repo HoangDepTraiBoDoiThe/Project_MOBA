@@ -87,12 +87,22 @@ void ABaseCharacter::Death()
 	GetCharacterMovement()->AddImpulse(FVector::DownVector * 10000);
 }
 
-UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag) const
+FGameplayTag ABaseCharacter::GetTeamTag()
+{
+	return TeamTag;
+}
+
+FGameplayTag ABaseCharacter::GetCharacterTag()
+{
+	return CharacterTag;
+}
+
+UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag)
 {
 	return CharacterInfos->GetMontageByTag(GetCharacterTag(), Tag);
 }
 
-TArray<FCharacterAbilityStruct> ABaseCharacter::GetCharacterStartupAbilities() const
+TArray<FCharacterAbilityStruct> ABaseCharacter::GetCharacterStartupAbilities()
 {
 	TArray<FCharacterAbilityStruct> OutStartupAbilities;
 	CharacterInfos.Get()->GetStartupAbilities(GetCharacterTag(), OutStartupAbilities);

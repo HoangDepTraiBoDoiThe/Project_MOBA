@@ -16,6 +16,12 @@ public:
  static void InitNativeGameplayTags();
 
  /*
+ *	Character tags
+ */
+ FGameplayTag Team_White;
+ FGameplayTag Team_Black;
+ 
+ /*
   *	Character tags
   */
  FGameplayTag Character_Hero_Murdock;

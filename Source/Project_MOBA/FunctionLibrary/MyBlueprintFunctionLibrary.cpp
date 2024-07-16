@@ -16,14 +16,14 @@
 #include "Project_MOBA/UI/WidgetController/BaseWidgetController.h"
 #include "Project_MOBA/UI/WidgetController/MainWidgetController.h"
 
-void UMyBlueprintFunctionLibrary::GetFilteredActorListFromComponentList(const UObject* WorldContextObject, const FVector SpherePos,
-                                                                        float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter,
-                                                                        const TArray<AActor*>& ActorsToIgnore, TArray<AActor*>& OutActors)
+void UMyBlueprintFunctionLibrary::GetFilteredCombatActorListFromOverlappedActors(const UObject* WorldContextObject, const FVector SpherePos,
+                                                                        float SphereRadius, const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, UClass* InterfaceClassFilter, FGameplayTag OwnerTeamTag,
+                                                                        const TArray<AActor*>& ActorsToIgnore, TArray<ICombatInterface*>& OutActors)
 {
 	OutActors.Empty();
 
 	TArray<UPrimitiveComponent*> OverlapComponents;
-	bool bOverlapped = UKismetSystemLibrary::SphereOverlapComponents(WorldContextObject, SpherePos, SphereRadius, ObjectTypes, NULL, ActorsToIgnore, OverlapComponents);
+	const bool bOverlapped = UKismetSystemLibrary::SphereOverlapComponents(WorldContextObject, SpherePos, SphereRadius, ObjectTypes, NULL, ActorsToIgnore, OverlapComponents);
 	if (bOverlapped)
 	{
 		for (int32 i = 0; i < OverlapComponents.Num(); i++)
@@ -31,10 +31,10 @@ void UMyBlueprintFunctionLibrary::GetFilteredActorListFromComponentList(const UO
 			if (!OverlapComponents[i]) continue;
 
 			CHECKF(InterfaceClassFilter, "High", "UMyBlueprintFunctionLibrary", __FUNCTION__, "InterfaceClassFilter is null")
-			AActor* Owner = OverlapComponents[i]->GetOwner();
-			if (InterfaceClassFilter && Owner->GetClass()->ImplementsInterface(InterfaceClassFilter))
+			ICombatInterface* OverlappedActors = Cast<ICombatInterface>(OverlapComponents[i]->GetOwner());
+			if (InterfaceClassFilter && OverlappedActors && !OverlappedActors->GetTeamTag().MatchesTagExact(OwnerTeamTag))
 			{
-				OutActors.AddUnique(Owner);
+				OutActors.AddUnique(OverlappedActors);
 			}
 		}
 	}

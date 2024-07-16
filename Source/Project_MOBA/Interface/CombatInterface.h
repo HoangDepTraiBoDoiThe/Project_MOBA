@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
@@ -27,5 +28,7 @@ public:
 	virtual int32 GetXP() = 0;
 	virtual int32 GetXPReward() = 0;
 	virtual void IncreaseXP2Give(const int32 XPAmount) = 0;
-	virtual void Die() = 0;	
+	virtual void Die() = 0;
+	virtual FGameplayTag GetTeamTag() = 0;
+	virtual FGameplayTag GetCharacterTag() = 0;
 };
