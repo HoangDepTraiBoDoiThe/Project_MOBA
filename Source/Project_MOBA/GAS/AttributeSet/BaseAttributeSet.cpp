@@ -76,11 +76,13 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
         if (GetHitPoint() <= 0 && !Death)
         {
             Death = true;
-            const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
-
             const UAbilitySystemComponent* ASC = Data.EffectSpec.GetContext().GetInstigatorAbilitySystemComponent();
-            AMyPlayerState* PlayerState = Cast<APlayerCharacter>(ASC->GetAvatarActor())->GetMyPlayerState();
-            PlayerState->RewardPlayer(XP2Reward);
+            if (Cast<APlayerCharacter>(ASC->GetAvatarActor()))
+            {
+                const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
+                AMyPlayerState* PlayerState = Cast<APlayerCharacter>(ASC->GetAvatarActor())->GetMyPlayerState();
+                PlayerState->RewardPlayer(XP2Reward);
+            }
             GetThisCombatActor()->Die();
         }
     }
