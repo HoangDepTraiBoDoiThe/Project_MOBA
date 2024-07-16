@@ -73,7 +73,14 @@ void ABaseCharacter::Die()
 	MovementProperties.bCanSwim = false;
 	GetCharacterMovement()->MovementState = MovementProperties;
 	GetCharacterMovement()->MaxWalkSpeed = 0.f;
-	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
+	
+	GetMesh()->SetCollisionObjectType(ECC_WorldStatic);
+	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Ground, ECR_Block);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_WorldStatic);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Ground, ECR_Block);
+	
 	bool bSuccessfull = MyAbilitySystemComponent->TryActivateAbilityByTag(MyGameplayTagsManager::Get().Ability_Passive_Die);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *MyGameplayTagsManager::Get().Ability_Passive_Die.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
 }
