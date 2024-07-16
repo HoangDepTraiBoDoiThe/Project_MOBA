@@ -61,7 +61,7 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 			FString("")
 		);
 	MyGameplayTagsManager::GameplayTags.Character_Minion_Super_Mele = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Character.Minion.Super.Range"),
+		FName("Character.Minion.Super.Mele"),
 		FString("")
 	);
 	MyGameplayTagsManager::GameplayTags.Character_Minion_Super_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(

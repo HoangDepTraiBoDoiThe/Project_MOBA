@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagAssetInterface.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
@@ -18,7 +19,7 @@ class UBaseAttributeSet;
 class UMyAbilitySystemComponent;
 
 UCLASS()
-class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
+class PROJECT_MOBA_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -31,7 +32,7 @@ public:
 	UMyAbilitySystemComponent* GetMyAbilitySystemComponent() const;
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const { return BaseAttributeSet; }
 
-	// ICombatInterface override funcions.
+	// ICombatInterface override functions.
 	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
 	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
 	virtual void Die() override;
@@ -43,6 +44,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual FGameplayTag GetTeamTag() override;
 	virtual FGameplayTag GetCharacterTag() override;
+
+	// IGameplayTagAssetInterface override functions.
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
 	FORCEINLINE UCharacterInfosDataAsset* GetCharacterInfosDataAsset() const { return CharacterInfos; }
 	UFUNCTION(BlueprintCallable)

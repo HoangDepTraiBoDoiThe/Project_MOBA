@@ -108,3 +108,10 @@ TArray<FCharacterAbilityStruct> ABaseCharacter::GetCharacterStartupAbilities()
 	CharacterInfos.Get()->GetStartupAbilities(GetCharacterTag(), OutStartupAbilities);
 	return OutStartupAbilities;
 }
+
+void ABaseCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	TagContainer.AddTag(CharacterTag);
+	TagContainer.AddTag(TeamTag);
+}
+
