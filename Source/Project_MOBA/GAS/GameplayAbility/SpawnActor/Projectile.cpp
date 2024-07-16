@@ -72,9 +72,12 @@ void AProjectile::SetupDestroyTimer()
 
 void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor == Owner) return;
-	bool isCombatActor = OtherActor->Implements<UCombatInterface>();
-	if (HasAuthority() && isCombatActor)
+	if (OtherActor == Owner || !HasAuthority()) return;
+	ICombatInterface* OverlappedCombatActor = Cast<ICombatInterface>(OtherActor);
+	if (!OverlappedCombatActor) return;
+	
+	const bool IsNotTheSameTeam = !Cast<ICombatInterface>(GetInstigator())->GetTeamTag().MatchesTagExact(OverlappedCombatActor->GetTeamTag());
+	if (IsNotTheSameTeam)
 	{
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 		if (TargetASC)

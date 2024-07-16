@@ -25,7 +25,7 @@ void UDamageExecMagCal::Execute_Implementation(const FGameplayEffectCustomExecut
 	for (const FGameplayTag& DamageTypeTag : MyGameplayTagsManager::Get().DamageTypes)
 	{
 		const CaptureDefStruct* CaptureInfo = DamageTypeTagToCaptureDefStructMap.Find(DamageTypeTag);
-		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(DamageTypeTag, false);
+		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(DamageTypeTag, false, -1);
 		float SourceDamageBoostMag = 0;
 		float TargetDamageResistMag = 0;
 		if (CaptureInfo)
@@ -33,7 +33,8 @@ void UDamageExecMagCal::Execute_Implementation(const FGameplayEffectCustomExecut
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureInfo->SourceDamageBoostType, FAggregatorEvaluateParameters(), SourceDamageBoostMag);
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureInfo->TargetDamageResistType, FAggregatorEvaluateParameters(), TargetDamageResistMag);
 		}
-		const float DamageTypeAfterCal = DamageType + SourceDamageBoostMag - TargetDamageResistMag;
+		const bool DidCallerSendingThis = DamageType >= 0;
+		const float DamageTypeAfterCal = DidCallerSendingThis ? DamageType + SourceDamageBoostMag - TargetDamageResistMag : 0;
 		Damage += DamageTypeAfterCal;
 	}
 
