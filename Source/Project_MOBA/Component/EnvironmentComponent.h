@@ -49,7 +49,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-	ABaseCharacter* Owner;
+	ABaseCharacter* EnvirComponentOwner;
 
 private:
 	UPROPERTY()

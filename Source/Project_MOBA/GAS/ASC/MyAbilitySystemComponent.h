@@ -24,14 +24,15 @@ class PROJECT_MOBA_API UMyAbilitySystemComponent : public UAbilitySystemComponen
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
-	// For tags in Ability's tag.
-	bool TryActivateAbilityByTag(const FGameplayTag AbilityTag);
-	void ReceiveAndBindCallBackToDependencies();
 	/*
 	 Call this for every Actors that has this component.
 	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
 	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
+	
+	// For tags in Ability's tag.
+	bool TryActivateAbilityByTag(const FGameplayTag AbilityTag);
+	void ReceiveAndBindCallBackToDependencies();
 
 	FGameplayTagContainer GetLevelUpAbleAbilityTags(const int32 CharacterLevel);
 	bool UnlockAbility(FGameplayTag AbilityTag);

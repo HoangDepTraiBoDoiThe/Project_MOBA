@@ -6,6 +6,7 @@
 #include "BehaviorTree/Services/BTService_BlueprintBase.h"
 #include "BTService_FindTarget.generated.h"
 
+class AMotherBase;
 /**
  * 
  */
@@ -24,7 +25,7 @@ public:
 	FBlackboardKeySelector KeySelector_TargetTerritory;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<AActor> Territory;
+	TObjectPtr<AMotherBase> Territory;
 
 	// Order matter
 	UPROPERTY(EditAnywhere)

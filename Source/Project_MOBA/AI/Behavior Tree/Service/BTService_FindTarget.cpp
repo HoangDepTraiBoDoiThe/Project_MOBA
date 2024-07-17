@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
+#include "Project_MOBA/Character/Minion/MinionCharacter.h"
 #include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
 
@@ -42,5 +43,5 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 
  void UBTService_FindTarget::SetTargetTerritory()
  {
-	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Territory);
+	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Cast<AActor>(Territory));
  }

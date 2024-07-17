@@ -46,7 +46,7 @@ UEnvironmentWidgetController* UEnvironmentComponent::GetEnvironmentWidgetControl
 
 ABaseCharacter* UEnvironmentComponent::GetEnvirCompOwner()
 {
-	if (!Owner) Owner = Cast<ABaseCharacter>(GetOwner());
-	return Owner;
+	if (!EnvirComponentOwner) EnvirComponentOwner = Cast<ABaseCharacter>(GetOwner());
+	return EnvirComponentOwner;
 }
 

@@ -6,6 +6,8 @@
 #include "Project_MOBA/Character/BaseCharacter.h"
 #include "MinionCharacter.generated.h"
 
+class AMotherBase;
+class AMinionBase;
 class UWidgetComponent;
 class UEnvironmentComponent;
 class AMyAIController;
@@ -28,6 +30,8 @@ public:
 	UBehaviorTree* GetMinionBehaviorTree() const {return BehaviorTree;}
 
 	AMyAIController* GetMyAIController();
+	AMotherBase* GetOpponentMotherBase() const {return OpponentMotherBase;}
+	void SetOpponentMotherBase(AMotherBase* MotherBase) {OpponentMotherBase = MotherBase;}
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
@@ -37,6 +41,8 @@ protected:
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	TObjectPtr<AMyAIController> MyAIController;
+	UPROPERTY()
+	AMotherBase* OpponentMotherBase;
 	
 private:
 	
