@@ -52,7 +52,7 @@ UMyAbilitySystemComponent* ABaseCharacter::GetMyAbilitySystemComponent() const
 	return MyAbilitySystemComponent;
 }
 
-USkeletalMeshComponent* ABaseCharacter::GetAttackableActorMesh()
+USkeletalMeshComponent* ABaseCharacter::GetAttackableActor_Mesh()
 {
 	return GetMesh();
 }
@@ -99,20 +99,20 @@ FGameplayTag ABaseCharacter::GetTeamTag()
 	return TeamTag;
 }
 
-FGameplayTag ABaseCharacter::GetCharacterTag()
+FGameplayTag ABaseCharacter::GetActorTag()
 {
 	return CharacterTag;
 }
 
 UAnimMontage* ABaseCharacter::GetAnimMontageByTag(const FGameplayTag Tag)
 {
-	return CharacterInfos->GetMontageByTag(GetCharacterTag(), Tag);
+	return CharacterInfos->GetMontageByTag(GetActorTag(), Tag);
 }
 
 TArray<FCharacterAbilityStruct> ABaseCharacter::GetCharacterStartupAbilities()
 {
 	TArray<FCharacterAbilityStruct> OutStartupAbilities;
-	CharacterInfos.Get()->GetStartupAbilities(GetCharacterTag(), OutStartupAbilities);
+	CharacterInfos.Get()->GetStartupAbilities(GetActorTag(), OutStartupAbilities);
 	return OutStartupAbilities;
 }
 
@@ -120,5 +120,20 @@ void ABaseCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) c
 {
 	TagContainer.AddTag(CharacterTag);
 	TagContainer.AddTag(TeamTag);
+}
+
+void ABaseCharacter::IncreaseXP2Give(const int32 XPAmount)
+{
+	XP2Give += XPAmount;
+}
+
+int32 ABaseCharacter::GetXP()
+{
+	return XP;
+}
+
+int32 ABaseCharacter::GetXPReward()
+{
+	return XP2Give;
 }
 

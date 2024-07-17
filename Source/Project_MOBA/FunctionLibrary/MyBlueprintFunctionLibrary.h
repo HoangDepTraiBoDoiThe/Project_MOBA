@@ -7,6 +7,7 @@
 #include "Project_MOBA/GAS/GameplayAbility/GameplayEffectAbility.h"
 #include "MyBlueprintFunctionLibrary.generated.h"
 
+class AMyGameModeBase;
 class ICombatInterface;
 struct FGameplayTag;
 struct FWidgetControllerStruct;
@@ -41,5 +42,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static FGameplayEffectSpecHandle MakeEffectSpecHandleWithDamageTypeMap(TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* OwningASC, UGameplayAbility* OwningAbility, TMap<FGameplayTag, FMyEffectTypeStruct> EffectTypeMap);
 
+	static AMyGameModeBase* GetMyGameModeBase(const UObject* WorldContextObject);
+	
 private:
 };

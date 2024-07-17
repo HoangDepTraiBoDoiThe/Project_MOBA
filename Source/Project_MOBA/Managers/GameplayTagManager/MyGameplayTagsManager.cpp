@@ -70,6 +70,17 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 	);
 
 	/*
+ *	Environment tags
+ */
+	MyGameplayTagsManager::GameplayTags.Environment_Combat_Turret = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Environment.Combat.Turret"),
+		FString("")
+	);
+	MyGameplayTagsManager::GameplayTags.Environment_Combat_MotherBase = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Environment.Combat.MotherBase"),
+		FString("")
+	);
+	/*
 	 *	Vital attributes
 	 */
 	MyGameplayTagsManager::GameplayTags.Attribute_Vital_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(

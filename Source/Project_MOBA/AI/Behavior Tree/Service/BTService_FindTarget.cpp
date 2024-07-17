@@ -31,7 +31,7 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 	{
 		for (ICombatInterface* OverlappedActor : OutCombatActors)
 		{
-			const FGameplayTag ActorCharacterTag = OverlappedActor->GetCharacterTag();
+			const FGameplayTag ActorCharacterTag = OverlappedActor->GetActorTag();
 			if (!ActorCharacterTag.MatchesTag(TargetType)) continue;
 			
 			UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_CurrentTargetActor, Cast<AActor>(OverlappedActor));

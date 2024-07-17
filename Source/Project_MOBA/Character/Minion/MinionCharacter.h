@@ -29,11 +29,7 @@ public:
 	UBehaviorTree* GetMinionBehaviorTree() const {return BehaviorTree;}
 
 	AMyAIController* GetMyAIController();
-
-	// ICombatInterface override funcions.
-	virtual void IncreaseXP2Give(const int32 XPAmount) override;
-	virtual int32 GetXP() override;
-	virtual int32 GetXPReward() override;
+	
 
 	// IEnvironmentInterface functions
 	virtual UMyAbilitySystemComponent* GetASC() override;
@@ -52,12 +48,6 @@ protected:
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	TObjectPtr<AMyAIController> MyAIController;
-	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UWidgetComponent> WidgetComponent;
-	int32 XP{1};
-	UPROPERTY(EditDefaultsOnly)
-	int32 XP2Give{1};
 	
 private:
 	

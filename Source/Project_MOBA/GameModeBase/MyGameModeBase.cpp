@@ -3,3 +3,6 @@
 
 #include "MyGameModeBase.h"
 
+void AMyGameModeBase::EndGame()
+{
+}

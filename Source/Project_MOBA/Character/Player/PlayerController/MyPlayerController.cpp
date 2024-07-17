@@ -143,9 +143,9 @@ void AMyPlayerController::OnInputReleased(FGameplayTag InputTag)
 void AMyPlayerController::bShouldHighlight(ICombatInterface* Actor, bool b) const
 {
 	if (!Actor) return;
-	Actor->GetAttackableActorMesh()->bRenderCustomDepth = b;
-	Actor->GetAttackableActorMesh()->SetCustomDepthStencilValue((b) ? 250 : 0);
-	Actor->GetAttackableActorMesh()->MarkRenderStateDirty();
+	Actor->GetAttackableActor_Mesh()->bRenderCustomDepth = b;
+	Actor->GetAttackableActor_Mesh()->SetCustomDepthStencilValue((b) ? 250 : 0);
+	Actor->GetAttackableActor_Mesh()->MarkRenderStateDirty();
 }
 
 APlayerCharacter* AMyPlayerController::GetPlayerCharacter()

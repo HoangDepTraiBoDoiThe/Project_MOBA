@@ -10,6 +10,7 @@
 #include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
+class UWidgetComponent;
 class UBoxComponent;
 struct FCharacterAbilityStruct;
 class UGameplayAbility;
@@ -32,18 +33,12 @@ public:
 	UMyAbilitySystemComponent* GetMyAbilitySystemComponent() const;
 	FORCEINLINE UBaseAttributeSet* GetBaseAttributeSet() const { return BaseAttributeSet; }
 
-	// ICombatInterface override functions.
-	virtual USkeletalMeshComponent* GetAttackableActorMesh() override;
-	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
 	virtual void Die() override;
 	UFUNCTION(BlueprintCallable)
 	virtual void Death();
-	virtual int32 GetXP() override {return 0;}
-	virtual int32 GetXPReward() override {return 0;}
-	virtual void IncreaseXP2Give(const int32 XPAmount) override {}
 	UFUNCTION(BlueprintCallable)
 	virtual FGameplayTag GetTeamTag() override;
-	virtual FGameplayTag GetCharacterTag() override;
+	virtual FGameplayTag GetActorTag() override;
 
 	// IGameplayTagAssetInterface override functions.
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
@@ -56,6 +51,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UBoxComponent* GetMeleCollisionBoundary() const {return MeleCollisionBoundary;}
 
+	// ICombatInterface override functions.
+	virtual USkeletalMeshComponent* GetAttackableActor_Mesh() override;
+	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
+	virtual AActor* GetOwningCombatActor() override {return this;}
+	virtual void IncreaseXP2Give(const int32 XPAmount) override;
+	virtual int32 GetXP() override;
+	virtual int32 GetXPReward() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -78,4 +80,10 @@ protected:
 	FName MeleSocketName{"MeleWeaponSocket"};
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> MeleCollisionBoundary;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UWidgetComponent> WidgetComponent;
+	int32 XP{1};
+	UPROPERTY(EditDefaultsOnly)
+	int32 XP2Give{1};
 };

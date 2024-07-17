@@ -69,7 +69,7 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies()
 	WidgetControllerInfos->ASC->OnGameplayAbilityStatusToControllerDelegate.AddLambda(
 		[this] (const FGameplayTag AbilityTag, const FGameplayTag AbilityState, const int32 AbilityLevel)
 		{
-			const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetCharacterTag());
+			const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetActorTag());
 			for (auto Struct : HeroUIDataData.AbilityUIData)
 			{
 				if (Struct.AbilityTag.MatchesTagExact(AbilityTag))
@@ -97,7 +97,7 @@ void UMainWidgetController::BroadCastCurrentAttributes()
 
 void UMainWidgetController::RequestAbilityInitialUIData()
 {
-	const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetCharacterTag());
+	const FHeroUIDataStruct HeroUIDataData = GetHeroUIDataAsset()->GetUIDataByHeroTag(WidgetControllerInfos->PS->GetPlayerCharacter()->GetActorTag());
 	for (auto Struct : HeroUIDataData.AbilityUIData)
 	{
 		Struct.AbilityState = MyGameplayTagsManager::Get().Ability_Availability_Unlockable;

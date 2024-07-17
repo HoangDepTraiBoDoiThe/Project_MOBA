@@ -10,6 +10,7 @@
 #include "Project_MOBA/Project_MOBA.h"
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 #include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
+#include "Project_MOBA/GameModeBase/MyGameModeBase.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/GameplayAbility/SpawnActor/Projectile.h"
 #include "Project_MOBA/UI/MyHUD.h"
@@ -106,6 +107,15 @@ FGameplayEffectSpecHandle UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithD
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(Pair.Key, BaseDamageAtAbilityLevel);
 	}
 	return EffectSpecHandle;
+}
+
+AMyGameModeBase* UMyBlueprintFunctionLibrary::GetMyGameModeBase(const UObject* WorldContextObject)
+{
+	const UWorld* WorldContext = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::Assert);
+	if (WorldContext)
+		return Cast<AMyGameModeBase>(WorldContext->GetAuthGameMode());
+
+	return nullptr;
 }
 
 FWidgetControllerStruct* UMyBlueprintFunctionLibrary::MakeWidgetControllerInfos(const UObject* WorldContextObject)

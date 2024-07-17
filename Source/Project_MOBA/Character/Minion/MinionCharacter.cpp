@@ -56,21 +56,6 @@ void AMinionCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
-void AMinionCharacter::IncreaseXP2Give(const int32 XPAmount)
-{
-	XP2Give += XPAmount;
-}
-
-int32 AMinionCharacter::GetXP()
-{
-	return XP;
-}
-
-int32 AMinionCharacter::GetXPReward()
-{
-	return XP2Give;
-}
-
 UMyAbilitySystemComponent* AMinionCharacter::GetASC()
 {
 	return MyAbilitySystemComponent;
@@ -89,7 +74,7 @@ UWidgetComponent* AMinionCharacter::GetWidgetComponent()
 void AMinionCharacter::Destroyed()
 {
 	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;
-	CharacterInfos->GetParticleSystems(GetCharacterTag(), OutParticleSystems);
+	CharacterInfos->GetParticleSystems(GetActorTag(), OutParticleSystems);
 	for (const auto& Item : OutParticleSystems)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Item, GetActorTransform());

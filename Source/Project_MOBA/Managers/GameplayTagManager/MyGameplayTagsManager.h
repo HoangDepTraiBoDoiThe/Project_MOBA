@@ -16,7 +16,7 @@ public:
  static void InitNativeGameplayTags();
 
  /*
- *	Character tags
+ *	Team tags
  */
  FGameplayTag Team_White;
  FGameplayTag Team_Black;
@@ -32,6 +32,12 @@ public:
  FGameplayTag Character_Minion_Super_Mele;
  FGameplayTag Character_Minion_Super_Range;
 
+ /*
+*	Environment tags
+*/
+ FGameplayTag Environment_Combat_Turret;
+ FGameplayTag Environment_Combat_MotherBase;
+ 
 /*
  *	Vital attributes
  */

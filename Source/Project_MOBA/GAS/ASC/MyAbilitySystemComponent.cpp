@@ -40,7 +40,7 @@ void UMyAbilitySystemComponent::ApplyDefaultGEs()
 {
 	TSubclassOf<UGameplayEffect> PrimaryGE;
 	TArray<TSubclassOf<UGameplayEffect>> SecondaryGEs;
-	GetBaseCharacter()->GetCharacterInfosDataAsset()->GetDefaultGEs(BaseCharacter->GetCharacterTag(), PrimaryGE,
+	GetBaseCharacter()->GetCharacterInfosDataAsset()->GetDefaultGEs(BaseCharacter->GetActorTag(), PrimaryGE,
 	                                                                SecondaryGEs);
 	//CHECKF(PrimaryGE, "HIGH", UMyAbilitySystemComponent::GetName(), __FUNCTION__, "")
 	if (PrimaryGE)
