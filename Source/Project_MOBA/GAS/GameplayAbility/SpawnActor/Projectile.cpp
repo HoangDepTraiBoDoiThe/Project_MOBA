@@ -75,28 +75,28 @@ void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	if (OtherActor == Owner || !HasAuthority()) return;
 	ICombatInterface* OverlappedCombatActor = Cast<ICombatInterface>(OtherActor);
 	if (!OverlappedCombatActor) return;
+	const bool IsTheSameTeam = Cast<ICombatInterface>(GetInstigator())->GetTeamTag().MatchesTagExact(OverlappedCombatActor->GetTeamTag());
+	if (IsTheSameTeam) return;
 	
-	const bool IsNotTheSameTeam = !Cast<ICombatInterface>(GetInstigator())->GetTeamTag().MatchesTagExact(OverlappedCombatActor->GetTeamTag());
-	if (IsNotTheSameTeam)
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+	if (TargetASC)
 	{
-		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
-		if (TargetASC)
-		{
-			FActiveGameplayEffectHandle Handle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
-			TargetsOnArea.Add(TargetASC, Handle);
-		}
+		FActiveGameplayEffectHandle Handle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
+		TargetsOnArea.Add(TargetASC, Handle);
 	}
 
 	if (bShouldDestroyOnOver)
 	{
 		const bool bCharacter = Cast<ABaseCharacter>(OtherActor) != nullptr;
+		const bool bZeroImpactPointVector = SweepResult.ImpactPoint.IsZero();
+		const FVector SpawnLocation = !bZeroImpactPointVector ? FVector(SweepResult.ImpactPoint) : GetActorLocation();
 		if (bCharacter && HitCharacterParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitCharacterParticle, SpawnLocation, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
 		}
 		else if (HitWorldParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitWorldParticle, SpawnLocation, FRotator::ZeroRotator, GetActorScale() * FVector::One() * HitParticleMultiply);
 		}
 		Destroy();
 	}
