@@ -9,6 +9,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
 #include "Components/WidgetComponent.h"
+#include "Project_MOBA/Component/EnvironmentComponent.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
@@ -24,6 +25,7 @@ ABaseCharacter::ABaseCharacter()
 	MeleCollisionBoundary->SetCollisionResponseToAllChannels(ECR_Ignore);
 	MeleCollisionBoundary->SetupAttachment(GetMesh(), MeleSocketName);
 
+	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(FName("Environment Component"));
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>("Widget Component");
 	WidgetComponent->SetupAttachment(GetRootComponent());
 }
@@ -32,6 +34,7 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	EnvironmentComponent->SetWidgetControllerToWidget();
 	if (GetController()->IsPlayerController()) WidgetComponent->DestroyComponent();
 }
 
@@ -96,7 +99,6 @@ void ABaseCharacter::Death()
 	GetMesh()->SetCollisionResponseToAllChannels(ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	GetMesh()->SetEnableGravity(true);
-	GetCharacterMovement()->AddImpulse(FVector::DownVector * 10000);
 }
 
 FGameplayTag ABaseCharacter::GetTeamTag()

@@ -10,6 +10,7 @@
 #include "Project_MOBA/Interface/CombatInterface.h"
 #include "BaseCharacter.generated.h"
 
+class UEnvironmentComponent;
 class UWidgetComponent;
 class UBoxComponent;
 struct FCharacterAbilityStruct;
@@ -83,6 +84,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> MeleCollisionBoundary;
 
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UEnvironmentComponent> EnvironmentComponent;
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> WidgetComponent;
 	int32 XP{1};

@@ -31,11 +31,7 @@ public:
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
-	virtual void PostInitializeComponents() override;
 	virtual void Destroyed() override;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UEnvironmentComponent> EnvironmentComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
