@@ -39,7 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual FGameplayTag GetTeamTag() override;
 	virtual FGameplayTag GetActorTag() override;
-
+	
 	// IGameplayTagAssetInterface override functions.
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
@@ -58,6 +58,8 @@ public:
 	virtual void IncreaseXP2Give(const int32 XPAmount) override;
 	virtual int32 GetXP() override;
 	virtual int32 GetXPReward() override;
+
+	UWidgetComponent* GetWidgetComponent() const;
 
 protected:
 	virtual void BeginPlay() override;

@@ -28,6 +28,7 @@ public:
 	bool TryActivateAbilityByTag(const FGameplayTag AbilityTag);
 	void ReceiveAndBindCallBackToDependencies();
 	/*
+	 Call this for every Actors that has this component.
 	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
 	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);

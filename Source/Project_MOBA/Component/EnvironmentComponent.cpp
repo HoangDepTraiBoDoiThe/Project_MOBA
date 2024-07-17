@@ -4,7 +4,7 @@
 #include "EnvironmentComponent.h"
 
 #include "Components/WidgetComponent.h"
-#include "Project_MOBA/Interface/EnvironmentInterface.h"
+#include "Project_MOBA/Character/BaseCharacter.h"
 #include "Project_MOBA/UI/UserWidget/EnvirUserWidget.h"
 #include "Project_MOBA/UI/WidgetController/EnvironmentWidgetController.h"
 
@@ -28,7 +28,7 @@ void UEnvironmentComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void UEnvironmentComponent::SetWidgetControllerToWidget()
 {
-	const FEnvirWidgetControllerStruct EnvirWidgetControllerStruct(GetEnvirCompOwner()->GetASC(), GetEnvirCompOwner()->GetAS());
+	const FEnvirWidgetControllerStruct EnvirWidgetControllerStruct(GetEnvirCompOwner()->GetMyAbilitySystemComponent(), GetEnvirCompOwner()->GetBaseAttributeSet());
 	if (GetEnvirCompOwner()->GetWidgetComponent()->GetWidget())
 		Cast<UEnvirUserWidget>(GetEnvirCompOwner()->GetWidgetComponent()->GetWidget())->SetWidgetController(GetEnvironmentWidgetController(EnvirWidgetControllerStruct));
 }
@@ -44,9 +44,9 @@ UEnvironmentWidgetController* UEnvironmentComponent::GetEnvironmentWidgetControl
 	return EnvironmentWidgetController;
 }
 
-IEnvironmentInterface* UEnvironmentComponent::GetEnvirCompOwner()
+ABaseCharacter* UEnvironmentComponent::GetEnvirCompOwner()
 {
-	if (!Owner) Owner = Cast<IEnvironmentInterface>(GetOwner());
+	if (!Owner) Owner = Cast<ABaseCharacter>(GetOwner());
 	return Owner;
 }
 

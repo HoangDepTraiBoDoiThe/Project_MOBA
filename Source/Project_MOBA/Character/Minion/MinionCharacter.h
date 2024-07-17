@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
-#include "Project_MOBA/Interface/EnvironmentInterface.h"
 #include "MinionCharacter.generated.h"
 
 class UWidgetComponent;
@@ -17,7 +16,7 @@ class UBehaviorTreeComponent;
  * 
  */
 UCLASS()
-class PROJECT_MOBA_API AMinionCharacter : public ABaseCharacter, public IEnvironmentInterface
+class PROJECT_MOBA_API AMinionCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -29,12 +28,6 @@ public:
 	UBehaviorTree* GetMinionBehaviorTree() const {return BehaviorTree;}
 
 	AMyAIController* GetMyAIController();
-	
-
-	// IEnvironmentInterface functions
-	virtual UMyAbilitySystemComponent* GetASC() override;
-	virtual UBaseAttributeSet* GetAS() override;
-	virtual UWidgetComponent* GetWidgetComponent() override;
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;

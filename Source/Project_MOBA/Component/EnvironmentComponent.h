@@ -6,8 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "EnvironmentComponent.generated.h"
 
+class ABaseCharacter;
+class ICombatInterface;
 class UWidgetComponent;
-class IEnvironmentInterface;
 class UBaseUserWidget;
 class UBaseAttributeSet;
 class UMyAbilitySystemComponent;
@@ -40,13 +41,15 @@ public:
 	UEnvironmentComponent();
 	void SetWidgetControllerToWidget();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	IEnvironmentInterface* GetEnvirCompOwner();
+	ABaseCharacter* GetEnvirCompOwner();
 
 	UEnvironmentWidgetController* GetEnvironmentWidgetController(FEnvirWidgetControllerStruct EnvirWidgetControllerStruct);
 
 protected:
 	virtual void BeginPlay() override;
-	IEnvironmentInterface* Owner;
+
+	UPROPERTY()
+	ABaseCharacter* Owner;
 
 private:
 	UPROPERTY()

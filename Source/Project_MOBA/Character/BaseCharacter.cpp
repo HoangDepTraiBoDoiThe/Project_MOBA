@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
+#include "Components/WidgetComponent.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
@@ -22,12 +23,16 @@ ABaseCharacter::ABaseCharacter()
 	MeleCollisionBoundary = CreateDefaultSubobject<UBoxComponent>(FName("MeleCollisionBoundary"));
 	MeleCollisionBoundary->SetCollisionResponseToAllChannels(ECR_Ignore);
 	MeleCollisionBoundary->SetupAttachment(GetMesh(), MeleSocketName);
+
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>("Widget Component");
+	WidgetComponent->SetupAttachment(GetRootComponent());
 }
 
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetController()->IsPlayerController()) WidgetComponent->DestroyComponent();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -135,5 +140,10 @@ int32 ABaseCharacter::GetXP()
 int32 ABaseCharacter::GetXPReward()
 {
 	return XP2Give;
+}
+
+UWidgetComponent* ABaseCharacter::GetWidgetComponent() const
+{
+	return WidgetComponent;
 }
 
