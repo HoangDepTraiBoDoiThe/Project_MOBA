@@ -10,7 +10,7 @@
 
 UEnvironmentComponent::UEnvironmentComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 	
 }
 
@@ -33,12 +33,6 @@ void UEnvironmentComponent::SetWidgetControllerToWidget()
 		Cast<UEnvirUserWidget>(GetEnvirCompOwner()->GetWidgetComponent()->GetWidget())->SetWidgetController(GetEnvironmentWidgetController(EnvirWidgetControllerStruct));
 }
 
-IEnvironmentInterface* UEnvironmentComponent::GetEnvirCompOwner()
-{
-	if (!Owner) Owner = Cast<IEnvironmentInterface>(GetOwner());
-	return Owner;
-}
-
 UEnvironmentWidgetController* UEnvironmentComponent::GetEnvironmentWidgetController(
 	FEnvirWidgetControllerStruct EnvirWidgetControllerStruct)
 {
@@ -48,5 +42,11 @@ UEnvironmentWidgetController* UEnvironmentComponent::GetEnvironmentWidgetControl
 		EnvironmentWidgetController->SetupWidgetController(EnvirWidgetControllerStruct.ASC, EnvirWidgetControllerStruct.AS);
 	}
 	return EnvironmentWidgetController;
+}
+
+IEnvironmentInterface* UEnvironmentComponent::GetEnvirCompOwner()
+{
+	if (!Owner) Owner = Cast<IEnvironmentInterface>(GetOwner());
+	return Owner;
 }
 
