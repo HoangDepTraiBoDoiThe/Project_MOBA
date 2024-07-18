@@ -19,13 +19,22 @@ void AMotherBase::Tick(float DeltaTime)
 void AMotherBase::Die()
 {
 	Super::Die();
-	
-	UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->EndGame();
+
+	if (HasAuthority())
+	{
+		FGameplayTag TeamWinner = GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
+		UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->EndGame(TeamWinner);
+	}
 }
 
 void AMotherBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->GetTeamBaseMap().Add(GetTeamTag(), this);
+	if (HasAuthority()) UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->GetTeamBaseMap().Add(GetTeamTag(), this);
+}
+
+void AMotherBase::Destroyed()
+{
+	Super::Destroyed();
 }

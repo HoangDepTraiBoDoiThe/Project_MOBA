@@ -3,6 +3,7 @@
 
 #include "MainWidgetController.h"
 
+#include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 #include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
@@ -80,6 +81,12 @@ void UMainWidgetController::BindReceivedCallBacksToDependencies()
 					break;
 				}
 			}
+		});
+
+	WidgetControllerInfos->PS->OnEndingGame.BindLambda(
+		[this] (const FGameplayTag TeamWinner, float TimeInMinute)
+		{
+			NotifyEndingGameToView.Broadcast(TeamWinner, TimeInMinute);
 		});
 
 	BroadCastInitialValues();

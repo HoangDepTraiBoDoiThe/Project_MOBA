@@ -8,6 +8,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "PlayerController/MyPlayerController.h"
 #include "PLayerState/MyPlayerState.h"
+#include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
+#include "Project_MOBA/GameModeBase/MyGameModeBase.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/AttributeSet/BaseAttributeSet.h"
 #include "Project_MOBA/UI/MyHUD.h"
@@ -109,4 +111,17 @@ const TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInp
 		return &InputActionInfos;
 	}
 	return nullptr;
+}
+
+void APlayerCharacter::Die()
+{
+	if (HasAuthority())
+	{
+		AMyGameModeBase* GameMode = UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld());
+		if (GameMode)
+		{
+			GameMode->RespawnPlayer(MyPlayerController);
+		}
+	}
+	Super::Die();
 }

@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerState.h"
 #include "MyPlayerState.generated.h"
 
+struct FGameplayTag;
 struct FRewardForPlayerStruct;
 class APlayerCharacter;
 class UAbilitySystemComponent;
@@ -15,7 +17,7 @@ class UBaseAttributeSet;
  * 
  */
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnIntPropertyChangeTwoParamSignature, const int32 New, const int32 Old)
-
+DECLARE_DELEGATE_TwoParams(FOnEndingGame, const FGameplayTag TeamWinner, const float TotalTime)
 
 DECLARE_DELEGATE_OneParam(FAbilityPointSignature, int32 CharacterLevel)
 
@@ -43,10 +45,14 @@ public:
 
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
 
+	UFUNCTION(Client, Reliable)
+	void NotifyEndGame(const FGameplayTag TeamWinner, float TimeInMinute);
+	
 	// Delegates
 	FAbilityPointSignature AbilityPointDelegate;
 	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
 	FOnIntPropertyChangeTwoParamSignature OnLevelChangeDelegate;
+	FOnEndingGame OnEndingGame;
 
 protected:
 	UFUNCTION()

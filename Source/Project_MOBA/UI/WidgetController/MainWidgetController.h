@@ -18,6 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterXPToViewSignature, con
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterLevelToViewSignature, const int32, OldLevel, const int32, NewLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAbilityUpdateToViewSignature, const FAbilityUIStruct&, HeroUIDataStruct);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifyAbilityLevelUpToViewSignature, FGameplayTag, AbilityTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FNotifyEndingGameToView, const FGameplayTag, TeamWinner, const float, TotalTime);
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerStruct
@@ -86,8 +87,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
 	FNotifyAbilityLevelUpToViewSignature OnAbilityUpgradeDelegate;
 	
-protected:
-
+	UPROPERTY(BlueprintAssignable, Category = "GAS|EndGame")
+	FNotifyEndingGameToView NotifyEndingGameToView;
+	
 private:
 	FWidgetControllerStruct* WidgetControllerInfos;
 	UPROPERTY()

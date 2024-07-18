@@ -50,6 +50,7 @@ public:
 	// Other
 	const TMap<TObjectPtr<UInputAction>, FGameplayTag>* GetHeroInputActionInfos() const;
 	TObjectPtr<UCurveTable> GetHeroAbilityBaseDamageInfos() const {return HeroAbilityBaseDamageInfos;}
+	virtual void Die() override;
 
 protected:
 	// Components

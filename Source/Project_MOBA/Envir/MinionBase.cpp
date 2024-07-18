@@ -25,7 +25,7 @@ void AMinionBase::BeginPlay()
 
 void AMinionBase::SpawnAMinion(const TSubclassOf<AMinionCharacter> MinionClass)
 {
-	if (!MinionClass) return;
+	if (!MinionClass || !HasAuthority()) return;
 	AActor* NewMinion = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(), TSubclassOf<AActor>(MinionClass), SpawnLocation->GetComponentTransform(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, this);
 	AMinionCharacter* MinionCharacter = Cast<AMinionCharacter>(NewMinion);
 	const FGameplayTag OpponentMotherBaseTag = GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
