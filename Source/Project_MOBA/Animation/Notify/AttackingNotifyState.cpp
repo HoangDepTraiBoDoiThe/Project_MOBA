@@ -15,7 +15,7 @@ void UAttackingNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimS
 	{
 		FCollisionResponseContainer CollisionResponseContainer;
 		CollisionResponseContainer.SetResponse(ECC_Character, ECR_Overlap);
-		CollisionResponseContainer.SetResponse(ECC_Turret, ECR_Overlap);
+		CollisionResponseContainer.SetResponse(ECC_EnvirCombatActor, ECR_Overlap);
 		Character->GetMeleCollisionBoundary()->SetCollisionResponseToChannels(CollisionResponseContainer);
 		
 	}	
