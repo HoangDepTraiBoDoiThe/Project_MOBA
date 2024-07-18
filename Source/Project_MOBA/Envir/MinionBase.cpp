@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Project_MOBA/Character/Minion/MinionCharacter.h"
+#include "Project_MOBA/Character/Minion/Controller/MyAIController.h"
 #include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
 #include "Project_MOBA/GameModeBase/MyGameModeBase.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"

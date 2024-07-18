@@ -35,7 +35,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	EnvironmentComponent->SetWidgetControllerToWidget();
-	if (GetController()->IsPlayerController()) WidgetComponent->DestroyComponent();
+	if (GetController() && GetController()->IsPlayerController()) WidgetComponent->DestroyComponent();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
