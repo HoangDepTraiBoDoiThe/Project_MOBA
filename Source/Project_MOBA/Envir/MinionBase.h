@@ -36,20 +36,38 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	void SpawningMinion();
-	void SpawnTimerCallBack();
 
-	// How many second between each spawn.
-	UPROPERTY(EditAnywhere)
-	float SpawnRate;
+	// How many second between each Waves.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float WaveSpawnRate{20};
+
+	// How many second between each minion spawn in a wave.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float Rate;
+	
+	// How many normal waves before a Cannon wave
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float NumberNormalWavesBeforeBigWave{3};
+	
 	// Wait for how long in second before the first spawn.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DelayFirstSpawn;
+	
 	UPROPERTY(EditAnywhere)
-	TArray<FMinionToSpawnStruct> MinionToSpawn;
+	TArray<FMinionToSpawnStruct> MinionsToSpawn;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USphereComponent> SpawnLocation;
 
-	FTimerHandle SpawnTimer;
+	// Spawn functionality
+	UFUNCTION(BlueprintCallable)
+	TArray<TSubclassOf<AMinionCharacter>> GetNextWaveToResponse();
+	UPROPERTY(BlueprintReadWrite)
+	int32 NormalWaveRemainBeforeBigWave = NumberNormalWavesBeforeBigWave;
+	UFUNCTION(BlueprintCallable)
+	void SpawnAMinion(const TSubclassOf<AMinionCharacter> MinionClass);
+
+	
+private:
+	
 };

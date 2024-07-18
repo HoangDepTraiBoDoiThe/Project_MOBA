@@ -53,7 +53,7 @@ public:
 	UBoxComponent* GetMeleCollisionBoundary() const {return MeleCollisionBoundary;}
 
 	// ICombatInterface override functions.
-	virtual USkeletalMeshComponent* GetAttackableActor_Mesh() override;
+	virtual UPrimitiveComponent* GetAttackableActor_Mesh() override;
 	virtual FVector GetWeaponSocketLocationByName(FName SocketName) override;
 	virtual AActor* GetOwningCombatActor() override {return this;}
 	virtual void IncreaseXP2Give(const int32 XPAmount) override;

@@ -17,7 +17,12 @@ class PROJECT_MOBA_API ABaseEnvirActor : public ABaseCharacter
 public:
 	ABaseEnvirActor();
 
+	virtual UPrimitiveComponent* GetAttackableActor_Mesh() override;
+
 protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
+	
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
 	

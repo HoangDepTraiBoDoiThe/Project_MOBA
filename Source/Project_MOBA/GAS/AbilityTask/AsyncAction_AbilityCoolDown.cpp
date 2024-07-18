@@ -3,6 +3,7 @@
 
 #include "AsyncAction_AbilityCoolDown.h"
 
+#include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/GAS/GameplayAbility/BaseGameplayAbility.h"
 #include "Project_MOBA/UI/WidgetController/MainWidgetController.h"
 
@@ -15,8 +16,8 @@ UAsyncAction_AbilityCoolDown* UAsyncAction_AbilityCoolDown::WaitAbilityCoolDown(
 {
 	UAsyncAction_AbilityCoolDown* Obj = NewObject<UAsyncAction_AbilityCoolDown>();
 	Obj->OwningASC = MainWidgetController->GetWidgetControllerInfos()->ASC;
-	Obj->OwningAbilityTag = AbilityTag;
 	Obj->OwningASC->AbilityCommittedCallbacks.AddUObject(Obj, &ThisClass::OnAbilityCommitted);
+	Obj->OwningAbilityTag = AbilityTag;
 	return Obj;
 }
 

@@ -60,7 +60,7 @@ UMyAbilitySystemComponent* ABaseCharacter::GetMyAbilitySystemComponent() const
 	return MyAbilitySystemComponent;
 }
 
-USkeletalMeshComponent* ABaseCharacter::GetAttackableActor_Mesh()
+UPrimitiveComponent* ABaseCharacter::GetAttackableActor_Mesh()
 {
 	return GetMesh();
 }

@@ -9,7 +9,14 @@
 ABaseEnvirActor::ABaseEnvirActor()
 {
 	MyAbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>("Ability system component");
-	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>("Base Attriubute Set");
+	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>("Base Attribute Set");
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("Static mesh");
+	StaticMeshComponent->SetupAttachment(GetRootComponent());
+}
+
+UPrimitiveComponent* ABaseEnvirActor::GetAttackableActor_Mesh()
+{
+	return StaticMeshComponent;
 }
 
 void ABaseEnvirActor::BeginPlay()

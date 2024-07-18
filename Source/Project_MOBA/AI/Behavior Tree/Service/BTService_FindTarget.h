@@ -24,9 +24,6 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	FBlackboardKeySelector KeySelector_TargetTerritory;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<AMotherBase> Territory;
-
 	// Order matter
 	UPROPERTY(EditAnywhere)
 	TArray<FGameplayTag> TargetActorClassTypes;

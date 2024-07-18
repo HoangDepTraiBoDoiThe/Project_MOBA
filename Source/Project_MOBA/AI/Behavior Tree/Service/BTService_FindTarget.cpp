@@ -43,5 +43,5 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 
  void UBTService_FindTarget::SetTargetTerritory()
  {
-	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Cast<AActor>(Territory));
+	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Cast<AActor>(Cast<AMinionCharacter>(AIOwner->GetPawn<AMinionCharacter>())->GetOpponentMotherBase()));
  }

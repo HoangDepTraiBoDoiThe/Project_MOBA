@@ -20,23 +20,46 @@ void AMinionBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, this, &ThisClass::SpawnTimerCallBack, SpawnRate, true, DelayFirstSpawn);
 }
 
-void AMinionBase::SpawnTimerCallBack()
+void AMinionBase::SpawnAMinion(const TSubclassOf<AMinionCharacter> MinionClass)
 {
-	
-	SpawningMinion();
+	if (!MinionClass) return;
+	AActor* NewMinion = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(), TSubclassOf<AActor>(MinionClass), SpawnLocation->GetComponentTransform(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, this);
+	AMinionCharacter* MinionCharacter = Cast<AMinionCharacter>(NewMinion);
+	const FGameplayTag OpponentMotherBaseTag = GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
+	MinionCharacter->SetOpponentMotherBase(UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->GetTeamBaseMap().FindRef(OpponentMotherBaseTag));
+	UGameplayStatics::FinishSpawningActor(MinionCharacter, SpawnLocation->GetComponentTransform());
 }
 
-void AMinionBase::SpawningMinion()
+TArray<TSubclassOf<AMinionCharacter>> AMinionBase::GetNextWaveToResponse()
 {
-	for (const auto& Struct : MinionToSpawn)
+	TArray<TSubclassOf<AMinionCharacter>> NextWaveToResponse;
+	bool bIsSuperWave = false;
+
+	if (NormalWaveRemainBeforeBigWave <= 0)
 	{
-		AActor* NewMinion = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(), TSubclassOf<AActor>(Struct.MinionClass), SpawnLocation->GetComponentTransform(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, this);
-		AMinionCharacter* MinionCharacter = Cast<AMinionCharacter>(NewMinion);
-		FGameplayTag OpponentMotherBaseTag = GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
-		MinionCharacter->SetOpponentMotherBase(UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->GetTeamBaseMap().FindRef(OpponentMotherBaseTag));
-		UGameplayStatics::FinishSpawningActor(MinionCharacter, SpawnLocation->GetComponentTransform());
+		bIsSuperWave = true;
+		NormalWaveRemainBeforeBigWave = NumberNormalWavesBeforeBigWave;
 	}
+
+	for (const auto& Struct : MinionsToSpawn)
+	{
+		const bool bIsSuperMinionStruct = Struct.MinionTag.MatchesTag(FGameplayTag::RequestGameplayTag("Character.Minion.Super"));
+        
+		if (bIsSuperMinionStruct == bIsSuperWave)
+		{
+			for (int32 i = 0; i < Struct.SpawnCount; i++)
+			{
+				NextWaveToResponse.Add(Struct.MinionClass);
+			}
+		}
+	}
+
+	if (!bIsSuperWave)
+	{
+		NormalWaveRemainBeforeBigWave--;
+	}
+    
+	return NextWaveToResponse;
 }
