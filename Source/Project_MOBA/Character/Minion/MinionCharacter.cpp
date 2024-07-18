@@ -44,15 +44,3 @@ void AMinionCharacter::PossessedBy(AController* NewController)
 	AMyAIController* AIController = Cast<AMyAIController>(NewController);
 	if (AIController) AIController->SetupBehavior(BehaviorTree);
 }
-
-void AMinionCharacter::Destroyed()
-{
-	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;
-	CharacterInfos->GetParticleSystems(GetActorTag(), OutParticleSystems);
-	for (const auto& Item : OutParticleSystems)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Item, GetActorTransform());
-	}
-	
-	Super::Destroyed();
-}

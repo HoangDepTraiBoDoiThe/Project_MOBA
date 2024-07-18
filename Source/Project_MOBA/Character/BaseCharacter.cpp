@@ -9,6 +9,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Project_MOBA/Component/EnvironmentComponent.h"
 #include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
@@ -36,6 +37,17 @@ void ABaseCharacter::BeginPlay()
 
 	EnvironmentComponent->SetWidgetControllerToWidget();
 	if (GetController() && GetController()->IsPlayerController()) WidgetComponent->DestroyComponent();
+}
+
+void ABaseCharacter::Destroyed()
+{
+	TArray<TObjectPtr<UParticleSystem>> OutParticleSystems;
+	CharacterInfos->GetParticleSystems(GetActorTag(), OutParticleSystems);
+	for (const auto& Item : OutParticleSystems)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Item, GetActorTransform());
+	}
+	Super::Destroyed();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
