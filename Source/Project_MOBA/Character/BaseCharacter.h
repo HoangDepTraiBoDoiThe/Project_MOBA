@@ -61,10 +61,15 @@ public:
 	virtual int32 GetXPReward() override;
 
 	UWidgetComponent* GetWidgetComponent() const;
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentTargetActor(ABaseCharacter* Actor);
 
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<ABaseCharacter> CurrentTargetActor;
+	
 	UPROPERTY(EditAnywhere)
 	FGameplayTag TeamTag;
 	

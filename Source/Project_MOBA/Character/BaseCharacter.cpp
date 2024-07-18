@@ -149,3 +149,8 @@ UWidgetComponent* ABaseCharacter::GetWidgetComponent() const
 	return WidgetComponent;
 }
 
+void ABaseCharacter::SetCurrentTargetActor(ABaseCharacter* Actor)
+{
+	CurrentTargetActor = Actor;
+}
+
