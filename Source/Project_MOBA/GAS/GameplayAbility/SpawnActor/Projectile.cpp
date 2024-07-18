@@ -74,9 +74,7 @@ void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 {
 	if (OtherActor == Owner || !HasAuthority()) return;
 	ICombatInterface* OverlappedCombatActor = Cast<ICombatInterface>(OtherActor);
-	if (!OverlappedCombatActor) return;
-	const bool IsTheSameTeam = Cast<ICombatInterface>(GetInstigator())->GetTeamTag().MatchesTagExact(OverlappedCombatActor->GetTeamTag());
-	if (IsTheSameTeam) return;
+	if (OverlappedCombatActor && Cast<ICombatInterface>(GetInstigator())->GetTeamTag().MatchesTagExact(OverlappedCombatActor->GetTeamTag())) return;
 	
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 	if (TargetASC)

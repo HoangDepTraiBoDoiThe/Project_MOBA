@@ -77,7 +77,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
         {
             Death = true;
             const UAbilitySystemComponent* ASC = Data.EffectSpec.GetContext().GetInstigatorAbilitySystemComponent();
-            if (Cast<APlayerCharacter>(ASC->GetAvatarActor()))
+            if (ASC && Cast<APlayerCharacter>(ASC->GetAvatarActor()))
             {
                 const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
                 AMyPlayerState* PlayerState = Cast<APlayerCharacter>(ASC->GetAvatarActor())->GetMyPlayerState();
