@@ -62,6 +62,8 @@ protected:
     // Behavior
     UPROPERTY(EditAnywhere, Category = "Behavior")
     bool bShouldDestroyOnOver{true};
+    UPROPERTY(EditAnywhere, Category = "Behavior")
+    int32 AutoDestroyTime{5};
 
     // Particles
     TObjectPtr<UParticleSystemComponent> MainParticleSystemComponent;

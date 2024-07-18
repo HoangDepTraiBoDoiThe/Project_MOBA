@@ -67,7 +67,7 @@ void AProjectile::Tick(float DeltaTime)
 void AProjectile::SetupDestroyTimer()
 {
 	TimerManager = &GetWorld()->GetTimerManager();
-	TimerManager->SetTimer(AutoDestroyTimerHandle, this, &ThisClass::OnDestroyTimerCallBack, 5);
+	TimerManager->SetTimer(AutoDestroyTimerHandle, this, &ThisClass::OnDestroyTimerCallBack, AutoDestroyTime);
 }
 
 void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

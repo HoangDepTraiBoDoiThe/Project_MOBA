@@ -19,11 +19,6 @@ UPrimitiveComponent* ATurretEnvirActor::GetAttackableActor_Mesh()
 	return GetMesh();
 }
 
-ABaseCharacter* ATurretEnvirActor::GetTargetActor()
-{
-	return Cast<ABaseCharacter>(TargetActor);
-}
-
 void ATurretEnvirActor::BeginPlay()
 {
 	Super::BeginPlay();
