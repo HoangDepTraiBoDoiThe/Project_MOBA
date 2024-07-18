@@ -76,6 +76,10 @@ void MyGameplayTagsManager::InitNativeGameplayTags()
 		FName("Environment.Combat.Turret"),
 		FString("")
 	);
+	MyGameplayTagsManager::GameplayTags.Environment_Combat_MinionBase = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Environment.Combat.MinionBase"),
+		FString("")
+	);
 	MyGameplayTagsManager::GameplayTags.Environment_Combat_MotherBase = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Environment.Combat.MotherBase"),
 		FString("")

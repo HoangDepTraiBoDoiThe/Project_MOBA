@@ -36,6 +36,7 @@ public:
 *	Environment tags
 */
  FGameplayTag Environment_Combat_Turret;
+ FGameplayTag Environment_Combat_MinionBase;
  FGameplayTag Environment_Combat_MotherBase;
  
 /*
