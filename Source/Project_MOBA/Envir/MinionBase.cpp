@@ -14,6 +14,7 @@
 AMinionBase::AMinionBase()
 {
 	SpawnLocation = CreateDefaultSubobject<USphereComponent>("Spawn Location");
+	SpawnLocation->SetupAttachment(GetRootComponent());
 }
 
 void AMinionBase::BeginPlay()
@@ -29,6 +30,9 @@ void AMinionBase::SpawnAMinion(const TSubclassOf<AMinionCharacter> MinionClass)
 	AMinionCharacter* MinionCharacter = Cast<AMinionCharacter>(NewMinion);
 	const FGameplayTag OpponentMotherBaseTag = GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
 	MinionCharacter->SetOpponentMotherBase(UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld())->GetTeamBaseMap().FindRef(OpponentMotherBaseTag));
+	const FRotator ForwardVector = (SpawnLocation->GetComponentLocation() - GetRootComponent()->GetComponentLocation()).Rotation();
+	MinionCharacter->SetActorRotation(ForwardVector);
+	
 	UGameplayStatics::FinishSpawningActor(MinionCharacter, SpawnLocation->GetComponentTransform());
 }
 
