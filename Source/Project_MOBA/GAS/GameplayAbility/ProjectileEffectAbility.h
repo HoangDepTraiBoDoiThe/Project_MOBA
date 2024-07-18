@@ -21,6 +21,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AProjectile* SpawnProjectileAtSocket(FVector TargetLocation, bool bIgnorePitch, FName SocketName = "Muzzle", FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
 	UFUNCTION(BlueprintCallable)
+	AProjectile* SpawnHomingProjectileAtSocket(const float ProjectileSpeed, USceneComponent* HomingTargetComponent, FName SocketName = "Muzzle", FVector ProjectileScale = FVector(1, 1, 1));
+	UFUNCTION(BlueprintCallable)
 	AProjectile* SpawnProjectileAtSelectedLocation(FVector TargetLocation, bool bIgnorePitch, FVector SpawnLocation, FVector ProjectileScale = FVector(1, 1, 1), bool bMoving = false, const float ProjectileSpeed = 0);
 
 protected:

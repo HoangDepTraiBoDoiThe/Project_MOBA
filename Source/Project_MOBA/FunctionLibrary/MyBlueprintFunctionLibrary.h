@@ -32,6 +32,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category=Spawning)
 	static AProjectile* SpawnProjectile(const UObject* WorldContextObject, TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle, FVector SpawnLocation, const FVector& TargetLocation, FVector ProjectileScale, FGameplayTag AbilityTag, AActor* Owner = nullptr, APawn* Instigator = nullptr, bool bMoving = false, const float ActorInitialSpeed = 0);
+	static AProjectile* SpawnHomingProjectile(const UObject* WorldContextObject, TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle, FVector SpawnLocation, USceneComponent* HomingTargetComponent, FVector ProjectileScale, FGameplayTag AbilityTag, const float ActorInitialSpeed, AActor* Owner = nullptr, APawn* Instigator = nullptr);
 	UFUNCTION(BlueprintCallable)
 	static FGameplayEffectSpecHandle MakeMyGameplayEffectSpecHandle(const UAbilitySystemComponent* ASC, TSubclassOf<UGameplayEffect> EffectClass, int32 EffectLevel = 1);
 

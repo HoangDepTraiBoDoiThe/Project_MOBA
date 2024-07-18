@@ -58,8 +58,16 @@ AProjectile* UProjectileEffectAbility::SpawnProjectileAtSocket(FVector TargetLoc
 	return UMyBlueprintFunctionLibrary::SpawnProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, TargetLocation, ProjectileScale, GetAbilityTag(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()), bMoving, ProjectileSpeed);
 }
 
+AProjectile* UProjectileEffectAbility::SpawnHomingProjectileAtSocket(const float ProjectileSpeed,
+	USceneComponent* HomingTargetComponent, FName SocketName, FVector ProjectileScale)
+{
+	const FVector SpawnLocation = Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeaponSocketLocationByName(SocketName);
+	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithDamageTypeMap(EffectClass, GetAbilitySystemComponentFromActorInfo(), this, EffectTypeMap);
+	return UMyBlueprintFunctionLibrary::SpawnHomingProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, HomingTargetComponent, ProjectileScale, GetAbilityTag(), ProjectileSpeed, GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()));
+}
+
 AProjectile* UProjectileEffectAbility::SpawnProjectileAtSelectedLocation(FVector TargetLocation, const bool bIgnorePitch, const FVector SpawnLocation,
-                                                                 const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
+                                                                         const FVector ProjectileScale, bool bMoving, const float ProjectileSpeed)
 {
 	const FGameplayEffectSpecHandle EffectSpecHandle = UMyBlueprintFunctionLibrary::MakeEffectSpecHandleWithDamageTypeMap(EffectClass, GetAbilitySystemComponentFromActorInfo(), this, EffectTypeMap);
 	return UMyBlueprintFunctionLibrary::SpawnProjectile(GetWorld(), ProjectileClassToSpawn, EffectSpecHandle, SpawnLocation, TargetLocation, ProjectileScale, GetAbilityTag(), GetAvatarActorFromActorInfo(), Cast<APawn>(GetAvatarActorFromActorInfo()), bMoving, ProjectileSpeed);

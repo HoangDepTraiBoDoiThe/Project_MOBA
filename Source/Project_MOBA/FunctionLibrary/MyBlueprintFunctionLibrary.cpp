@@ -49,17 +49,13 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
                                                           const bool bMoving, const float ActorInitialSpeed)
 {
 	UWorld* World = WorldContextObject->GetWorld();
-	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), Owner,
-
-	Cast<APawn>(Instigator));
+	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), Owner, Cast<APawn>(Instigator));
 	if (!Projectile)
 	{
 		UE_LOG(LogActor, Error, TEXT("Can not spawn projectile. Projectile is null"));
 		return nullptr;
 	}
-	SpawnLocation = !SpawnLocation.IsZero()
-		                ? SpawnLocation
-		                : (Owner != nullptr ? Owner->GetActorLocation() : FVector::Zero());
+	SpawnLocation = !SpawnLocation.IsZero() ? SpawnLocation : (Owner != nullptr ? Owner->GetActorLocation() : FVector::Zero());
 
 	const FVector Direction = (TargetLocation - SpawnLocation).GetSafeNormal();
 	//OrientateCharacter(Direction.Rotation());
@@ -70,10 +66,42 @@ AProjectile* UMyBlueprintFunctionLibrary::SpawnProjectile(const UObject* WorldCo
 	ProjectileTransform.SetScale3D(ProjectileScale);
 	Projectile->SetSpecHandle(EffectSpecHandle);
 	Projectile->SetAbilityTag(AbilityTag);
-
+	
 	if (Projectile->GetProjectileMovementComponent())
 	{
 		Projectile->GetProjectileMovementComponent()->InitialSpeed = bMoving ? ActorInitialSpeed : 0.f;
+	}
+
+	Projectile->FinishSpawning(ProjectileTransform);
+	return Projectile;
+}
+
+AProjectile* UMyBlueprintFunctionLibrary::SpawnHomingProjectile(const UObject* WorldContextObject,
+	TSubclassOf<AProjectile> ProjectileToSpawn, const FGameplayEffectSpecHandle& EffectSpecHandle,
+	FVector SpawnLocation, USceneComponent* HomingTargetComponent, FVector ProjectileScale, FGameplayTag AbilityTag,
+	const float ActorInitialSpeed, AActor* Owner, APawn* Instigator)
+{
+	UWorld* World = WorldContextObject->GetWorld();
+	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(ProjectileToSpawn, FTransform(), Owner, Cast<APawn>(Instigator));
+	if (!Projectile)
+	{
+		UE_LOG(LogActor, Error, TEXT("Can not spawn projectile. Projectile is null"));
+		return nullptr;
+	}
+	SpawnLocation = !SpawnLocation.IsZero() ? SpawnLocation : (Owner != nullptr ? Owner->GetActorLocation() : FVector::Zero());
+	
+	FTransform ProjectileTransform;
+	ProjectileTransform.SetLocation(SpawnLocation);
+	ProjectileTransform.SetScale3D(ProjectileScale);
+	Projectile->SetSpecHandle(EffectSpecHandle);
+	Projectile->SetAbilityTag(AbilityTag);
+	
+	if (Projectile->GetProjectileMovementComponent())
+	{
+		//Projectile->GetProjectileMovementComponent()->InitialSpeed = ActorInitialSpeed;
+		Projectile->GetProjectileMovementComponent()->bIsHomingProjectile = true;
+		Projectile->GetProjectileMovementComponent()->HomingTargetComponent = HomingTargetComponent;
+		Projectile->GetProjectileMovementComponent()->HomingAccelerationMagnitude = ActorInitialSpeed;
 	}
 
 	Projectile->FinishSpawning(ProjectileTransform);

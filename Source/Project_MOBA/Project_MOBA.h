@@ -16,7 +16,7 @@
 #define EOTQ_ProjectileObject EObjectTypeQuery::ObjectTypeQuery10
 #define EOTQ_PawnObject EObjectTypeQuery::ObjectTypeQuery3
 
-#define ECC_Turret ECollisionChannel::ECC_GameTraceChannel1
+#define ECC_EnvirCombatActor ECollisionChannel::ECC_GameTraceChannel1
 #define ECC_Ground ECollisionChannel::ECC_GameTraceChannel2
 #define ECC_Character ECollisionChannel::ECC_GameTraceChannel3
 #define ECC_Projectile ECollisionChannel::ECC_GameTraceChannel4
