@@ -20,6 +20,7 @@ APlayerCharacter::APlayerCharacter()
 
 	CameraArmComponent->SetupAttachment(CameraRootComponent);
 	CameraComponent->SetupAttachment(CameraArmComponent);
+	CameraArmComponent->SetupAttachment(GetRootComponent());
 }
 
 void APlayerCharacter::BeginPlay()
