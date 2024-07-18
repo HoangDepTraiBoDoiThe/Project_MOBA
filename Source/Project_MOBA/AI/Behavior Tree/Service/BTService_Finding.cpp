@@ -1,20 +1,22 @@
- // Cu Nhat Hoang
+// Cu Nhat Hoang
 
 
-#include "BTService_FindTarget.h"
+#include "BTService_Finding.h"
 
 #include "AIController.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
-#include "Project_MOBA/Character/Minion/MinionCharacter.h"
 #include "Project_MOBA/FunctionLibrary/MyBlueprintFunctionLibrary.h"
 #include "Project_MOBA/Interface/CombatInterface.h"
 
-void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTService_Finding::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	SetTargetTerritory();
-	
+	SearchingForTarget();
+}
+
+void UBTService_Finding::SearchingForTarget()
+{
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.AddUnique(AIOwner->GetPawn());
 	const FVector Origin = AIOwner->GetPawn()->GetActorLocation();
@@ -24,9 +26,6 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 	const FGameplayTag TeamTag = CombatOwner->GetTeamTag();
 	
 	UMyBlueprintFunctionLibrary::GetFilteredCombatActorListFromOverlappedActors(GetWorld(), Origin, SearchRadius, ObjectTypeQueries, UCombatInterface::StaticClass(), TeamTag, ActorsToIgnore, OutCombatActors);
-	/*
-	UKismetSystemLibrary::DrawDebugCapsule(GetWorld(), Origin, SearchRadius, SearchRadius, FRotator());
-	*/
 	
 	for (const FGameplayTag TargetType : TargetActorClassTypes)
 	{
@@ -40,8 +39,3 @@ void UBTService_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 		}
 	}
 }
-
- void UBTService_FindTarget::SetTargetTerritory()
- {
-	UBTFunctionLibrary::SetBlackboardValueAsObject(this, KeySelector_TargetTerritory, Cast<AActor>(Cast<AMinionCharacter>(AIOwner->GetPawn<AMinionCharacter>())->GetOpponentMotherBase()));
- }

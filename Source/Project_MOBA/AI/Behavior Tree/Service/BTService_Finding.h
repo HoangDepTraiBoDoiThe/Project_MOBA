@@ -4,25 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Services/BTService_BlueprintBase.h"
-#include "BTService_FindTarget.generated.h"
+#include "BTService_Finding.generated.h"
 
-class AMotherBase;
 /**
  * 
- */
+ */ 
 UCLASS()
-class PROJECT_MOBA_API UBTService_FindTarget : public UBTService_BlueprintBase
+class PROJECT_MOBA_API UBTService_Finding : public UBTService_BlueprintBase
 {
 	GENERATED_BODY()
 
 public:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-	void SetTargetTerritory();
 
+protected:
+	void SearchingForTarget();
+	
 	UPROPERTY(EditInstanceOnly)
 	FBlackboardKeySelector KeySelector_CurrentTargetActor;
-	UPROPERTY(EditInstanceOnly)
-	FBlackboardKeySelector KeySelector_TargetTerritory;
 
 	// Order matter
 	UPROPERTY(EditAnywhere)
@@ -31,5 +30,6 @@ public:
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeQueries;
 	
 	UPROPERTY(EditAnywhere)
-	float SearchRadius;	
+	float SearchRadius;
+	
 };

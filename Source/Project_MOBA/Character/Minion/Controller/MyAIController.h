@@ -31,6 +31,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AMinionCharacter> MinionCharacter;
+	
 private:
 	
 };

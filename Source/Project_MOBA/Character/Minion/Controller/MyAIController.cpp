@@ -17,10 +17,7 @@ void AMyAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetMinionCharacter())
-	{
-		
-	}
+	GetMinionCharacter();
 }
 
 AMinionCharacter* AMyAIController::GetMinionCharacter()
