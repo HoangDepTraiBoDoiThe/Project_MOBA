@@ -9,8 +9,8 @@
 
 void UBTService_MinionSearchForTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-	SetTargetTerritory();
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
+	SetTargetTerritory();
 }
 
  void UBTService_MinionSearchForTarget::SetTargetTerritory()

@@ -23,7 +23,7 @@ class PROJECT_MOBA_API AMyGameModeBase : public AGameModeBase
 public:
 	virtual void BeginPlay() override;
 	virtual void StartPlay() override;
-	TMap<FGameplayTag, AMotherBase*> GetTeamBaseMap() {return TeamBaseMap;}
+	TMap<FGameplayTag, AMotherBase*>& GetTeamBaseMap() {return TeamBaseMap;}
 
 	FGameplayTag DetermineInitialTeam() const;
 	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;

@@ -89,7 +89,7 @@ APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
 
 void AMyPlayerState::NotifyEndGame_Implementation(const FGameplayTag TeamWinner, float TimeInMinute)
 {
-	OnEndingGame.Execute(TeamWinner, TimeInMinute);
+	OnEndingGame.ExecuteIfBound(TeamWinner, TimeInMinute);
 }
 
 void AMyPlayerState::RepNotify_XP(const int32 OldValue) const
