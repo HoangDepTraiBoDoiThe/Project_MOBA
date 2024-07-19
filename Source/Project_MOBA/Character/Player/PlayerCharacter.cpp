@@ -49,6 +49,19 @@ void APlayerCharacter::OnRep_PlayerState()
 	}
 }
 
+void APlayerCharacter::Destroyed()
+{
+	if (HasAuthority())
+	{
+		AMyGameModeBase* GameMode = UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld());
+		if (GameMode)
+		{
+			GameMode->RespawnPlayer(MyPlayerController);
+		}
+	}
+	Super::Destroyed();
+}
+
 void APlayerCharacter::PlayerInitializeGASInfos()
 {
 	if (!GetMyPlayerState()) return;
@@ -109,13 +122,5 @@ const TMap<TObjectPtr<UInputAction>, FGameplayTag>* APlayerCharacter::GetHeroInp
 
 void APlayerCharacter::Die()
 {
-	if (HasAuthority())
-	{
-		AMyGameModeBase* GameMode = UMyBlueprintFunctionLibrary::GetMyGameModeBase(GetWorld());
-		if (GameMode)
-		{
-			GameMode->RespawnPlayer(MyPlayerController);
-		}
-	}
 	Super::Die();
 }

@@ -111,7 +111,7 @@ void AMyPlayerController::CharacterAutoMovetoLocation()
 	if (bShouldAutoRunToLocation && GetPlayerCharacter())
 	{
 		const FVector MoveDirection = SplineComponent->FindDirectionClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
-		GetPlayerCharacter()->AddMovementInput(MoveDirection);
+		GetPlayerCharacter()->AddMovementInput(MoveDirection, 1);
 		const FVector LocationClosestToCharacter = SplineComponent->FindLocationClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
 		const float DistanceToDestination = FMath::Abs((LocationClosestToCharacter - DestinyLocation).Size2D());
 		if (DistanceToDestination <= 50.f)

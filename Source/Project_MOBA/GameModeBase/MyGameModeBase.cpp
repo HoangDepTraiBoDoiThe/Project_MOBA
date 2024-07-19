@@ -130,17 +130,11 @@ void AMyGameModeBase::FinishRespawn(AMyPlayerController* Controller)
 
 	AMyPlayerStart* StartSpot = ChoosePlayerStart(Controller);
 
+	Cast<AMyPlayerController>(Controller)->GetPlayerCharacter()->Reset();
+	Cast<AMyPlayerController>(Controller)->GetPlayerCharacter()->Destroy();
 	if (StartSpot != nullptr)
 	{
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-        
-		APawn* NewPawn = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, StartSpot->GetActorLocation(), StartSpot->GetActorRotation(), SpawnParams);
-
-		if (NewPawn != nullptr)
-		{
-			Controller->Possess(NewPawn);
-		}
+		RestartPlayerAtPlayerStart(Controller, StartSpot);
 	}
 }
 
