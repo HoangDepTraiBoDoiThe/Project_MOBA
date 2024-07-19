@@ -39,6 +39,7 @@ public:
 	virtual void Death();
 	UFUNCTION(BlueprintCallable)
 	virtual FGameplayTag GetTeamTag() override;
+	void SetTeamTag(FGameplayTag Team) ;
 	virtual FGameplayTag GetActorTag() override;
 	
 	// IGameplayTagAssetInterface override functions.

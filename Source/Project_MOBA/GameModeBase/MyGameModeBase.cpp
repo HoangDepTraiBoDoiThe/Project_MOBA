@@ -11,6 +11,7 @@
 #include "Project_MOBA/Character/Player/PlayerController/MyPlayerController.h"
 #include "Project_MOBA/Character/Player/PLayerState/MyPlayerState.h"
 #include "Project_MOBA/Envir/MyPlayerStart.h"
+#include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 
 void AMyGameModeBase::BeginPlay()
 {
@@ -35,22 +36,24 @@ APawn* AMyGameModeBase::SpawnDefaultPawnFor_Implementation(AController* NewPlaye
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-        
-		APawn* NewPawn = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, StartSpot->GetActorLocation(), StartSpot->GetActorRotation(), SpawnParams);
+
+		AActor* NewPawn = UGameplayStatics::BeginDeferredActorSpawnFromClass(this, DefaultPawnClass, StartSpot->GetTransform(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
 
 		if (NewPawn)
 		{
+
 			// Set the team tag for the new pawn here if necessary
 			APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(NewPawn);
 			if (PlayerCharacter)
 			{
 				// You might want to implement logic here to determine the initial team
 				// For example, based on the number of players on each team
-				PlayerCharacter->GetTeamTag() = DetermineInitialTeam();
+				PlayerCharacter->SetTeamTag(DetermineInitialTeam());
 			}
+			UGameplayStatics::FinishSpawningActor(NewPawn, StartSpot->GetTransform());
 		}
 
-		return NewPawn;
+		return Cast<APawn>(NewPawn);
 	}
 
 	return nullptr;
@@ -63,7 +66,7 @@ TArray<AActor*> AMyGameModeBase::FindAllPlayerStarts(UWorld* World)
 	return PlayerStarts;
 }
 
-AMyPlayerStart* AMyGameModeBase::ChoosePlayerStart(AController* Controller)
+AMyPlayerStart* AMyGameModeBase::ChoosePlayerStart(const AController* Controller)
 {
 	TArray<AActor*> AllPlayerStarts = FindAllPlayerStarts(GetWorld());
 	TArray<AActor*> ValidStartPoints;
@@ -78,7 +81,6 @@ AMyPlayerStart* AMyGameModeBase::ChoosePlayerStart(AController* Controller)
 	else
 	{
 		// If the player doesn't have a character yet (initial spawn), 
-		// you might want to determine their team here
 		PlayerTeamTag = DetermineInitialTeam();
 	}
 
@@ -86,7 +88,7 @@ AMyPlayerStart* AMyGameModeBase::ChoosePlayerStart(AController* Controller)
 	for (AActor* StartPoint : AllPlayerStarts)
 	{
 		AMyPlayerStart* MyPlayerStart = Cast<AMyPlayerStart>(StartPoint);
-		if (MyPlayerStart->GetTeamTag() == PlayerTeamTag)
+		if (MyPlayerStart->GetTeamTag().MatchesTagExact(PlayerTeamTag))
 		{
 			ValidStartPoints.Add(MyPlayerStart);
 		}
@@ -142,10 +144,16 @@ void AMyGameModeBase::FinishRespawn(AMyPlayerController* Controller)
 	}
 }
 
-// You'll need to implement this function to determine the initial team for a player
-FGameplayTag AMyGameModeBase::DetermineInitialTeam()
+FGameplayTag AMyGameModeBase::DetermineInitialTeam() const
 {
-	return FGameplayTag();
+	for (APlayerState* PlayerState : GetWorld()->GetGameState()->PlayerArray)
+	{
+		AMyPlayerState* MyPlayerState = Cast<AMyPlayerState>(PlayerState);
+		if (!MyPlayerState->GetPlayerCharacter()) return MyGameplayTagsManager::Get().Team_White;
+		const FGameplayTag ChoosingTeam = MyPlayerState->GetPlayerCharacter()->GetTeamTag().MatchesTagExact(MyGameplayTagsManager::Get().Team_White) ? MyGameplayTagsManager::Get().Team_Black : MyGameplayTagsManager::Get().Team_White;
+		return ChoosingTeam;
+	}
+	return MyGameplayTagsManager::Get().Team_White;
 }
 
 void AMyGameModeBase::EndGame(FGameplayTag TeamWinner)

@@ -118,6 +118,11 @@ FGameplayTag ABaseCharacter::GetTeamTag()
 	return TeamTag;
 }
 
+void ABaseCharacter::SetTeamTag(const FGameplayTag Team)
+{
+	TeamTag = Team;
+}
+
 FGameplayTag ABaseCharacter::GetActorTag()
 {
 	return CharacterTag;

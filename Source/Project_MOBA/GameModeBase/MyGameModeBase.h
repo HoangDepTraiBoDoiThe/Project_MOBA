@@ -25,10 +25,10 @@ public:
 	virtual void StartPlay() override;
 	TMap<FGameplayTag, AMotherBase*> GetTeamBaseMap() {return TeamBaseMap;}
 
-	FGameplayTag DetermineInitialTeam();
+	FGameplayTag DetermineInitialTeam() const;
 	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;
 	TArray<AActor*> FindAllPlayerStarts(UWorld* World);
-	AMyPlayerStart* ChoosePlayerStart(AController* Controller);
+	AMyPlayerStart* ChoosePlayerStart(const AController* Controller);
 
 	void EndGame(FGameplayTag TeamWinner);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
