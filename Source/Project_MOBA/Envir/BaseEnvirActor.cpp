@@ -28,5 +28,12 @@ void ABaseEnvirActor::BeginPlay()
 void ABaseEnvirActor::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	MyAbilitySystemComponent->ActorASCInitialize(this, this);
+	MyAbilitySystemComponent->ActorASCInitializeServer(this, this);
+	
+}
+
+void ABaseEnvirActor::OnRep_Controller()
+{
+	Super::OnRep_Controller();
+	MyAbilitySystemComponent->ActorASCInitializeClient();
 }

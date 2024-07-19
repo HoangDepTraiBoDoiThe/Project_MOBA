@@ -49,21 +49,15 @@ void APlayerCharacter::OnRep_PlayerState()
 	}
 }
 
-void APlayerCharacter::OnRep_Controller()
-{
-	Super::OnRep_Controller();
-}
-
 void APlayerCharacter::PlayerInitializeGASInfos()
 {
 	if (!GetMyPlayerState()) return;
 
 	MyAbilitySystemComponent = Cast<UMyAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetMyPlayerState()));
 	BaseAttributeSet = MyPlayerState->GetBaseAttributeSet();
-	if (HasAuthority())
-	{
-		MyAbilitySystemComponent->ActorASCInitialize(GetMyPlayerState(), this);
-	}
+
+	MyAbilitySystemComponent->ActorASCInitializeClient();
+	if (HasAuthority()) MyAbilitySystemComponent->ActorASCInitializeServer(GetMyPlayerState(), this);
 }
 
 AMyHUD* APlayerCharacter::GetMyHUD()

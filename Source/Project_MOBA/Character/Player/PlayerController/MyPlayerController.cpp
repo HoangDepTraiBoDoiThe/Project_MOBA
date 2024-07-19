@@ -108,7 +108,7 @@ void AMyPlayerController::CharacterMoveToLocation()
 
 void AMyPlayerController::CharacterAutoMovetoLocation()
 {
-	if (bShouldAutoRunToLocation)
+	if (bShouldAutoRunToLocation && GetPlayerCharacter())
 	{
 		const FVector MoveDirection = SplineComponent->FindDirectionClosestToWorldLocation(GetCharacterLocation(), ESplineCoordinateSpace::World);
 		GetPlayerCharacter()->AddMovementInput(MoveDirection);

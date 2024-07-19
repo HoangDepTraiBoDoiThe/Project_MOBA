@@ -28,7 +28,8 @@ public:
 	 Call this for every Actors that has this component.
 	 Give abilities, default attribute values, bind callback functions and etc to character.
 	 */
-	void ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor);
+	void ActorASCInitializeServer(AActor* InOwnerActor, AActor* InAvatarActor);
+	void ActorASCInitializeClient();
 	
 	// For tags in Ability's tag.
 	bool TryActivateAbilityByTag(const FGameplayTag AbilityTag);

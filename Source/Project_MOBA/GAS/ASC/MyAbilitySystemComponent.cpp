@@ -11,11 +11,15 @@
 #include "Project_MOBA/GAS/GameplayAbility/BaseGameplayAbility.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 
-void UMyAbilitySystemComponent::ActorASCInitialize(AActor* InOwnerActor, AActor* InAvatarActor)
+void UMyAbilitySystemComponent::ActorASCInitializeServer(AActor* InOwnerActor, AActor* InAvatarActor)
 {
 	InitAbilityActorInfo(InOwnerActor, InAvatarActor);
 	ApplyDefaultGEs();
 	GiveStartupAbilities();
+}
+
+void UMyAbilitySystemComponent::ActorASCInitializeClient()
+{
 	ReceiveAndBindCallBackToDependencies();
 }
 

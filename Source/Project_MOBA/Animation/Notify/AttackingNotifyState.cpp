@@ -4,6 +4,7 @@
 #include "AttackingNotifyState.h"
 
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Project_MOBA.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
 
@@ -11,8 +12,9 @@ void UAttackingNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimS
                                         float TotalDuration)
 {
 	ABaseCharacter* Character = Cast<ABaseCharacter>(MeshComp->GetOwner());
-	if (Character)
+	if (Character && Character->HasAuthority())
 	{
+		UKismetSystemLibrary::PrintString(Character,TEXT("NotifyBegin"));
 		FCollisionResponseContainer CollisionResponseContainer;
 		CollisionResponseContainer.SetResponse(ECC_Character, ECR_Overlap);
 		CollisionResponseContainer.SetResponse(ECC_EnvirCombatActor, ECR_Overlap);
@@ -25,7 +27,7 @@ void UAttackingNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSeq
 	const FAnimNotifyEventReference& EventReference)
 {
 	ABaseCharacter* Character = Cast<ABaseCharacter>(MeshComp->GetOwner());
-	if (Character)
+	if (Character && Character->HasAuthority())
 	{
 		Character->GetMeleCollisionBoundary()->SetCollisionResponseToAllChannels(ECR_Ignore);
 	}	

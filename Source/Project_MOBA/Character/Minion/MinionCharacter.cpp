@@ -39,8 +39,14 @@ void AMinionCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	MyAbilitySystemComponent->ActorASCInitialize(this, this);
+	MyAbilitySystemComponent->ActorASCInitializeServer(this, this);
 
 	AMyAIController* AIController = Cast<AMyAIController>(NewController);
 	if (AIController) AIController->SetupBehavior(BehaviorTree);
+}
+
+void AMinionCharacter::OnRep_Controller()
+{
+	Super::OnRep_Controller();
+	MyAbilitySystemComponent->ActorASCInitializeClient();
 }
