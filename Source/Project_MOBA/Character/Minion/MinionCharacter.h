@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Project_MOBA/Character/BaseCharacter.h"
+#include "Project_MOBA/Envir/MotherBase.h"
 #include "MinionCharacter.generated.h"
 
-class AMotherBase;
 class AMinionBase;
 class UWidgetComponent;
 class UEnvironmentComponent;

@@ -30,7 +30,6 @@ void UMyBlueprintFunctionLibrary::GetFilteredCombatActorListFromOverlappedActors
 		{
 			if (!OverlapComponents[i]) continue;
 
-			CHECKF(InterfaceClassFilter, "High", "UMyBlueprintFunctionLibrary", __FUNCTION__, "InterfaceClassFilter is null")
 			ICombatInterface* OverlappedActors = Cast<ICombatInterface>(OverlapComponents[i]->GetOwner());
 			if (InterfaceClassFilter && OverlappedActors && !OverlappedActors->GetTeamTag().MatchesTagExact(OwnerTeamTag))
 			{

@@ -6,7 +6,7 @@
 
 // DEV MESSAGE | Priority | ErrorClass | Function | Message
 #define CHECKF(Pointer, Priority, ErrorClassName, ErrorFunctionName,  Message) \
-	checkf(Pointer, TEXT("DEV MESSAGE | %s | %s | %hs | %s "), *FString(Priority), *ErrorClassName, *ErrorFunctionName, *FString(Message));
+checkf(Pointer, TEXT("DEV MESSAGE | %s | %s | %hs | %s "), *FString(Priority), *ErrorClassName, *ErrorFunctionName, *FString(Message));
 
 //		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Try activate ability %s is %s"), *InputTag.GetTagName().ToString(), bSuccessfull ? *FString("Successfully") : *FString("Failed")));
 
