@@ -73,26 +73,19 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
         const float IncomingDamage = Data.EvaluatedData.Attribute.GetNumericValue(this);
         SetDamageIncoming(0);
         SetHitPoint(GetHitPoint() - IncomingDamage);
-        if (GetHitPoint() <= 0 && !Death)
+        if (GetHitPoint() <= 0)
         {
-            Death = true;
+            ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetActorInfo()->AvatarActor);
             const UAbilitySystemComponent* ASC = Data.EffectSpec.GetContext().GetInstigatorAbilitySystemComponent();
             if (ASC && Cast<APlayerCharacter>(ASC->GetAvatarActor()))
             {
-                const int32 XP2Reward = GetThisCombatActor()->GetXPReward();
+                const int32 XP2Reward = CombatInterface->GetXPReward();
                 AMyPlayerState* PlayerState = Cast<APlayerCharacter>(ASC->GetAvatarActor())->GetMyPlayerState();
                 PlayerState->RewardPlayer(XP2Reward);
             }
-            GetThisCombatActor()->Die();
+            CombatInterface->Die();
         }
     }
-}
-
-ICombatInterface* UBaseAttributeSet::GetThisCombatActor()
-{
-    if (!ThisCombatActor)
-        ThisCombatActor = Cast<ICombatInterface>(GetActorInfo()->AvatarActor);
-    return ThisCombatActor;
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& OldValue) const

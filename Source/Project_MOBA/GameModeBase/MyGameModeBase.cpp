@@ -131,7 +131,8 @@ void AMyGameModeBase::FinishRespawn(AMyPlayerController* Controller)
 	AMyPlayerStart* StartSpot = ChoosePlayerStart(Controller);
 
 	Cast<AMyPlayerController>(Controller)->GetPlayerCharacter()->Reset();
-	Cast<AMyPlayerController>(Controller)->GetPlayerCharacter()->Destroy();
+	Cast<AMyPlayerController>(Controller)->GetPlayerCharacter()->Destroy(true);
+	Cast<AMyPlayerController>(Controller)->SetPlayerCharacter(nullptr);
 	if (StartSpot != nullptr)
 	{
 		RestartPlayerAtPlayerStart(Controller, StartSpot);

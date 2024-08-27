@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MyPlayerController.h"
 
 #include "EnhancedInputSubsystems.h"
@@ -10,7 +9,6 @@
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_MOBA/Character/Player/PlayerCharacter.h"
-#include "Project_MOBA/Data/CharacterInfosDataAsset.h"
 #include "Project_MOBA/GAS/ASC/MyAbilitySystemComponent.h"
 #include "Project_MOBA/Managers/GameplayTagManager/MyGameplayTagsManager.h"
 
@@ -65,7 +63,7 @@ void AMyPlayerController::HighlightingActor()
 void AMyPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	
+	SetupInputComponent();
 }
 
 void AMyPlayerController::AcknowledgePossession(APawn* P)

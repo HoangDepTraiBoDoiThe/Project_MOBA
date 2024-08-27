@@ -27,7 +27,7 @@ class PROJECT_MOBA_API UBaseAttributeSet : public UAttributeSet
 public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	ICombatInterface* GetThisCombatActor();
+	void SetAlive(bool bAlive) {Death = !bAlive;}
 	
 	// Vital attributes
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPoint)
@@ -191,7 +191,6 @@ protected:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 private:
-	ICombatInterface* ThisCombatActor;
 	bool Death{false};
 	
 };
