@@ -83,7 +83,7 @@ void AMyPlayerState::IncreaseXP2Give(const int32 XP2GiveAmount)
 
 APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
 {
-	if (!PlayerCharacter) PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
+	if (!IsValid(PlayerCharacter)) PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
 	return PlayerCharacter;
 }
 

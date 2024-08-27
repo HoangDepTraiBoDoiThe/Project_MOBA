@@ -220,6 +220,6 @@ void UMyAbilitySystemComponent::Server_LevelUpAbility_Implementation(const FGame
 
 ABaseCharacter* UMyAbilitySystemComponent::GetBaseCharacter()
 {
-	if (!BaseCharacter) BaseCharacter = Cast<ABaseCharacter>(GetAvatarActor());
+	if (!IsValid(BaseCharacter)) BaseCharacter = Cast<ABaseCharacter>(GetAvatarActor());
 	return BaseCharacter;
 }

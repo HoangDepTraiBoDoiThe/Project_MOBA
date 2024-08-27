@@ -148,7 +148,7 @@ void AMyPlayerController::bShouldHighlight(ICombatInterface* Actor, bool b) cons
 
 APlayerCharacter* AMyPlayerController::GetPlayerCharacter()
 {
-	if (!PlayerCharacter)
+	if (!IsValid(PlayerCharacter))
 	{
 		PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
 	}
@@ -163,5 +163,6 @@ AMyPlayerState* AMyPlayerController::GetMyPlayerState()
 
 FVector AMyPlayerController::GetCharacterLocation()
 {
-	return GetPlayerCharacter()->GetActorLocation();
+	if (GetPlayerCharacter()) return GetPlayerCharacter()->GetActorLocation();
+	return FVector();
 }

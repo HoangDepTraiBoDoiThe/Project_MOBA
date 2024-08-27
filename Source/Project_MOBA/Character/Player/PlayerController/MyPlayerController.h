@@ -27,7 +27,6 @@ public:
 	void CharacterAutoMovetoLocation();
 	virtual void Tick(float DeltaSeconds) override;
 	FORCEINLINE APlayerCharacter* GetPlayerCharacter();
-	FORCEINLINE void SetPlayerCharacter(APlayerCharacter* NewPlayerCharacter) {PlayerCharacter = NewPlayerCharacter;};
 	AMyPlayerState* GetMyPlayerState();
 	virtual void AcknowledgePossession(APawn* P) override;
 	FVector GetCharacterLocation();
